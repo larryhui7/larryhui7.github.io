@@ -21,12 +21,12 @@ repository               : "academicpages/academicpages.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "profileLarry.png"
   name             : "Larry Hui"
   pronouns         : # example: "she/her"  
-  bio              : "MechE and EECS @UC Berkeley"
-  location         : "Berkeley, CA | Toronto, ON | London, UK"
-  employer         : "University of California, Berkeley"
+  bio              : "MechE and EECS Student"
+  location         : "Berkeley, CA"
+  employer         : "UC Berkeley"
   uri              : # URL
   email            : "larryhui7@berkeley.edu" 
 
@@ -58,7 +58,7 @@ author:
   keybase          : # Username
   instagram        : larry.hui7
   lastfm           : # Username
-  linkedin         : # Larry Hui
+  linkedin         : Larry Hui
   mastodon         : # URL
   medium           : # URL
   pinterest        : # Username
