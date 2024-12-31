@@ -6,7 +6,7 @@
 
 main:    
   - title: "Coursework"
-    url: /teaching/ 
+    url: /coursework/ 
 
   - title: "Projects"
     url: /talks/    
