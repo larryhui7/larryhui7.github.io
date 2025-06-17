@@ -57,7 +57,7 @@ params:
     title: Professor Larry Hui
     subtitle: "I am a Professor in the Institute of Romance Philology at the University of Regensburg, Germany. My research focuses on Portuguese irregular verbs. I was a doctoral student of Professor Dr Dieter Vogelsang in Munich, and later a second assistant of Professor Walter Schoeffler-Henschell at the University of Wiesbaden."
     imageUrl: "LarryProfilePic.png"
-    imageWidth: 160
+    imageWidth: 140
     imageHeight: 160
     buttons:
       - name: Papers
@@ -79,21 +79,19 @@ params:
     - name: CV
       url: cv.pdf
     - name: Email
-      url: mailto:igelfeld@regensburg.edu
-    - name: Zoom
-      url: https://www.zoom.us/my/igelfeld
+      url: mailto:larryhui7@berkeley.edu
     - name: Location
       url: location/
-    - name: Office Hours
-      url: officehours/
-    - name: Google Scholar
-      url: https://scholar.google.com/citations?user=cL23w-4AAAAJ
+    - name: linkedin
+      url: https://www.linkedin.com/in/larryhui7/
     - name: GitHub
-      url: https://github.com/pmichaillat
-    - name: Substack
-      url: https://pmichaillat.substack.com
-    - name: YouTube
-      url: https://www.youtube.com/@pmichaillat
+      url: https://github.com/larryhui7
+    - name: kaggle
+      url: https://www.kaggle.com/larryhui7
+    - name: spotify
+      url: https://open.spotify.com/user/larryhui7
+    - name: Threads
+      url:
 
   assets:
     disableScrollBarStyle: true
