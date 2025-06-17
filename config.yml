@@ -89,6 +89,7 @@ params:
           "<em>Fun fact: The em dash—despite being sullied by GPT—is my favorite punctuation mark.</em>",
           "<em>Fun fact: My CAD program of choice is (somewhat reluctantly) Solidworks.</em>",
           "<em>Fun fact: Ich kann ein bisschen Deutsch.</em>",
+          "<em>Fun fact: Saying Foxtrot is pretentious; fox is better.</em>",
           "<em>Fun fact: The Porsche 911 GT3RS is the best car of all time.</em>",
           "<em>Fun fact: This has been 23 fun facts, and now you've seen them all!</em>"
         ];
