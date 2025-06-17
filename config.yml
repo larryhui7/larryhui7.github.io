@@ -15,8 +15,8 @@ menu:
     - name: Books
       url: books/
       weight: 5
-    - name: Papers
-      url: papers/
+    - name: Projects
+      url: projects/
       weight: 2
     - name: Courses
       url: courses/
@@ -24,9 +24,6 @@ menu:
     - name: Data
       url: data/
       weight: 4
-    - name: Blog
-      url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
-      weight: 6
 
 params:
   description: "This website hosts Larry Hui's research papers, books, course materials, data, curriculum vitae, and contact information."
@@ -44,7 +41,7 @@ params:
   ShowBreadCrumbs: false
   ShowCodeCopyButtons: true
   ShowAllPagesInArchive: false
-  MainSections: ["books", "courses", "papers", "data"]
+  MainSections: ["books", "courses", "projects", "data"]
   ShowToc: false
   disableScrollToTop: true
   TocOpen: true
@@ -60,51 +57,70 @@ params:
 
       Currently, I am a lead TA for Dynamic Systems and Feedback Controls. This past semester I took electives in Machine Learning, Convex Optimization, The Finite Element Method, Convective Transport and Computational Methods. My interests span multiple areas, namely FEA, optimal control and linear system theory, optimization, and machine learning as they relate to robotics.<br><br>
 
-      I have experience working in a small group at a startup, working as a Hardware Engineering intern assisting by creating and tolerancing a drone-based hodoscope. I spent time integrating the PCB design into the enclosure, writing code for failure analysis, and researching deployment methods. Currently, I am doing research with Professor Grace X. Gu on implementing MGNs and PINNs in MATLAB. We are also reviewing differentiable GNN-based PDE solvers as they relate to fluid-solid interactions.<br><br>
+      I have experience working in a small group at <a href="https://ore.green/" style="color:#3399ff;">ORE</a>, a startup, as a Hardware Engineering intern assisting by creating and tolerancing a drone-based hodoscope. I spent time integrating the PCB design into the enclosure, writing code for failure analysis, and researching deployment methods. Currently, I am doing research with Professor <a href="https://gu.berkeley.edu/people/grace-x-gu/" style="color:#3399ff;">Grace X. Gu</a> on implementing MGNs and PINNs in MATLAB. We are also reviewing differentiable GNN-based PDE solvers as they relate to fluid-solid interactions.<br><br>
 
       Besides academics, I enjoy cooking, trying cocktails, exploring restaurants around the world, and travelling (I literally spawn randomly around the world...). I consider myself a classical music afficionado with my favourite pieces being: Rachmaninoff Piano Conerto 2, Mahler Symphony 2, Schubert Piano Sonata No. 19; sometimes I play the trumpet, and all the other brass instruments. I also love to fly. I have my private pilot's licence, a high performance, and complex aircraft endorsements. I am working on my instrument rating. Patience. <br><br>
 
-      Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!<br><br>
-
-      <div id="fun-fact">Fun fact: This sentence changes every time you reload!</div>
+      <div id="fun-fact"><em>Fun fact: This sentence changes every time you reload!</em></div>
 
       <script>
         const facts = [
-          "Fun fact: My favorite Wii game is <strong>Lego Star Wars: The Complete Saga</strong>.",
-          "Fun fact: My shell of choice is <strong>zsh</strong>.",
-          "Fun fact: My favorite TV show is <strong>The Sopranos</strong>.",
-          "Fun fact: I once built a drone-based hodoscope.",
-          "Fun fact: I have a private pilot's license."
+          "<em>Fun fact: My favorite Wii game is <strong>Lego Star Wars: The Complete Saga</strong>.</em>",
+          "<em>Fun fact: My shell of choice is <strong>zsh</strong>.</em>",
+          "<em>Fun fact: My favorite TV show is <strong>Doctor Who</strong>.</em>",
+          "<em>Fun fact: My favorite movie is <strong>Inglorious Basterds</strong>.</em>",
+          "<em>Fun fact: I once shocked myself building my Nixie Tube clock.</em>",
+          "<em>Fun fact: My eye colour is brown... how typical.</em>",
+          "<em>Fun fact: Je sais parler français.</em>",
+          "<em>Fun fact: The Japanese Zero is the coolest warbird.</em>",
+          "<em>Fun fact: Favourite cocktail is a Last Word.</em>",
+          "<em>Fun fact: Ferrari fan despite giving me depression.</em>",
+          "<em>Fun fact: My favourite condiment is Kewpie Mayo or Honey Mustard.</em>",
+          "<em>Fun fact: My favourite constant is <a href=\"https://en.wikipedia.org/wiki/Euler's_constant\" style=\"color:#3399ff;\">Euler's</a>.</em>",
+          "<em>Fun fact: Love the Pope.</em>",
+          "<em>Fun fact: This sentence contains threee erors.</em>",
+          "<em>Fun fact: Whetherspoons at 7am. Don't ask.</em>",
+          "<em>Fun fact: Every planet in our solar system is named after a god, except Earth, which is named after the stuff on the ground.</em>",
+          "<em>Fun fact: A tensor is something that transforms as a tensor.</em>",
+          "<em>Fun fact: Stanford is clean, safe, and boring; Berkeley is the opposite.</em>",
+          "<em>Fun fact: The em dash—despite being sullied by GPT—is my favorite punctuation mark.</em>",
+          "<em>Fun fact: My CAD program of choice is (somewhat reluctantly) Solidworks.</em>",
+          "<em>Fun fact: Ich kann ein bisschen Deutsch.</em>",
+          "<em>Fun fact: The Porsche 911 GT3RS is the best car of all time.</em>",
+          "<em>Fun fact: This has been 23 fun facts, and now you've seen them all!</em>"
         ];
-        const randomFact = facts[Math.floor(Math.random() * facts.length)];
-        document.getElementById("fun-fact").innerHTML = randomFact;
+
+        // Get current index from localStorage or start at 0
+        let currentIndex = parseInt(localStorage.getItem('funFactIndex')) || 0;
+
+        // Display the current fun fact
+        document.getElementById("fun-fact").innerHTML = facts[currentIndex];
+
+        // Update index for next load
+        currentIndex = (currentIndex + 1) % facts.length;
+        localStorage.setItem('funFactIndex', currentIndex);
       </script>
+
     imageUrl: "LarryProfilePic.png"
     imageWidth: 155
     imageHeight: 160
     buttons:
-      - name: Papers
-        url: papers/
+      - name: Projects
+        url: projects/
       - name: Data
         url: data/
       - name: Books
         url: books/
       - name: Courses
         url: courses/
-      - name: Tags
-        url: tags/
       - name: Archive
         url: archive/
-      - name: Blog
-        url: https://en.wikipedia.org/wiki/Moritz-Maria_von_Igelfeld_(character)
 
   socialIcons:
     - name: CV
       url: cv.pdf
     - name: Email
       url: mailto:larryhui7@berkeley.edu
-    - name: Location
-      url: location/
     - name: linkedin
       url: https://www.linkedin.com/in/larryhui7/
     - name: GitHub
@@ -113,8 +129,6 @@ params:
       url: https://www.kaggle.com/larryhui7
     - name: spotify
       url: https://open.spotify.com/user/larryhui7
-    - name: Threads
-      url:
 
   assets:
     disableScrollBarStyle: true
