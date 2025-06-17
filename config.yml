@@ -30,9 +30,9 @@ params:
   author: Larry Hui
   # googleAnalyticsID: "G-XXXXX"
   DateFormat: "January 2006"
-  defaultTheme: light
+  defaultTheme: dark
   hideFooter: false
-  disableThemeToggle: true
+  disableThemeToggle: false
   ShowShareButtons: false
   ShowReadingTime: false
   disableSpecial1stPost: true
