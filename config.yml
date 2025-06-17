@@ -55,7 +55,8 @@ params:
   profileMode:
     enabled: true
     title: Larry Hui
-    subtitle: ""
+    subtitle: |
+      Hey! I’m Larry, welcome to my page! I am a rising senior at <a href="https://www.berkeley.edu/">UC Berkeley</a>, studying <a href="https://me.berkeley.edu/">Mechanical Engineering</a> and <a href="https://eecs.berkeley.edu/">EECS</a>.
     imageUrl: "LarryProfilePic.png"
     imageWidth: 155
     imageHeight: 160
