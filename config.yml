@@ -54,10 +54,10 @@ params:
   math: true
   profileMode:
     enabled: true
-    title: Professor Larry Hui
-    subtitle: "I am a Professor in the Institute of Romance Philology at the University of Regensburg, Germany. My research focuses on Portuguese irregular verbs. I was a doctoral student of Professor Dr Dieter Vogelsang in Munich, and later a second assistant of Professor Walter Schoeffler-Henschell at the University of Wiesbaden."
+    title: Larry Hui
+    subtitle: ""
     imageUrl: "LarryProfilePic.png"
-    imageWidth: 140
+    imageWidth: 155
     imageHeight: 160
     buttons:
       - name: Papers
