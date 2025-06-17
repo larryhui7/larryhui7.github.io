@@ -94,10 +94,8 @@ params:
       url: https://pmichaillat.substack.com
     - name: YouTube
       url: https://www.youtube.com/@pmichaillat
-    - name: Twitter
+    - name: Kaggle
       url: https://x.com/pmichaillat
-    - name: Bluesky
-      url: https://bsky.app/profile/pmichaillat.bsky.social
 
   assets:
     disableScrollBarStyle: true
