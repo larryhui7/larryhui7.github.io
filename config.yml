@@ -1,5 +1,5 @@
-baseURL: "https://larryhui7.github.io"
-title: Larry Hui
+baseURL: "https://pascalmichaillat.org/hugo-website/"
+title: Moritz-Maria von Igelfeld
 theme: PaperMod
 
 enableInlineShortcodes: true
