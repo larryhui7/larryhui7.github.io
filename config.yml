@@ -55,7 +55,14 @@ params:
   profileMode:
     enabled: true
     title: Larry Hui
-    subtitle: "Hey! I'm Larry, welcome to my page! I am a rising senior at UC Berkeley, studying Mechanical Engineering and EECS. Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!\n\nCurrently, I am a lead TA for Dynamic Systems and Feedback Controls. This past semester I took electives in Machine Learning, Convex Optimization, The Finite Element Method, Convective Transport and Computational Methods. My interests span multiple areas, namely FEA, optimal control and linear system theory, optimization, and machine learning as they relate to robotics. \n\nI have experience working in a small group at a startup, working as a Hardware Engineering intern assisting by creating and tolerancing a drone-based hodoscope. I spent time integrating the PCB design into the enclosure, writing code for failure analysis, and researching deployment methods. Currently, I am doing research with Professor Grace X. Gu on implementing MGNs and PINNs in MATLAB. We are also reviewing differentiable GNN-based PDE solvers as they relate to fluid-solid interactions. \n\nHave some fun exploring my page to see some projects, classes, and research I’ve been involved in! Feel free to contact me as well!"
+    subtitle: |
+      <p>Hey! I'm Larry, welcome to my page! I am a rising senior at <a href="https://www.berkeley.edu/">UC Berkeley</a>, studying Mechanical Engineering and EECS. Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!</p>
+
+      <p>Currently, I am a lead TA for Dynamic Systems and Feedback Controls. This past semester I took electives in Machine Learning, Convex Optimization, The Finite Element Method, Convective Transport and Computational Methods. My interests span multiple areas, namely FEA, optimal control and linear system theory, optimization, and machine learning as they relate to robotics.</p>
+
+      <p>I have experience working in a small group at a startup, working as a Hardware Engineering intern assisting by creating and tolerancing a drone-based hodoscope. I spent time integrating the PCB design into the enclosure, writing code for failure analysis, and researching deployment methods. Currently, I am doing research with Professor Grace X. Gu on implementing MGNs and PINNs in MATLAB. We are also reviewing differentiable GNN-based PDE solvers as they relate to fluid-solid interactions.</p>
+
+      <p>Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!</p>
     imageUrl: "LarryProfilePic.png"
     imageWidth: 155
     imageHeight: 160
