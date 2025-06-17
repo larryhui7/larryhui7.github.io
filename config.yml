@@ -56,7 +56,7 @@ params:
     enabled: true
     title: Hey! I'm Larry Hui
     subtitle: |
-      Welcome to my page! I am a rising senior at <a href="https://www.berkeley.edu/" style="color:#3399ff;">UC Berkeley</a>, studying <a href="https://www.me.berkeley.edu/" style="color:#3399ff;">Mechanical Engineering</a> and <a href="https://www.berkeley.edu/" style="color:#3399ff;">EECS</a>. Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!<br><br>
+      <span style="border-bottom: 2px solid maroon; padding-bottom: 1px;">Welcome to my page!</span> I am a rising senior at <a href="https://www.berkeley.edu/" style="color:#3399ff;">UC Berkeley</a>, studying <a href="https://www.me.berkeley.edu/" style="color:#3399ff;">Mechanical Engineering</a> and <a href="https://www.berkeley.edu/" style="color:#3399ff;">EECS</a>. Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!<br><br>
 
       Currently, I am a lead TA for Dynamic Systems and Feedback Controls. This past semester I took electives in Machine Learning, Convex Optimization, The Finite Element Method, Convective Transport and Computational Methods. My interests span multiple areas, namely FEA, optimal control and linear system theory, optimization, and machine learning as they relate to robotics.<br><br>
 
