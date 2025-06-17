@@ -1,0 +1,14 @@
+body,
+.main,
+.post-entry,
+.post-content,
+.content,
+.profile,
+.profile_inner,
+.subtitle,
+p {
+    font-family: 'PT Mono', monospace !important;
+    font-size: 0.85rem !important;
+    /* ≈ 14px */
+    line-height: 1.6 !important;
+}
