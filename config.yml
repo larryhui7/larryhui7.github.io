@@ -12,25 +12,28 @@ taxonomies:
 
 menu:
   main:
-    - name: Books
-      url: books/
-      weight: 5
     - name: Projects
       url: projects/
-      weight: 2
-    - name: Courses
+      weight: 1
+    - name: Coursework
       url: courses/
+      weight: 2
+    - name: Research
+      url: research/
       weight: 3
-    - name: Data
-      url: data/
+    - name: Certifications
+      url: certifications/
       weight: 4
+    - name: Miscellaneous (Fun)
+      url: misc/
+      weight: 5
 
 params:
   description: "This website hosts Larry Hui's research papers, books, course materials, data, curriculum vitae, and contact information."
   author: Larry Hui
   # googleAnalyticsID: "G-XXXXX"
   DateFormat: "January 2006"
-  defaultTheme: dark
+  defaultTheme: light
   hideFooter: false
   disableThemeToggle: false
   ShowShareButtons: false
@@ -41,7 +44,7 @@ params:
   ShowBreadCrumbs: false
   ShowCodeCopyButtons: true
   ShowAllPagesInArchive: false
-  MainSections: ["books", "courses", "projects", "data"]
+  MainSections: ["misc", "courses", "projects", "research"]
   ShowToc: false
   disableScrollToTop: true
   TocOpen: true
@@ -107,14 +110,14 @@ params:
     buttons:
       - name: Projects
         url: projects/
-      - name: Data
-        url: data/
-      - name: Books
-        url: books/
-      - name: Courses
+      - name: Coursework
         url: courses/
-      - name: Archive
-        url: archive/
+      - name: Research
+        url: research/
+      - name: Certifications
+        url: certifications/
+      - name: Miscellaneous (Fun)
+        url: misc/
 
   socialIcons:
     - name: CV
