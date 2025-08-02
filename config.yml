@@ -58,16 +58,17 @@ params:
     subtitle: |
       <span style="border-bottom: 2px solid maroon; padding-bottom: 1px;">Welcome to my page!</span> I am a rising senior at <a href="https://www.berkeley.edu/" style="color:#3399ff;">UC Berkeley</a>, studying <a href="https://www.me.berkeley.edu/" style="color:#3399ff;">Mechanical Engineering</a> and <a href="https://www.berkeley.edu/" style="color:#3399ff;">EECS</a>. Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!<br><br>
 
-      Currently, I am a lead TA for Dynamic Systems and Feedback Controls. This past semester I took electives in Machine Learning, Convex Optimization, The Finite Element Method, Convective Transport and Computational Methods. My interests span multiple areas, namely FEA, optimal control and linear system theory, optimization, and machine learning as they relate to robotics.<br><br>
+      Currently, I am a lead TA for Dynamic Systems and Feedback Controls. I have a passion of robotics, controls, optimization, and machine learning.<br><br>
 
       I have experience working in a small group at <a href="https://ore.green/" style="color:#3399ff;">ORE</a>, a startup, as a Hardware Engineering intern assisting by creating and tolerancing a drone-based hodoscope. I spent time integrating the PCB design into the enclosure, writing code for failure analysis, and researching deployment methods. Currently, I am doing research with Professor <a href="https://gu.berkeley.edu/people/grace-x-gu/" style="color:#3399ff;">Grace X. Gu</a> on implementing MGNs and PINNs in MATLAB. We are also reviewing differentiable GNN-based PDE solvers as they relate to fluid-solid interactions.<br><br>
 
-      Besides academics, I enjoy cooking, trying cocktails, exploring restaurants around the world, and travelling (I literally spawn randomly around the world...). I consider myself a classical music afficionado with my favourite pieces being: Rachmaninoff Piano Conerto 2, Mahler Symphony 2, Schubert Piano Sonata No. 19; sometimes I play the trumpet, and all the other brass instruments. Beleive it or not, I also used to swim competetitvely, and I still do recreationally. I also love to fly; I have my private pilot's licence, a high performance, and complex aircraft endorsements. I am working on my instrument rating. Patience. <br><br>
+      Besides academics, I enjoy cooking and travelling. I consider myself a classical music afficionado with my favourite pieces being: Rachmaninoff Piano Conerto 2, Mahler Symphony 2, Schubert Piano Sonata No. 19; sometimes I play the trumpet, and all the other brass instruments. Beleive it or not, I also used to swim competetitvely, and I still do recreationally. I also love to fly; I have my private pilot's licence, a high performance, and complex aircraft endorsements. I am working on my instrument rating. <br><br>
 
       <div id="fun-fact"><em>Fun fact: This sentence changes every time you reload!</em></div>
 
       <script>
         const facts = [
+          "<em>Fun fact: This sentence changes every time you reload! </em>",
           "<em>Fun fact: My favorite Wii game is <strong>Lego Star Wars: The Complete Saga</strong>.</em>",
           "<em>Fun fact: My shell of choice is <strong>zsh</strong>.</em>",
           "<em>Fun fact: My favorite TV show is <strong>Doctor Who</strong>.</em>",
