@@ -58,7 +58,7 @@ params:
     subtitle: |
       <span style="border-bottom: 2px solid maroon; padding-bottom: 1px;">Welcome to my page!</span> I am a rising senior at <a href="https://www.berkeley.edu/" style="color:#3399ff;">UC Berkeley</a>, studying <a href="https://www.me.berkeley.edu/" style="color:#3399ff;">Mechanical Engineering</a> and <a href="https://www.berkeley.edu/" style="color:#3399ff;">EECS</a>. Have some fun exploring my page to see some projects, classes, and research I've been involved in! Feel free to contact me as well!<br><br>
 
-      Currently, I am a lead TA for Dynamic Systems and Feedback Controls. I have a passion of robotics, controls, optimization, and machine learning.<br><br>
+      Currently, I am a TA for Experimentation and Measurements (prev Dynamic Systems and Feedback Controls). I have a passion of robotics, controls, optimization, and machine learning.<br><br>
 
       I have experience working in a small group at <a href="https://ore.green/" style="color:#3399ff;">ORE</a>, a startup, as a Hardware Engineering intern assisting by creating and tolerancing a drone-based hodoscope. I spent time integrating the PCB design into the enclosure, writing code for failure analysis, and researching deployment methods. Currently, I am doing research with Professor <a href="https://gu.berkeley.edu/people/grace-x-gu/" style="color:#3399ff;">Grace X. Gu</a> on implementing MGNs and PINNs in MATLAB. We are also reviewing differentiable GNN-based PDE solvers as they relate to fluid-solid interactions.<br><br>
 
