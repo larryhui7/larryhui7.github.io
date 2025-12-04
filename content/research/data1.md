@@ -5,6 +5,9 @@ tags: ["PINNs","physics-informed neural networks","fluid-solid interactions","ma
 author: ["Larry Hui", "Grace X. Gu"]
 description: "Research on implementing Physics-Informed Neural Networks (PINNs) and Mesh Graph Networks (MGNs) for solving fluid-solid interaction problems."
 summary: "Research on implementing Physics-Informed Neural Networks (PINNs) and Mesh Graph Networks (MGNs) for solving fluid-solid interaction problems."
+cover:
+    image: "pinn.png"
+    relative: true
 editPost:
     URL: "https://github.com/larryhui7/larryhui7.github.io"
     Text: "GitHub repository"

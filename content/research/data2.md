@@ -5,6 +5,9 @@ tags: ["fluid dynamics","experimental fluid mechanics","FLOW lab","multiphase fl
 author: ["Larry Hui", "Simo Makiharju"]
 description: "Research in the FLOW (Fluid Laboratory for Optimization and Waves) lab focusing on experimental fluid dynamics and multiphase flows."
 summary: "Research in the FLOW (Fluid Laboratory for Optimization and Waves) lab focusing on experimental fluid dynamics and multiphase flows."
+cover:
+    image: "flow_loop.png"
+    relative: true
 editPost:
     URL: "https://github.com/larryhui7/larryhui7.github.io"
     Text: "GitHub repository"
