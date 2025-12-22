@@ -187,15 +187,15 @@ Not everything in the world is so serious! Apart from the academics, here are so
 </div>
 <div class="travel-stats">
 <div class="stat-item">
-<div class="stat-number">15+</div>
+<div class="stat-number">40+</div>
 <div class="stat-label">Countries</div>
 </div>
 <div class="stat-item">
-<div class="stat-number">50+</div>
+<div class="stat-number">100+</div>
 <div class="stat-label">Cities</div>
 </div>
 <div class="stat-item">
-<div class="stat-number">4</div>
+<div class="stat-number">3</div>
 <div class="stat-label">Continents</div>
 </div>
 </div>
