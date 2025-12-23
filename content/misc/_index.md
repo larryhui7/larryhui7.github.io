@@ -202,7 +202,7 @@ Not everything in the world is so serious! Apart from the academics, here are so
 </div>
 
 <div class="fun-section">
-<h2>🎵 Currently Music</h2>
+<h2>🎵 Current Music</h2>
 <p>Some albums I've been listening to on repeat:</p>
 <div class="album-grid">
 <div class="album-card">
