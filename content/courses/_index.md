@@ -38,7 +38,7 @@ Numerical methods, optimization, and data-driven modeling.
 - **COMPSCI 185** – *Deep Reinforcement Learning, Decision Making, and Control* taught by [Professor Sergey Levine](https://people.eecs.berkeley.edu/~svlevine/) 
 - **MECENG 104** – *Engineering Mechanics II* taught by [Professor David Steigmann](https://me.berkeley.edu/people/david-steigmann/)
 - **EAPME 126** – *Computational Continuum Mechanics (Imperial)* taught by [Professor Dan Balint](https://profiles.imperial.ac.uk/d.balint)
-- **MECENG 287** – *Graduate Introduction to Continuum Mechanics* taughty by [Professor Ken Kamrin](https://me.berkeley.edu/people/ken-kamrin/)
+- **MECENG 287** – *Graduate Introduction to Continuum Mechanics* taught by [Professor Ken Kamrin](https://me.berkeley.edu/people/ken-kamrin/)
 
 ---
 
