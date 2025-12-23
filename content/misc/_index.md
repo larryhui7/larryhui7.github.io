@@ -195,35 +195,35 @@ Not everything in the world is so serious! Apart from the academics, here are so
 <div class="stat-label">Cities</div>
 </div>
 <div class="stat-item">
-<div class="stat-number">3</div>
+<div class="stat-number">4</div>
 <div class="stat-label">Continents</div>
 </div>
 </div>
 </div>
 
 <div class="fun-section">
-<h2>🎵 Currently Spinning</h2>
+<h2>🎵 Currently Music</h2>
 <p>Some albums I've been listening to on repeat:</p>
 <div class="album-grid">
 <div class="album-card">
-<a href="https://open.spotify.com/album/YOUR_ALBUM_1" target="_blank">
-<img src="https://i.scdn.co/image/ab67616d0000b273c9f744b0d62da795bc21d04a" alt="Album 1">
-<div class="album-title">Album Title 1</div>
-<div class="album-artist">Artist Name</div>
+<a href="https://open.spotify.com/track/75IQVo8hqI1iwVZyvkN2VT" target="_blank">
+<img src="https://t2.genius.com/unsafe/417x417/https%3A%2F%2Fimages.genius.com%2F4da53da832363231cac36ad414e38a28.1000x1000x1.png" alt=" Jazz">
+<div class="album-title">Oncle Jazz</div>
+<div class="album-artist">Men I Trust</div>
 </a>
 </div>
 <div class="album-card">
-<a href="https://open.spotify.com/album/YOUR_ALBUM_2" target="_blank">
-<img src="https://i.scdn.co/image/ab67616d0000b2734a6c0376235e5aa44e59d2c2" alt="Album 2">
-<div class="album-title">Album Title 2</div>
-<div class="album-artist">Artist Name</div>
+<a href="https://open.spotify.com/album/7z9NFSRufj49W9kaD2rORj" target="_blank">
+<img src="https://i.scdn.co/image/ab67616d0000b273d4cbc712774c49532e7bbd3c" alt="Tchaikovsky: Piano Concerto No. 1">
+<div class="album-title">Tchaikovsky: Piano Concerto No. 1</div>
+<div class="album-artist">Evegeny Kissin, Berlin Philharmoniker, Herbert von Karajan</div>
 </a>
 </div>
 <div class="album-card">
-<a href="https://open.spotify.com/album/YOUR_ALBUM_3" target="_blank">
-<img src="https://i.scdn.co/image/ab67616d0000b273e8b066f70c206551210d902b" alt="Album 3">
-<div class="album-title">Album Title 3</div>
-<div class="album-artist">Artist Name</div>
+<a href="https://open.spotify.com/album/7aJuG4TFXa2hmE4z1yxc3n" target="_blank">
+<img src="https://media.pitchfork.com/photos/6614092742a7de97785c7a48/master/pass/Billie-Eilish-Hit-Me-Hard-and-Soft.jpg" alt="Album 3">
+<div class="album-title">Hit Me Hard and Soft</div>
+<div class="album-artist">Billie Eilish</div>
 </a>
 </div>
 </div>
@@ -235,7 +235,7 @@ Not everything in the world is so serious! Apart from the academics, here are so
 <div class="content-grid">
 <div class="content-card">
 <h3>Signature Dishes</h3>
-<p>Homemade pasta, French onion soup, pan-seared salmon with lemon butter</p>
+<p>Maple glazed pan-roasted carrots with blueberries, French onion soup, 5 spice duck breast</p>
 </div>
 <div class="content-card">
 <h3>Current Obsession</h3>
