@@ -2,7 +2,7 @@
 title: "NMOS Chip Fabrication" 
 date: 2025-11-01
 tags: ["microfabrication","NMOS","semiconductor","MOSFET"]
-author: "Larry Hui"
+author: ["Larry Hui", "Arhaan Aggarwal", "Emerson Hsieh"]
 description: "Step-by-step fabrication of a ⟨100⟩ silicon wafer containing MOSFETs, ring oscillators, comb drives, and cantilever arrays. Completed for EE 143 at UC Berkeley." 
 summary: "Hands-on NMOS fabrication lab covering field oxidation, photolithography, polysilicon deposition, doping, and metallization on a ⟨100⟩ silicon wafer." 
 cover:
