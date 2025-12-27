@@ -21,12 +21,15 @@ menu:
     - name: Research
       url: research/
       weight: 3
-    - name: Certifications
-      url: certifications/
+    - name: Skills
+      url: skills/
       weight: 4
-    - name: Miscellaneous (Fun)
-      url: misc/
+    - name: Teaching
+      url: teaching/
       weight: 5
+    - name: Other
+      url: other/
+      weight: 6
 
 params:
   description: "This website hosts Larry Hui's research papers, books, course materials, data, curriculum vitae, and contact information."
@@ -44,7 +47,7 @@ params:
   ShowBreadCrumbs: false
   ShowCodeCopyButtons: true
   ShowAllPagesInArchive: false
-  MainSections: ["misc", "courses", "projects", "research"]
+  MainSections: ["other", "courses", "projects", "research", "teaching"]
   ShowToc: false
   disableScrollToTop: true
   TocOpen: true
@@ -116,10 +119,12 @@ params:
         url: courses/
       - name: Research
         url: research/
-      - name: Certifications
-        url: certifications/
-      - name: Miscellaneous (Fun)
-        url: misc/
+      - name: Skills
+        url: skills/
+      - name: Teaching
+        url: teaching/
+      - name: Other
+        url: other/
 
   socialIcons:
     - name: CV
