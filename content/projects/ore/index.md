@@ -105,7 +105,6 @@ Designed the full plastic CAD assembly for the drone-mounted muon detector in **
 - Designed enclosure with heat dissipation and waterproofing considerations
 
 ![Hodoscope Top View](images/hodoscope_topview.png)
-*Add: Hodoscope enclosure top view showing < 5cm PCB constraint*
 
 ### Structural Topology Optimization & FEA
 
@@ -129,9 +128,6 @@ Fixtures describe how the model is supported and define the boundary conditions 
 
 - **2 areas of fixed geometry** 
 - **2 areas of fixed hinges** (where the motor from the worm gearbox connects)
-
-![Fixtures Diagram](images/fixtures.png)
-*Add: Fixtures and interactions diagram (green arrows)*
 
 #### Goals and Constraints
 
