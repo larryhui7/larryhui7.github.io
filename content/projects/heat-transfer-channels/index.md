@@ -96,9 +96,19 @@ We finally consider a complex cross section where we analyze the fully developed
 ![Complex Cross Section](images/151bp1fig3.png)
 *Figure 3: Constant Wall Temperature $T\_w$ with Uniform Heat Input and Adiabatic Bottom Wall*
 
+### Work Division and Tasks
+
+This project is split into 3 tasks as follows:
+
+1. **Task I**: Theoretical Derivations of the finite-difference equations for both the velocity and temperature fields from the governing equations and implementation of the Gauss-Seidel method for a 4:1 aspect ratio rectangular passage. From this, we generate 3D surface plots of $w(x,y)$ and $T(x,y)$ as well as the variation of the heat transfer coefficient along the short and long walls as a function of $x$ and $y$. Additionally, we find the hydraulic diameter, the Nusselt number, the Reynolds number and do analysis on these properties. We also make modifications to $dx$ and $dy$, and perform a sensitivity study for a mixture of ethylene glycol and water.
+
+2. **Task II**: We modified our Task I program to the 2:1 aspect ratio passage shown in Figure 2. Changes were made to the boundary conditions as we now had an adiabatic right wall. We plotted the 3D surface plots of $w(x,y)$ and $T(x,y)$. Additionally, we find the hydraulic diameter, the Nusselt number, and compared it to the tabulated Nusselt numbers. We then calculated the hydraulic diameter based on the heated perimeter $D\_H=4A\_0/p\_h$ for which we also computed the fully developed Nusselt number and compared it to the tabulated Nusselt numbers.
+
+3. **Task III**: The last task was to modify Task I again with a complex geometry and an adiabatic bottom wall. The mean velocities and mean temperatures were found in all three sections as well as the fully developed heat transfer coefficient and Nusselt number. The Reynolds number and fully developed Nusselt number were also determined using this geometry but we used the flow conditions specified in Task I.
+
 ### Theoretical Background
 
-We can derive the finite-difference equations for both the velocity and temperature fields as follows.
+We can derive the finite-difference equations (**Task I**) for both the velocity and temperature fields as follows.
 
 #### Derivation of Velocity Field Equation
 
@@ -164,7 +174,7 @@ $$
 
 The following section will be a summary of our analysis organization including a description of our code organization for each task as well as different cases within each task that were considered. Snippets of code will be included where relevant.
 
-### 4:1 Rectangular Passage
+### Task I
 
 Firstly, our code organization and analysis is modular in design—we structured it into clear segments: parameter definitions, field initialization, iteration loops until convergence, post-processing, and finally visualization of results. This was particularly helpful for debugging and for running different cases.
 
@@ -292,9 +302,9 @@ $$
 Nu=\frac{\bar{h}D\_h}{k}\text{ and }Re=\frac{w\_mD\_h}{\nu}
 $$
 
-### 2:1 Passage with Adiabatic Wall
+### Task II
 
-This case uses the same code organization as the 4:1 passage, however the number of elements changed and we introduced a new boundary condition, namely an adiabatic one. After each temperature iteration, the wall temperature at each node of the right wall is set equal to the new value of temperature at the node immediately to the left of the wall node, enforcing no temperature gradient and thus zero heat flux.
+Task II is effectively the exact same code organization as Task I, however the number of elements changed and we have introduced a new boundary condition, namely an adiabatic one. After each temperature iteration, the wall temperature at each node of the right wall is set equal to the new value of temperature at the node immediately to the left of the wall node, enforcing no temperature gradient and thus zero heat flux.
 
 ```matlab
 % Iterative loop to check T convergence
@@ -334,17 +344,17 @@ fprintf('Hydraulic Diameter (Dh) (heated): %.4f m\n', Dh_heated);
 fprintf('Nusselt Number (Nu) (heated): %.4f\n', Nusselt_heated);
 ```
 
-### Complex Cross-Section
+### Task III
 
-This case uses the same base code as the 4:1 passage, however there are three major differences. We break the sweeping loops into three separate for loops so that we are able to change the $x$ extent of the looping for each. We have $i$ varying from 2 to 15 in the low section, 7 to 15 in the middle section, and 7 to 20 in the top section. The first major difference is the iterative scheme. We are doing region-based sweeps where the domain is separated three regions—lower, middle, and upper—each with its own looping indices. This allows different parts of the domain to be solved in sequence due to the complex geometry.
+Again, effectively the same code as Task I, however there are three major differences. We break the sweeping loops into three separate for loops so that we are able to change the $x$ extent of the looping for each. We have $i$ varying from 2 to 15 in the low section, 7 to 15 in the middle section, and 7 to 20 in the top section. The first major difference is the iterative scheme. We are doing region-based sweeps where the domain is separated three regions—lower, middle, and upper—each with its own looping indices. This allows different parts of the domain to be solved in sequence due to the complex geometry.
 
 ---
 
 ## Results and Discussion
 
-### 4:1 Aspect Ratio Rectangular Passage
+### Task I Results and Discussion
 
-We first analyze the 4:1 aspect ratio rectangular passage, generating 3D surface plots of the $w$ and $T$ fields, and 2D plots to analyze the results.
+In Task I, we were asked to generate 3D surface plots of the $w$ and $T$ fields, and 2D plots as necessary to analyze the results.
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0;">
   <figure style="text-align: center; margin: 0;">
@@ -385,7 +395,7 @@ Despite the hydraulic diameter decreasing from 11.4 mm to 3.8 mm, the mean heat 
 
 For the ethylene glycol and water mixture, the new values of the mean heat transfer coefficient and Nusselt number are $h=213.12 \, W/m^2 \cdot °C$ and $\mathrm{Nu}= 5.97$, respectively. The Nusselt number does not change significantly with variations in fluid properties, as it depends more on the geometry of the channel. However, the heat transfer coefficient is most influenced by the fluid's thermal conductivity, $k$, since $h$ is directly related to the wall heat flux, which is a function of $k$, as described by Fourier's Law.
 
-### 2:1 Aspect Ratio Passage with Adiabatic Wall
+### Task II Results and Discussion
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0;">
   <figure style="text-align: center; margin: 0;">
@@ -398,7 +408,7 @@ For the ethylene glycol and water mixture, the new values of the mean heat trans
   </figure>
 </div>
 
-For this geometry, the 3D surface plots of the $w$ and $T$ fields are shown above in Figures 9 and 10 respectively. The wetted hydraulic diameter of the new geometry is 12.5 mm for the 21 by 41 node channel. A new boundary condition was introduced by making the rightmost wall adiabatic. This was achieved by setting the wall temperature at each node on the right wall equal to the temperature of the node immediately to its left. With no temperature difference between adjacent nodes, no heat flux occurs, thus creating an adiabatic wall.
+For Task II, the 3D surface plots of the $w$ and $T$ fields are shown above in Figures 9 and 10 respectively. The wetted hydraulic diameter of the new geometry is 12.5 mm for the 21 by 41 node channel. A new boundary condition was introduced by making the rightmost wall adiabatic. This was achieved by setting the wall temperature at each node on the right wall equal to the temperature of the node immediately to its left. With no temperature difference between adjacent nodes, no heat flux occurs, thus creating an adiabatic wall.
 
 In this new channel, the fully developed average heat transfer coefficient is $162.23 \, W/m^2 \cdot °C$. When calculating the Nusselt number, both heated and wetted values were determined. The wetted Nusselt number is calculated using the wetted hydraulic diameter, multiplying it by the average heat transfer coefficient, and dividing by the thermal conductivity, following the same method as before. In contrast, the heated Nusselt number requires calculating the heated hydraulic diameter, which excludes adiabatic walls when determining the perimeter. The result is a heated Nusselt number of $\mathrm{Nu}\_h=4.98$, while the wetted Nusselt number is $\mathrm{Nu}\_w=3.33$. The heated hydraulic diameter is 18.7 mm. Comparing the wetted Nusselt number to a square cross section with uniform wall temperature, we see that our Nusselt number of $3.33>2.976$. The error in the terms lies in the fact that we do not have uniform wall temperature and we are also not using a square cross section.
 
@@ -418,9 +428,9 @@ In this new channel, the fully developed average heat transfer coefficient is $1
 
 Notice how on the right wall, the heat transfer coefficient is 0 due to the enforcement of the adiabatic boundary condition. Along the short walls, the heat transfer coefficient is roughly the same for both top and bottom but they diverge as the nodes in the $x$-direction increase. We also see a standard parabolic shaped variation in heat transfer for the long walls which would match our intuition.
 
-### Complex Cross-Section Geometry
+### Task III Results and Discussion
 
-For the complex geometry, the 3D surface plots reflect that complexity as seen in Figures 14 and 15.
+For Task III, we are given a complex geometry and the 3D surface plots reflect that complexity as seen in Figures 14 and 15.
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0;">
   <figure style="text-align: center; margin: 0;">
@@ -433,7 +443,7 @@ For the complex geometry, the 3D surface plots reflect that complexity as seen i
   </figure>
 </div>
 
-The fully developed heat transfer coefficient is $313.5290 \, W/m^2 \cdot °C$ and the Nusselt number is $\mathrm{Nu}=8.9067$. The Reynolds number for the specified flow conditions is $\mathrm{Re}=811.03$. The above plots are consistent with our expectations and intuition for flow in the complex channel geometry, where local changes in cross-sectional area and the presence of an adiabatic bottom wall influence the momentum and thermal fields.
+The fully developed heat transfer coefficient is $313.5290 \, W/m^2 \cdot °C$ and the Nusselt number is $\mathrm{Nu}=8.9067$. The Reynolds number for the flow conditions specified in Task I is $\mathrm{Re}=811.03$. The above plots are consistent with our expectations and intuition for flow in the complex channel geometry, where local changes in cross-sectional area and the presence of an adiabatic bottom wall influence the momentum and thermal fields.
 
 | Case | Mean Velocity (m/s) | Mean Temperature (°C) |
 |:-----|:--------------------|:----------------------|
@@ -494,10 +504,10 @@ The analysis between a standard rectangular domain and a segmented configuration
 
 ## Code Appendix
 
-This appendix includes all the code for each geometry case. The code is also commented to ease understanding and to display our thought process while writing.
+This appendix includes all the code relevant for **Task I**, **Task II**, **Task III**. The code is also commented to ease understanding and to display our thought process while writing.
 
 <details>
-<summary><strong>4:1 Rectangular Passage Code (Click to Expand)</strong></summary>
+<summary><strong>Task I Code (Click to Expand)</strong></summary>
 
 ```matlab
 clear; clc; close all
@@ -640,7 +650,7 @@ fprintf('Reynolds Number (Re): %.4f\n', Reynolds);
 </details>
 
 <details>
-<summary><strong>2:1 Passage with Adiabatic Wall Code (Click to Expand)</strong></summary>
+<summary><strong>Task II Code (Click to Expand)</strong></summary>
 
 ```matlab
 clear; clc; close all
@@ -725,7 +735,7 @@ A0 = Nx*Ny*dx*dy;
 wm = sum(sum(w .* A)) / A0;
 Tm = sum(sum(w .* T .* A)) / (wm * A0);
 
-% ... (heat flux and h calculations similar to 4:1 case)
+% ... (heat flux and h calculations similar to Task I)
 
 Dh = 4 * (A0) / (2*(Nx*dy+Ny*dx));
 Nusselt = h_mean * Dh / k;
@@ -741,7 +751,7 @@ fprintf('Nusselt Number (Nu) (heated): %.4f\n', Nusselt_heated);
 </details>
 
 <details>
-<summary><strong>Complex Cross-Section Code (Click to Expand)</strong></summary>
+<summary><strong>Task III Code (Click to Expand)</strong></summary>
 
 ```matlab
 clear; clc; close all
