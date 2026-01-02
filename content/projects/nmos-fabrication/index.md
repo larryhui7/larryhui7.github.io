@@ -26,6 +26,9 @@ Dry and wet oxidation were used to form insulating layers, and successive photol
 
 Overall, the workflow proceeded smoothly: the same wafer was used from start to finish without shattering, the critical dimensions were met, and the resulting electrical behavior aligned well with expectations. Most deviations remained below 10%, indicating negligible impact from our handling. We learned that microfabrication demands both precision and patience. Tuning the HF etch time required experimentation since we had no means of in-situ monitoring, but ultimately produced satisfactory results when etching the field oxide. 
 
+![A funny photo](images/larry_wafer.png)
+*The completed wafer after all fabrication steps with my reflection*
+
 ---
 
 ## Experimental Details

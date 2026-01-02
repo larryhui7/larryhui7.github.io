@@ -8,6 +8,9 @@ description: "A two-part investigation combining classical turbulence theory for
 summary: "Turbulent falling film analysis for molten salt solar receivers combined with PINN solutions for fully developed channel flow and heat transfer."
 math: true
 showToc: true
+editPost:
+  URL: "https://github.com/larryhui7/ME151B"
+  Text: "GitHub Repository"
 cover:
   image: "images/cover.png"
   alt: "Turbulent falling film and PINN analysis"

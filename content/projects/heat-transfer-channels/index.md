@@ -11,6 +11,9 @@ cover:
     relative: true
 showToc: true
 math: true
+editPost:
+  URL: "https://github.com/larryhui7/ME151B"
+  Text: "GitHub Repository"
 ---
 
 ---

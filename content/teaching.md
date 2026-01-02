@@ -1,6 +1,6 @@
 ---
 title: "Teaching"
-description: "Courses I have taught as a Teaching Assistant at UC Berkeley."
+description: "Courses I have taught as a uGSI or reader at UC Berkeley."
 hideMeta: true
 ---
 
@@ -66,13 +66,14 @@ hideMeta: true
 <div class="course-card">
 <h3>MEC ENG 103</h3>
 <div class="course-title">Experimentation and Measurements</div>
-<div class="course-role">Lead Teaching Assistant</div>
+<div class="course-role">Lead Teaching Assistant — Department of Mechanical Engineering, UC Berkeley</div>
 <p>
 This course covers the principles and practices of experimental measurement in mechanical engineering. Topics include sensor technologies, data acquisition systems, signal processing, uncertainty analysis, and experimental design. Students gain hands-on experience with various measurement instruments and learn to design, conduct, and analyze engineering experiments.
 </p>
 <ul>
 <li>Lead weekly lab sections and office hours</li>
-<li>Develop and grade lab reports and assignments</li>
+<li>Develop and grade lab reports, assignments, and midterms</li>
+<li>Developing course website for Spring 2026</li>
 <li>Mentor students on experimental techniques and data analysis</li>
 <li>Coordinate with course staff on curriculum improvements</li>
 </ul>
@@ -84,7 +85,7 @@ This course covers the principles and practices of experimental measurement in m
 <div class="course-card">
 <h3>MEC ENG 132</h3>
 <div class="course-title">Dynamical Systems and Feedback Control</div>
-<div class="course-role">Teaching Assistant (Previous)</div>
+<div class="course-role">Lead Teaching Assistant — Department of Mechanical Engineering, UC Berkeley</div>
 <p>
 This course introduces the analysis and design of feedback control systems. Topics include modeling of dynamic systems, transfer functions, block diagrams, stability analysis, root locus methods, frequency response techniques, and controller design. Students apply these concepts to real-world mechanical and electromechanical systems.
 </p>
@@ -92,7 +93,20 @@ This course introduces the analysis and design of feedback control systems. Topi
 <li>Led discussion sections and held office hours</li>
 <li>Graded problem sets and exams</li>
 <li>Assisted students with MATLAB/Simulink simulations</li>
-<li>Helped develop course materials and practice problems</li>
+<li>Helped develop course materials, practice problems, and exams</li>
+</ul>
+</div>
+
+<div class="course-card">
+<h3>MATH 52/1B</h3>
+<div class="course-title">Calculus II</div>
+<div class="course-role">Reader — Department of Mathematics, UC Berkeley </div>
+<p>
+This course covers techniques and applications of integration, including integration by substitution, integration by parts, trigonometric integrals, partial fractions, improper integrals, sequences, series, and Taylor series.
+</p>
+<ul>
+<li>Managed Gradescope for 1000+ students and 2 discussion sections of 150 students</li>
+<li>Graded weekly problem sets, quizzes, and exams with consistency and technical accuracy</li>
 </ul>
 </div>
 

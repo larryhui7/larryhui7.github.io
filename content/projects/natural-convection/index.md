@@ -7,6 +7,9 @@ tags: ["Heat Transfer", "CFD", "MATLAB", "Numerical Methods", "Boundary Layer"]
 description: "Numerical analysis of boundary layer flow caused by natural convection using FTCS finite-difference, similarity transformation, and integral boundary layer methods."
 summary: "Numerical analysis of natural convection boundary layer flow using FTCS finite-difference, Runge-Kutta similarity solutions, and integral methods, with application to electronic device cooling."
 math: true
+editPost:
+  URL: "https://github.com/larryhui7/ME151B"
+  Text: "GitHub Repository"
 cover:
   image: "images/cover.png"
   alt: "Natural convection boundary layer flow"
