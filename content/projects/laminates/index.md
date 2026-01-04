@@ -12,6 +12,9 @@ cover:
   image: "images/cover.png"
   alt: "Carbon Fiber Laminate Tensile Testing"
   relative: true
+editPost:
+  URL: "/ME103_Research_Paper.pdf"
+  Text: "Download Full Report (PDF)"
 ---
 
 **Keywords:** Carbon Fibre Laminate, Composites, Tensile Behavior, Weibull Statistic, Material Properties

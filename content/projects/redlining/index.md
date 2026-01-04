@@ -1,6 +1,6 @@
 ---
 title: "Redlining & Resilience: Exploring the Intersection of Urban Policy and Socio-environmental Vulnerability"
-date: 2025-05-01
+date: 2025-07-01
 draft: false
 author: ["Larry Hui", "Dalin Try", "Rohit Vasantha", "Danielle Reshef", "Joey Park", "Amith Vasantha"]
 tags: ["Digital Humanities", "Urban Policy", "Redlining", "GIS", "Data Visualization", "Environmental Justice"]
