@@ -374,17 +374,3 @@ Overall, we are quite content with our work as we ended up successfully accompli
 - **Pick up functionality** to pick up the cable itself prior to insertion
 
 ---
-
-## Team
-
-| | Gabriel Han | Larry Hui | Erik Ma |
-|:-:|:-----------:|:---------:|:-------:|
-| **Role** | Computer Vision & Control | Hardware & Force Mode | Search & Transforms |
-| **Focus** | OpenCV pipeline, chessboard calibration, port detection, general movement | 3D-printed end-effector design, force control implementation | Spiral search injection script, coordinate transforms |
-| **Background** | Senior in EECS, interested in deep learning and computer vision | Senior in MechE, interested in optimization, optimal control theory, and multi-agent systems | Senior in EECS, interested in robotics, perception and sensing |
-
-Our team worked collaboratively through the entirety of the project, and although each member took the lead on different components, everyone was involved in every aspect of the project as a whole.
-
----
-
-*Completed for EECS C106A: Introduction to Robotics at UC Berkeley, Fall 2025*

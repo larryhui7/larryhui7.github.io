@@ -22,7 +22,7 @@ After design selection, we started to model the individual parts of our car in S
 
 We then created drawings for parts we manufactured ourselves in the STW, submitted drawings to be laser cut and 3D printed, and ordered components off RS which could not be manufactured by our team. After manufacturing was complete, the car was assembled exposing some key weaknesses in our design which we attempted to mitigate.
 
-![Final CAD Model](images/cover.png)
+![Final Car](images/actual_car.png)
 
 ---
 
@@ -401,6 +401,8 @@ All processed by Centre Lathe and Vertical Milling Machine. Turbine and cover we
 Our team was tasked with the design and manufacture of a car powered by compressed gas adhering to the instructions and limitations given by the design brief. We began by comparing several different designs such as direct propulsion, direct drive and the design we pursued, a drivetrain powered by a turbine. The initial decision was based on morphological analysis.
 
 After making the choice to build a drivetrain, we considered different methods of transmission such as gears and pulleys. We could then consider materials for each component and designed the components of our car in SolidWorks. With designed components, we underwent analytical assessments such as FEA of the shafts and turbine. With the design stage complete, we entered the STW to produce the parts and assembled our final product.
+
+![Final CAD MODEL](images/cover.png)
 
 ### Design Flaws Identified
 
