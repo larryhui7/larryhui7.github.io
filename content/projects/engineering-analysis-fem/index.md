@@ -1052,27 +1052,584 @@ end
 
 </details>
 
-## 3. Element Types and Shape Functions
+## 3. Adaptive Mesh Refinement
 
-*(Section 3 content to be added)*
+### 3.1 Boundary Value Problem with Complex Solution
 
-## 4. Assembly and Solution Methods
+Consider the boundary value problem with a highly oscillatory solution that requires adaptive mesh refinement:
+
+$$\frac{d}{dx}\left(E\frac{du}{dx}\right) + f(x) = 0$$
+
+where $\Omega = (0,1)$, $E = 0.4$, and the analytical solution is given by:
+
+$$u(x) = (4\sin(\pi x^3) + 6x)\cos(3\pi x)$$
+
+This solution exhibits rapid oscillations and varying curvature, making it an excellent test case for adaptive mesh refinement algorithms.
+
+#### Derivation of Forcing Function and Boundary Conditions
+
+Starting with the general form of the differential equation, we can derive the forcing function $f(x)$:
+
+$$\frac{d}{dx}\left(E\frac{du}{dx}\right) + f(x) = 0$$
+
+$$f(x) = -\frac{d}{dx}\left(E\frac{du}{dx}\right) = -E \frac{d^2u}{dx^2}$$
+
+First, compute the first derivative using the product rule:
+
+$$\frac{du}{dx} = \frac{d}{dx}\left(4\sin(\pi x^3) + 6x\right)\cos(3\pi x) + \frac{d}{dx}(\cos(3\pi x))(4\sin(\pi x^3) + 6x)$$
+
+$$= (12\pi x^2 \cos(\pi x^3) + 6)\cos(3\pi x) + (-\sin(3\pi x)\cdot 3\pi)(4\sin(\pi x^3) + 6x)$$
+
+$$= \cos(3\pi x)(12\pi x^2 \cos(\pi x^3) + 6) - 3\pi \sin(3\pi x)(4\sin(\pi x^3) + 6x)$$
+
+Now compute the second derivative (this is quite involved):
+
+$$\frac{d^2u}{dx^2} = -36\pi^2 x^4 \cos(3\pi x)\sin(\pi x^3) - 72\pi^2 x^2 \sin(3\pi x)\cos(\pi x^3) - 54\pi^2 x \cos(3\pi x)$$
+
+$$+ 24\pi x \cos(3\pi x)\cos(\pi x^3) - 36\pi^2 \cos(3\pi x)\sin(\pi x^3) - 36\pi \sin(3\pi x)$$
+
+Therefore, the forcing function becomes:
+
+$$f(x) = -E(-36\pi^2 x^4 \cos(3\pi x)\sin(\pi x^3) - 72\pi^2 x^2 \sin(3\pi x)\cos(\pi x^3) - 54\pi^2 x \cos(3\pi x)$$
+
+$$+ 24\pi x \cos(3\pi x)\cos(\pi x^3) - 36\pi^2 \cos(3\pi x)\sin(\pi x^3) - 36\pi \sin(3\pi x))$$
+
+The boundary conditions are found by evaluating the analytical solution:
+
+$$u(0) = (4\sin(\pi \cdot 0^3) + 6 \cdot 0)\cos(3\pi \cdot 0) = 0$$
+
+$$u(1) = (4\sin(\pi \cdot 1^3) + 6 \cdot 1)\cos(3\pi \cdot 1) = -6$$
+
+### 3.2 Principle of Minimum Potential Energy
+
+The principle of minimum potential energy states that among all kinematically admissible displacement fields, the true solution minimizes the total potential energy. For the potential energy functional:
+
+$$\mathcal{J}(u) = \frac{1}{2}\int_{\Omega} \frac{du}{dx} E \frac{du}{dx} dx - \int_{\Omega} f u dx - t^* u|_{\Gamma_t}$$
+
+the true solution satisfies:
+
+$$\mathcal{J}(u) \leq \mathcal{J}(v) \quad \forall v \in \mathcal{V}$$
+
+#### Derivation
+Starting with the energy norm relation:
+
+$$\|u - w\|_{E(\Omega)}^2 = \int_{\Omega} \frac{d(u-w)}{dx} E \frac{d(u-w)}{dx} \, dx$$
+
+Expanding this yields:
+
+$$\|u - w\|_{E(\Omega)}^2 = \|u\|_{E(\Omega)}^2 + \|w\|_{E(\Omega)}^2 - 2\mathcal{B}(u,w)$$
+
+where $\mathcal{B}(u,w) = \int_{\Omega} \frac{du}{dx} E \frac{dw}{dx} dx$
+
+Relating to the potential energy:
+
+$$\|u - w\|_{E(\Omega)}^2 = 2\mathcal{J}(w) - 2\mathcal{J}(u)$$
+
+Since the energy norm is always non-negative:
+
+$$\frac{1}{2}\|u - w\|_{E(\Omega)}^2 = \mathcal{J}(w) - \mathcal{J}(u) \geq 0$$
+
+Therefore: $\mathcal{J}(u) \leq \mathcal{J}(w)$ for all admissible $w$.
+
+### 3.3 Importance of Potential Energy in FEM
+
+The potential energy functional serves as a critical monitoring tool in finite element analysis because:
+
+- **Error Estimation**: The difference between numerical and analytical potential energies provides a global error measure
+- **Convergence Monitoring**: As mesh refinement progresses, the potential energy should approach the analytical minimum
+- **Solution Validation**: Significant deviations from expected potential energy values indicate numerical issues
+- **Adaptive Refinement**: Local potential energy gradients guide mesh refinement decisions
+
+The minimizer of the potential energy corresponds to the true solution of the system. Thus, when the potential energy is well-defined, the weak formulation of the problem is equivalent to its minimization. This allows us to construct error estimates for global mesh refinement, by assessing how well the numerical solution approximates the minimum potential energy.
+
+### 3.4 Adaptive Mesh Refinement Implementation
+
+Adaptive mesh refinement automatically adjusts element sizes based on local error indicators, concentrating computational effort where it's most needed.
+
+#### Error Indicator Definition
+
+The local error indicator $A_I$ for element $I$ is defined as:
+
+$$A_I^2 = \frac{L}{h_I} \cdot \frac{\|u^{\mathrm{true}} - u^N\|_{E(\Omega_I)}}{\|u^{\mathrm{true}}\|_{E(\Omega)}}$$
+
+where:
+- $\Omega_I$ is the domain of element $I$
+- $h_I$ is the length of element $I$
+- $L$ is the total domain length
+
+#### Final Solution Comparison
+
+![Final Refined Solution](images/proj3_Figure_1.png)
+*Figure 3.1: Final adaptive mesh solution compared with the analytical solution, showing excellent agreement in regions of high solution variation.*
+
+#### Refinement Algorithm
+
+1. Start with uniform mesh (N = 20 elements)
+2. Compute local error indicators for each element
+3. Refine elements where $A_I > TOL_E = 0.05$
+4. Repeat until all elements satisfy the tolerance
+
+#### Comparison with Uniform Refinement
+
+**Adaptive Refinement Results:**
+- Final element count: 75 elements
+- Computational efficiency: ~2× more efficient than uniform refinement
+
+**Uniform Refinement Results:**
+- Final element count: 152 elements
+- Even distribution of elements regardless of local error
+
+The number of elements needed to achieve a tolerance of $A_I < TOL_E = 0.05$ for all I using adaptive mesh refinement is 75 elements. However, using the same error tolerance for the uniform mesh refinement, we needed 152 elements to meet the same tolerance. Therefore, using a uniform mesh is roughly $2$ times more elements than the adaptive scheme. Thus, we see that it is much more computationally efficient to use adaptive refinement.
+
+### 3.5 Mesh Refinement Analysis
+
+#### Where Refinement is Needed
+
+The solution $u(x) = (4\sin(\pi x^3) + 6x)\cos(3\pi x)$ requires more elements in regions of:
+- **High Curvature**: Rapid changes in the solution slope
+- **Oscillatory Behavior**: Regions where trigonometric functions create complex patterns
+- **Boundary Effects**: Areas near discontinuities or high gradients
+
+Conversely, fewer elements suffice in regions where the solution varies smoothly.
+
+Evidently, from the adaptive mesh graph, the solution requires more nodes near the peaks and troughs. These places have steeper gradients, higher curvatures and/or rapid changes in curvature. The solution requires less nodes when $u_{\mathrm{true}}(x)$ is relatively smooth or regular i.e. the gradients remain more constant as $x$ increases much. The local error of each element drives where we refine the mesh so when we have higher curvature, using linear approximations will generate a high local error so we subdivide that element until the linear approximations approach the true solution. If the solution is smooth with no curves or kinks then we just take a couple elements and that is enough to capture the true solution. For the uniform case, it must refine everywhere to improve it's accuracy which is computationally expensive so nodes are spread evenly even in areas of smoothness, thus we achieve the same accuracy with a lot more elements.
+
+#### Convergence Behavior
+
+Both adaptive and uniform refinement show convergence of the potential energy toward the analytical minimum, but:
+- **Adaptive Refinement**: Faster convergence with fewer elements due to targeted refinement
+- **Uniform Refinement**: Slower convergence requiring uniform mesh density everywhere
+
+![Potential Energy Convergence](images/proj3_Figure_2.png)
+*Figure 3.2: Potential energy convergence for adaptive vs uniform mesh refinement, showing superior performance of adaptive refinement.*
+
+The adaptive refinement has 4 points corresponding to each new re-meshed configuration. The uniform mesh, we are adding one point re-spacing all the nodes equally until we hit 152 elements. For both $h$-refinement strategies, as the total number of elements increases, $\mathcal{J}(u^N)$ converges towards a value which represents the minimum of a quadratic indicating that $h$-refinement improves the accuracy of the approximation. The potential energy for the uniform mesh are higher even as the number of elements increases whereas the adaptive refinement potential energy is consistently lower than uniform (at low $N_e$) suggesting that for an equal number of elements, the adaptive mesh will approximate the true solution closer than the uniform mesh based off of the Principle of Minimum Potential.
+
+#### Error Distribution
+
+**Adaptive Meshing**: Evenly distributes error across elements by concentrating refinement where needed
+**Uniform Meshing**: Higher error in critical regions, lower error in smooth regions
+
+![Error Indicator Analysis](images/proj3_Figure_3.png)
+*Figure 3.3: Error indicators A_I vs element midpoint for adaptive and uniform mesh refinement, demonstrating more uniform error distribution with adaptive meshing.*
+
+For the uniform mesh, the areas of the highest errors are the stationary points of the true solution; as the curvature of the peaks and troughs gets tighter as $x$ increases, we see that $A_I$ also increases. The uniform mesh has a lower overall $A_I$ in smooth regions compared to the adaptive mesh. It is also more uniform in pattern and much smoother, since all the elements have the same size regardless of local solution behaviour. The adaptive mesh more evenly distributes the error indicators $A_I$ at 0.035-0.04 but is more jagged. This is due to refining only in the regions of large local element error, so we keep the error uniform across the domain. Notice that we see the same parabola in both adaptive and uniform meshes at the areas of curvature, since a lot more nodes are used to capture the solution. Therefore, for the same number of total elements, the adaptive mesh refinement scheme seems more efficient since it places very little elements in places that are smooth and once it reaches the error threshold, it just stops, which is why we see generally a higher error per element for adaptive. However, it is more efficient as we only place elements where the solution has the steepest gradients, whereas the uniform refinement wastes resolution in smooth regions while still struggling equally as much in the areas of steeper curvature.
+
+### 3.6 MATLAB Implementation for Adaptive Refinement
+
+<details>
+<summary><strong>Adaptive Mesh Refinement Implementation (Click to Expand)</strong></summary>
+
+```matlab
+clear; close all; clc;
+
+%% MATERIAL CONSTANTS AND GEOMETRIC CONSTRAINTS
+x0 = 0;                                      % Left endpoint location
+L = 1;                                       % Right endpoint location
+Efunc = 0.4;                                 % Youngs modulus function
+BC0 = 0;                                     % u(x0) = ?
+BCL = -6;                                    % u(L) = ?
+res = 0;                                     % Number of resample points
+p = 1;                                       % Shape function order
+Ne = 20;                                     % 20 elements to start
+h = (L-x0)/Ne * ones(Ne,1);                  % Array of initial element sizes
+TOL = 0.05;                                  % Error tolerance in energy norm
+E = 0.4;                                     % Youngs modulus
+
+% Array to see if BC is Dirichlet (1) or Neumann (0)
+% First entry (BCType(1)) is for left boundary
+% Second entry (BCType(2)) is for right boundary
+BCType = [1 1]; % Both Endpoints are Dirichlet for HW3
+
+force = @(x) -E * (-36*pi^2*x.^4.*cos(3*pi*x).*sin(pi*x.^3) ...
+              - 72*pi^2*x.^2.*sin(3*pi*x).*cos(pi*x.^3) ...
+              - 54*pi^2*x.*cos(3*pi*x) ...
+              + 24*pi*x.*cos(3*pi*x).*cos(pi*x.^3) ...
+              - 36*pi^2*cos(3*pi*x).*sin(pi*x.^3) ...
+              - 36*pi*sin(3*pi*x));
+
+uTrue = @(x) (4*sin(pi.*x.^3) + 6.*x) .* cos(3*pi.*x);
+
+duTrue = @(x) cos(3.*pi.*x).*(12.*pi.*x.^2.*cos(pi.*x.^3)+6)-3.*pi.*sin(3.*pi.*x)...
+    .*(4.*sin(pi.*x.^3)+6.*x);
+
+% Ensure all plots in LaTex
+set(groot, 'defaultTextInterpreter', 'latex');
+set(groot, 'defaultLegendInterpreter', 'latex');
+
+%% ==================== PROBLEM 3A: ADAPTIVE Mesh Refinement ====================
+% Initial mesh with Ne = 20
+[xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h);
+
+% Solve FEM with initial Ne and get intial error
+[xh, uN, error, PE] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue, res);
+
+NeVec = [Ne]; % Array for holdong Ne used in error while loop below
+PEVec = [PE]; % Array for storing PE for each Ne used in while loop
+
+while any(error >= TOL)
+    [xglobe, conn, Ne, Nn] = addNodes(xglobe, error, TOL, p); % remesh based on last error
+
+    % Solve with new nodes
+    [xh, uN, error, PE] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue, res);
+    NeVec = [NeVec, Ne]; % append new Ne to NeVec
+    PEVec = [PEVec, PE]; % append new PE to PEVec
+end
+
+fprintf('Adaptive refinement: Ne = %d\n', Ne);
+
+%% ===================== PROBLEM 3A: UNIFORM Mesh Refinement =====================
+% Re-assign initial mesh with Ne = 20
+Ne_uniform = 20;
+
+% Array of initial element sizes for uniform mesh
+h_uniform = (L-x0)/Ne_uniform * ones(Ne_uniform,1);
+
+% Solve FEM with initial Ne and get intial error
+[xglobe_u, Nn_u, conn_u] = Mesh1D(p, Ne_uniform, x0, h_uniform);
+[xh_u, uN_u, error_u, PE_u] = myFEM1D(p, Ne_uniform, Nn_u, conn_u, xglobe_u, force, Efunc, BC0, BCL, BCType, duTrue, res);
+
+NeVec_uniform = [Ne_uniform]; % Array for holdong Ne used in error while loop below
+PEVec_uniform = [PE_u];       % Array for storing PE for each Ne used in while loop
+
+while any(error_u >= TOL)
+    Ne_uniform = Ne_uniform + 1;
+    h_uniform = (L-x0)/(Ne_uniform) * ones(Ne_uniform,1);
+
+    [xglobe_u, Nn_u, conn_u] = Mesh1D(p, Ne_uniform, x0, h_uniform);
+    [xh_u, uN_u, error_u, PE_u] = myFEM1D(p, Ne_uniform, Nn_u, conn_u, xglobe_u, force, Efunc, BC0, BCL, BCType, duTrue, res);
+
+    NeVec_uniform = [NeVec_uniform, Ne_uniform];
+    PEVec_uniform = [PEVec_uniform, PE_u];
+end
+
+fprintf('Uniform refinement: Ne = %d\n', Ne_uniform);
+
+%% ===================== PROBLEM 3B: PLOTS FOR ADAPTIVE + UNIFORM MESH REFINEMENT =====================
+% Plot true solution and adaptive meshing
+figure(1)
+xtrue = linspace(0,1,1000);
+plot(xtrue, uTrue(xtrue), 'b-', 'LineWidth', 2)
+hold on;
+plot(xh, uN, 'r*--')
+hold on;
+plot(xglobe, 0, 'g^-')
+title('Adaptive Mesh: FEM vs. True Solution')
+xlabel('$x$')
+ylabel('$u(x)$')
+grid on;
+legend('$u_{\mathrm{true}}(x)$', '$u_{\mathrm{FEM}}(x)$', 'Adaptive Mesh', 'Location','NorthWest')
+
+% Plot true solution and uniform meshing
+figure(2)
+plot(xtrue, uTrue(xtrue), 'b-', 'LineWidth', 2)
+hold on;
+plot(xh_u, uN_u, 'r*-')
+hold on;
+plot(xglobe_u, 0, 'g^-')
+title('Uniform Mesh: FEM vs. True Solution')
+xlabel('$x$')
+ylabel('$u(x)$')
+grid on;
+legend('$u_{\mathrm{true}}(x)$', '$u_{\mathrm{FEM}}(x)$', 'Uniform Mesh', 'Location','NorthWest')
+hold off;
+
+%% ===================== PROBLEM 3C: POTENTIAL ENERGY PLOTS FOR EACH ELEMENT  =====================
+figure(3)
+plot(NeVec, PEVec, 'r*-')
+hold on;
+plot(NeVec_uniform, PEVec_uniform, 'b-')
+title('Potential Energy $\mathcal{J}(u^N)$ vs. $Ne$')
+xlabel('$Ne$')
+ylabel('$\mathcal{J}(u^N)$')
+legend('Adaptive Refinement','Uniform Refinement')
+grid on
+hold off;
+
+%% ===================== PROBLEM 3D: POTENTIAL ENERGY PLOTS FOR EACH ELEMENT  =====================
+AI_adapt = zeros(Ne,1);
+Xmid_adapt = zeros(Ne,1);
+for e = 1:Ne
+    id = conn(e,:);
+    Xmid_adapt(e) = (xglobe(id(1)) + xglobe(id(end))) / 2;  % midpoint of element e
+    AI_adapt(e) = error(e);                                 % error from problem 3A
+end
+
+% Compute element midpoints and error indicator for uniform mesh
+AI_uniform = zeros(Ne_uniform, 1);
+Xmid_uniform = zeros(Ne_uniform, 1);
+for e = 1:Ne_uniform
+    id = conn_u(e,:);
+    Xmid_uniform(e) = (xglobe_u(id(1)) + xglobe_u(id(end))) / 2;
+    AI_uniform(e) = error_u(e);
+end
+
+figure(4)
+subplot(1,2,1)
+plot(Xmid_adapt, AI_adapt, 'r*-')
+title('Adaptive Mesh: $A_I$ vs. Element Midpoint')
+xlabel('$X_I$')
+ylabel('$A_I$')
+grid on;
+
+subplot(1,2,2)
+plot(Xmid_uniform, AI_uniform, 'bo-')
+title('Uniform Mesh: $A_I$ vs. Element Midpoint')
+xlabel('$X_I$')
+ylabel('$A_I$')
+grid on;
+
+%% MESHER FUNCTION
+function [xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h)
+    % Number of nodes in domain
+    Nn = p * Ne + 1;
+
+    % Initializing real domain positions
+    xglobe = x0 * ones(1,Nn);
+
+    % Number of nodes per element
+    Nne = p + 1;
+
+    % Iterate each next node position based on previous position + element length
+    for node = 1:Nn-1
+        xglobe(node+1) = xglobe(node) + h(floor((p+node)/Nne))/p;
+    end
+
+    % Initializing connectivity matrix
+    conn = zeros(Ne, Nne);
+
+    for c = 1:Nne % Columns
+        conn(:,c) = (c : p : (Nn - (p - c + 1)))';
+    end
+end
+
+%% EVALUATE SHAPE FUNCTIONS AND SHAPE DERIVATIVES
+function [ShapeFunc, ShapeDer] = evalShape(p,pts)
+    switch p
+        case 1
+            % Linear Shape Functions
+            ShapeFunc = [(1-pts)./2, (1+pts)./2]; % Eq 3.27
+            ShapeDer = [-1/2, 1/2].*ones(size(pts));
+
+        case 2
+            % Quadratic Shape functions
+            ShapeFunc = [(pts.*(pts-1))/2, 1-pts.^2, (pts.*(pts+1))/2];
+            ShapeDer = [ (2*pts-1)/2, -2*pts, (2*pts+1)/2 ];
+
+        case 3
+            % Cubic Shape Functions
+            ShapeFunc = [-9/16*(pts+1/3).*(pts-1/3).*(pts-1),...
+                    27/16*(pts+1).*(pts-1/3).*(pts-1),...
+                    -27/16*(pts+1).*(pts+1/3).*(pts-1),...
+                    9/16*(pts+1).*(pts+1/3).*(pts-1/3)];
+
+            ShapeDer = [-(27*pts.^2 - 18*pts - 1)/16,...
+                    9*(9*pts.^2 - 2*pts - 3)/16,...
+                    -9*(9*pts.^2 + 2*pts - 3)/16,...
+                    (27*pts.^2 + 18*pts - 1)/16];
+    end
+end
+
+%% FINITE ELEMENT IN 1D
+function [xh, uN, error, PE] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue, res)
+    % Defining weights and Gauss points
+    [wts, pts] = myGauss(p);
+
+    % Evaluating shape functions and their derivatives
+    [ShapeFunc, ShapeDer] = evalShape(p,pts);
+
+    % Initializing stiffness Matrix
+    K = zeros(Nn,Nn);
+
+    % Initializing FEM solution vector
+    uN = zeros(Nn,1);
+
+    % Initializing Forcing vector
+    R = zeros(Nn,1);
+    for e = 1:Ne
+        % Extracting element id from conn matrix
+        id = conn(e,:); % <- whole row
+        for q = 1:numel(pts) % Loop through Gauss points
+            x_zeta = xglobe(id) * ShapeFunc(q,:)';
+            J = xglobe(id) * ShapeDer(q,:)';
+            K_e = wts(q) * (Efunc / J) * (ShapeDer(q,:)' * ShapeDer(q,:));
+            R_e = force(x_zeta) * ShapeFunc(q,:)' * J * wts(q);
+            K(id, id) = K(id, id) + K_e;
+            R(id) = R(id) + R_e;
+        end
+    end
+
+    KPE = K;
+    RPE = R;
+
+    % Boundary conditions
+    if BCType(1) % Left Dirichlet BC
+        uN(1) = BC0;
+        % Adjust loading terms
+        switch p
+            case 1 % Linear
+                R(2) = R(2) - K(2,1) * uN(1);
+            case 2 % Quadtratic
+                R(2) = R(2) - K(2,1)*uN(1);
+                R(3) = R(3) - K(3,1)*uN(1);
+            case 3 % Cubic
+                R(2) = R(2) - K(2,1)*uN(1);
+                R(3) = R(3) - K(3,1)*uN(1);
+                R(4) = R(4) - K(4,1)*uN(1);
+        end
+    else % for Left Neumann BC
+        R(1) = R(1) + BC0;
+    end
+
+    if BCType(2) % Right Dirichlet BC
+        uN(Nn) = BCL;
+        % Adjust loading terms
+        switch p
+            case 1 % Linear
+                R(Nn-1) = R(Nn-1) - K(Nn-1,Nn)*uN(Nn);
+            case 2 % Quadtratic
+                R(Nn-1) = R(Nn-1) - K(Nn-1,Nn)*uN(Nn);
+                R(Nn-2) = R(Nn-2) - K(Nn-2,Nn)*uN(Nn);
+            case 3 % Cubic
+                R(Nn-1) = R(Nn-1) - K(Nn-1,Nn)*uN(Nn);
+                R(Nn-2) = R(Nn-2) - K(Nn-2,Nn)*uN(Nn);
+                R(Nn-3) = R(Nn-3) - K(Nn-3,Nn)*uN(Nn);
+        end
+    else % Right Neumann BC
+        R(Nn) = R(Nn) + BCL;
+    end
+
+    % Calculating uh (with refomated K and R)
+    uN(2:end-1) = K(2:end-1,2:end-1) \ R(2:end-1);
+
+    % Calculating PE
+    PE = 0.5 * uN' * KPE * uN - uN' * RPE;
+
+    % Evaluating Error
+    % Initialize error numerator and denominator
+    errNum = zeros(Ne,1);
+    errDen = 0;
+
+    for e = 1:Ne
+        % Extract element ID
+        id = conn(e,:);
+        % Loop through Gauss points
+        for q = 1:numel(pts)
+            x_zeta = xglobe(id) * ShapeFunc(q,:)'; % Eq. 3.26
+            J = xglobe(id) * ShapeDer(q,:)';
+            % Derivative of numerical solution
+            duN = (ShapeDer(q,:) / J) * uN(id);
+            % Derivative of true solution duTrue is input into myFEM1D
+            % Error numerator and denominator
+            errNum(e) = errNum(e) + (duTrue(x_zeta) - duN).^2 * Efunc * J * wts(q);
+            errDen = errDen + (duTrue(x_zeta)).^2  * Efunc * J * wts(q);
+        end
+        % Divide by element size
+        errNum(e) = errNum(e) / diff(xglobe(id));
+    end
+
+    errDen = errDen / (xglobe(end) - xglobe(1));
+    % Final error vector
+    error = sqrt(errNum ./ errDen);
+
+    % Resampling
+    if res
+        xh = zeros(res*Ne,1);                              % Initialzing Positions of resample pts
+        uNres = zeros(res*Ne,1);                           % Initializing uh placeholder
+        S = linspace(-1,1,res)';                           % Sample points
+        [ResShapeFunc, ~] = evalShape(p,S);                % ShapeFunc evaluated at res points
+        n = 1;                                             % Counter for indexing xh and uNRes through all res*Ne sample points
+        for e = 1:Ne
+            id = conn(e,:);
+            for i = 1:res                                  % loop through resampled points
+                xh(n) =  xglobe(id) * ResShapeFunc(i, :)'; % x(zeta)
+                uNres(n) = ResShapeFunc(i, :) * uN(id);    % evaluating uh at sample point
+                n = n + 1;
+            end
+        end
+        uN = uNres;
+    else
+        xh = xglobe;
+    end
+end
+
+%% ADAPTIVE MESHING
+function [xglobeNew, connNew, NeNew, NnNew] = addNodes(xglobe, error, TOL, p)
+    % Initialize empty array for new nodes
+    newNodes = [];
+
+    % Finding bad elements indices
+    naughty = find(error >= TOL);
+
+    for i = 1:length(naughty)
+        L_idx = (naughty(i)-1) * p + 1;
+        R_idx = naughty(i) + 1;
+        % Midpoint obtained from xglobe
+        mid = (xglobe(L_idx) + xglobe(R_idx)) / 2;
+        newNodes = [newNodes, mid];
+    end
+
+    % Putting node coordinates in proper order
+    xglobeNew = sort([xglobe, newNodes]);
+
+    NnNew = length(xglobeNew);
+    NeNew = floor((NnNew - 1) / p);
+    connNew = zeros(NeNew, p+1);
+
+    for e = 1:NeNew
+        connNew(e,:) = (1:(p + 1)) + (e - 1) * p;
+    end
+end
+
+%% DO NOT MODIFY BELOW -- use myGauss for myFEM1D
+function [wts,pts] = myGauss(p)
+    ptsNeed = ceil((p+1)/2);
+
+    switch ptsNeed + 2
+        case 1
+            wts = 2;
+            pts = 0;
+        case 2
+            wts = [1; 1];
+            pts = [-0.5773502691896257; 0.5773502691896257];
+        case 3
+            wts = [0.8888888888888888; 0.5555555555555556; ...
+                0.5555555555555556];
+            pts = [0; -0.7745966692414834; 0.7745966692414834];
+        case 4
+            wts = [0.6521451548625461; 0.6521451548625461; ...
+                0.3478548451374538; 0.3478548451374538];
+            pts = [-0.3399810435848563; 0.3399810435848563; ...
+                -0.8611363115940526; 0.8611363115940526];
+        case 5
+            wts = [0.5688888888888889; 0.4786286704993665;...
+                0.4786286704993665; 0.2369268850561891; ...
+                0.2369268850561891];
+            pts = [0; -0.5384693101056831;  0.5384693101056831;...
+                -0.9061798459386640; 0.9061798459386640];
+    end
+end
+```
+
+</details>
+
+## 4. Efficient Solution Techniques
 
 *(Section 4 content to be added)*
 
-## 5. Structural Analysis Applications
+## 5. 3D Formulation for Linear Elasticity and Thermodynamics Problem
 
 *(Section 5 content to be added)*
 
-## 6. Thermal and Fluid Analysis
+## 6. Modeling and Simulation of Time-Dependent Laser Processing - Meshing, Gaussian Quadrature, and Shape Functions
 
 *(Section 6 content to be added)*
 
-## 7. Advanced Topics and Nonlinear Analysis
+## 7. Modeling and Simulation of Time-Dependent Laser Processing - Assembling K and R
 
 *(Section 7 content to be added)*
 
-## 8. Practical Implementation and Case Studies
+## 8. Modeling and Simulation of Time-Dependent Laser Processing - Time-Stepping
 
 *(Section 8 content to be added)*
 

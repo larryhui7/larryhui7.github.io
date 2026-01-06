@@ -2,15 +2,15 @@
 title: "Physics-Informed Neural Networks (PINNs) for Fluid-Solid Interactions" 
 date: 2025-01-01
 tags: ["PINNs","physics-informed neural networks","fluid-solid interactions","machine learning","computational mechanics","MATLAB","GNN","PDE solvers"]
-author: ["Larry Hui", "Grace X. Gu"]
+author: ["Ekaterina Antimirova", "Zixiao Wei", "Larry Hui", "Grace X. Gu"]
 description: "Research on implementing Physics-Informed Neural Networks (PINNs) and Mesh Graph Networks (MGNs) for solving fluid-solid interaction problems."
 summary: "Research on implementing Physics-Informed Neural Networks (PINNs) and Mesh Graph Networks (MGNs) for solving fluid-solid interaction problems."
 cover:
-    image: "pinn.png"
-    alt: "FLOW lab experimental flow loop apparatus"
+    image: "images/cover.png"
+    alt: "PINN"
     relative: true
 editPost:
-    URL: "https://github.com/larryhui7/larryhui7.github.io"
+    URL: "https://github.com/larryhui7/PINNs"
     Text: "GitHub repository"
 showToc: true
 disableAnchoredHeadings: false

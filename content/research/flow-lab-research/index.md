@@ -1,6 +1,6 @@
 ---
 title: "FLOW Lab Research: Fluid Dynamics Exhibit Design"
-date: 2024-12-01
+date: 2023-01-01
 draft: false
 author: ["Larry Hui"]
 tags: ["Fluid Dynamics", "FLOW Lab", "Engineering Design", "Exhibit Design", "Fluid Mechanics", "CFD", "Research"]
@@ -136,9 +136,9 @@ The test section dimensions were carefully selected based on multiple engineerin
 - **Reynolds Number Analysis**: For water at 20°C, Re = ρVD/μ ranges from ~3,000 to ~30,000, covering laminar-to-turbulent transition regimes
 
 #### Froude Number Scaling
-The Froude number (Fr = V/√(g×d)) compares inertial forces to gravitational forces and is crucial for free-surface flows:
+The Froude number ($Fr = V/\sqrt{(g\times d)}$) compares inertial forces to gravitational forces and is crucial for free-surface flows:
 
-**Fr = V/√(g×d) ≈ 0.3 < 1**
+**$Fr = V/\sqrt{(g\times d)} \approx 0.3 < 1$**
 
 This sub-critical flow condition ensures:
 - Stable free surface without excessive wave generation
@@ -148,7 +148,7 @@ This sub-critical flow condition ensures:
 #### Flow Rate Calculations
 **Cross-sectional Area**: A = 18" × 10" = 180 in² = 1.167 ft² = 0.1087 m²
 
-**Maximum Flow Rate**: Q = V × A = 0.5 m/s × 0.1087 m² = 0.05435 m³/s = 1,441 L/min = 381 GPM
+**Maximum Flow Rate**: $Q = V \times A =$ 0.5 m/s × 0.1087 m² = 0.05435 m³/s = 1,441 L/min = 381 GPM
 
 **Practical Considerations**: The system is designed for 942 GPM to account for:
 - Pump inefficiencies and system losses
