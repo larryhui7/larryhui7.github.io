@@ -484,3 +484,4 @@ If redesigning from scratch, our largest focus would be **weight reduction**:
 2. Travieso-Rodriguez, J. A., et al. (2019). Mechanical Properties of 3D-Printing Polylactic Acid Parts subjected to Bending Stress and Fatigue Testing. *Materials*, 12(23), 3859. https://doi.org/10.3390/ma12233859
 
 3. Mohammed, I. K. (9 October 2023). ME2-DMF: Autumn Group Project 2023-2024; Project Brief.
+

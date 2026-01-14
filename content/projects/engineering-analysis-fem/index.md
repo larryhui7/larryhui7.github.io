@@ -1615,11 +1615,866 @@ end
 
 ## 4. Efficient Solution Techniques
 
-*(Section 4 content to be added)*
+### 4.1 Linear System Setup for Piecewise Material Properties
+
+Consider the differential equation with piecewise constant material properties:
+
+$$\frac{d}{dx}\left(E(x)\frac{du}{dx}\right) + x^2k^2\sin\left(\frac{6\pi k x}{L}\right) = 0$$
+
+with domain $\Omega = (0,L)$, parameters $k = 8$, $L = 1$, and boundary conditions $u(0) = -0.1$, $u(L) = 1.2$.
+
+#### Material Property Segmentation
+
+The material property $E(x)$ is defined in ten equal segments:
+
+- **Segment 1**: $0.0 < x < 0.1$, $E_1 = 2.25$
+- **Segment 2**: $0.1 < x < 0.2$, $E_2 = 1.5$
+- **Segment 3**: $0.2 < x < 0.3$, $E_3 = 2.0$
+- **Segment 4**: $0.3 < x < 0.4$, $E_4 = 0.5$
+- **Segment 5**: $0.4 < x < 0.5$, $E_5 = 1.25$
+- **Segment 6**: $0.5 < x < 0.6$, $E_6 = 0.75$
+- **Segment 7**: $0.6 < x < 0.7$, $E_7 = 0.25$
+- **Segment 8**: $0.7 < x < 0.8$, $E_8 = 3.50$
+- **Segment 9**: $0.8 < x < 0.9$, $E_9 = 2.0$
+- **Segment 10**: $0.9 < x < 1.0$, $E_{10} = 1.75$
+
+#### Analytical Solution Development
+
+Starting with the differential equation:
+
+$$\frac{d}{dx}\left(E(x)\frac{du}{dx}\right) = -x^2k^2\sin\left(\frac{6\pi k x}{L}\right)$$
+
+Integrate once to find the flux:
+
+$$E(x)\frac{du}{dx} = -k^2\int x^2\sin\left(\frac{6\pi k x}{L}\right) dx + C$$
+
+Using integration by parts twice for the sine integral:
+
+$$E(x)\frac{du}{dx} = -\frac{L((L^2-18\pi^2k^2x^2)\cos\left(\frac{6\pi k x}{L}\right) + 6\pi k L x \sin\left(\frac{6\pi k x}{L}\right))}{108\pi^3 k} + C$$
+
+Let $g(x)$ represent the antiderivative term:
+
+$$g(x) = \frac{L((L^2-18\pi^2k^2x^2)\cos\left(\frac{6\pi k x}{L}\right) + 6\pi k L x \sin\left(\frac{6\pi k x}{L}\right))}{108\pi^3 k}$$
+
+Then the derivative becomes:
+
+$$\frac{du}{dx} = \frac{1}{E(x)}(-g(x) + C)$$
+
+Integrate again to find the displacement:
+
+$$u(x) = \frac{1}{E_i}\int g(x) dx + \frac{C}{E_i}x + \frac{D_i}{E_i}$$
+
+where $i$ denotes the segment number and $D_i$ are integration constants for each segment.
+
+Let $h(x) = \int g(x) dx$ represent the double antiderivative:
+
+$$h(x) = \frac{L^2\left(4\pi k L x \cos\left(\frac{6\pi k x}{L}\right) - (L^2 - 6\pi^2 k^2 x^2)\sin\left(\frac{6\pi k x}{L}\right)\right)}{216\pi^4 k^2}$$
+
+#### Continuity Conditions
+
+For kinematic admissibility, displacements and tractions must be continuous at segment interfaces:
+
+**Displacement Continuity**: $u_i(x_j^-) = u_{i+1}(x_j^+)$
+**Traction Continuity**: $E_i \frac{du_i}{dx}(x_j^-) = E_{i+1} \frac{du_{i+1}}{dx}(x_j^+)$
+
+From traction continuity, it follows that $C_1 = C_2 = \dots = C_{10} = C$ (same constant for all segments).
+
+#### Linear System Formulation
+
+The continuity conditions and boundary conditions form a system of 11 equations for 11 unknowns ($D_1$ through $D_{10}$ and $C$):
+
+**Displacement continuity at interfaces:**
+$$\frac{h(x_j)}{E_i} + \frac{C x_j}{E_i} + \frac{D_i}{E_i} = \frac{h(x_j)}{E_{i+1}} + \frac{C x_j}{E_{i+1}} + \frac{D_{i+1}}{E_{i+1}}$$
+
+**Boundary conditions:**
+- Left boundary: $u(0) = -0.1 \Rightarrow D_1 = -0.1 E_1$
+- Right boundary: $u(1) = 1.2 \Rightarrow D_{10} + C = 1.2 E_{10} - h(1)$
+
+This yields the linear system $\mathbf{A}\mathbf{b} = \mathbf{y}$ where $\mathbf{b} = [D_1, D_2, \dots, D_{10}, C]^\top$:
+
+$$
+\begin{array}{c}
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\frac{1}{E_1} & -\frac{1}{E_2} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 &
+0.1\left(\frac{1}{E_1}-\frac{1}{E_2}\right) \\
+0 & \frac{1}{E_2} & -\frac{1}{E_3} & 0 & 0 & 0 & 0 & 0 & 0 & 0 &
+0.2\left(\frac{1}{E_2}-\frac{1}{E_3}\right) \\
+0 & 0 & \frac{1}{E_3} & -\frac{1}{E_4} & 0 & 0 & 0 & 0 & 0 & 0 &
+0.3\left(\frac{1}{E_3}-\frac{1}{E_4}\right) \\
+0 & 0 & 0 & \frac{1}{E_4} & -\frac{1}{E_5} & 0 & 0 & 0 & 0 & 0 &
+0.4\left(\frac{1}{E_4}-\frac{1}{E_5}\right) \\
+0 & 0 & 0 & 0 & \frac{1}{E_5} & -\frac{1}{E_6} & 0 & 0 & 0 & 0 &
+0.5\left(\frac{1}{E_5}-\frac{1}{E_6}\right) \\
+0 & 0 & 0 & 0 & 0 & \frac{1}{E_6} & -\frac{1}{E_7} & 0 & 0 & 0 &
+0.6\left(\frac{1}{E_6}-\frac{1}{E_7}\right) \\
+0 & 0 & 0 & 0 & 0 & 0 & \frac{1}{E_7} & -\frac{1}{E_8} & 0 & 0 &
+0.7\left(\frac{1}{E_7}-\frac{1}{E_8}\right) \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & \frac{1}{E_8} & -\frac{1}{E_9} & 0 &
+0.8\left(\frac{1}{E_8}-\frac{1}{E_9}\right) \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \frac{1}{E_9} & -\frac{1}{E_{10}} &
+0.9\left(\frac{1}{E_9}-\frac{1}{E_{10}}\right) \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1
+\end{bmatrix}
+\begin{bmatrix}
+D_1 \\ D_2 \\ D_3 \\ D_4 \\ D_5 \\ D_6 \\ D_7 \\ D_8 \\ D_9 \\ D_{10} \\ C
+\end{bmatrix}
+\\[1.2em]
+=
+\\[1.2em]
+\begin{bmatrix}
+-0.1E_1 \\
+h(0.1)\left(\frac{1}{E_2}-\frac{1}{E_1}\right) \\
+h(0.2)\left(\frac{1}{E_3}-\frac{2}{E_1}\right) \\
+h(0.3)\left(\frac{1}{E_4}-\frac{3}{E_1}\right) \\
+h(0.4)\left(\frac{1}{E_5}-\frac{4}{E_1}\right) \\
+h(0.5)\left(\frac{1}{E_6}-\frac{5}{E_1}\right) \\
+h(0.6)\left(\frac{1}{E_7}-\frac{6}{E_1}\right) \\
+h(0.7)\left(\frac{1}{E_8}-\frac{7}{E_1}\right) \\
+h(0.8)\left(\frac{1}{E_9}-\frac{8}{E_1}\right) \\
+h(0.9)\left(\frac{1}{E_{10}}-\frac{9}{E_1}\right) \\
+1.2E_{10}-h(1)
+\end{bmatrix}
+\end{array}
+$$
+
+### 4.2 Finite Element Solution with Piecewise Materials
+
+Using linear equal-sized elements with piecewise constant material properties requires special handling at material interfaces.
+
+#### Element-Level Implementation
+
+For elements that span material interfaces, the element stiffness matrix must account for different material properties in different parts of the element. This requires subdividing such elements or using specialized integration techniques.
+
+#### Direct vs. Iterative Solution Methods
+
+**Direct Methods**: Use Gaussian elimination or LU decomposition to solve $\mathbf{K}\mathbf{u} = \mathbf{f}$ exactly in $\mathcal{O}(N^3)$ operations.
+
+**Iterative Methods**: Use preconditioned conjugate gradient (PCG) to solve iteratively with convergence tolerance $10^{-6}$.
+
+#### Performance Comparison
+
+Testing with $N_e = 100$, $1000$, and $10000$ elements:
+
+- **Solution Characteristics**: Piecewise linear approximation creates kinks at material interfaces
+- **Convergence Analysis**: Both methods show expected convergence rates, with direct solver maintaining $\mathcal{O}(h^2)$ and PCG eventually degrading to $\mathcal{O}(h)$
+- **Computational Efficiency**: Direct solver more efficient for problems up to $N_e \approx 2000$, PCG better for larger sparse systems
+
+### 4.3 Preconditioned Conjugate Gradient Implementation
+
+#### PCG Algorithm Overview
+
+The preconditioned conjugate gradient method solves $\mathbf{K}\mathbf{u} = \mathbf{f}$ iteratively:
+
+1. Choose preconditioner $\mathbf{M} \approx \mathbf{K}$
+2. Initialize $\mathbf{r}_0 = \mathbf{f} - \mathbf{K}\mathbf{u}_0$
+3. Solve $\mathbf{M}\mathbf{z}_0 = \mathbf{r}_0$
+4. Set $\mathbf{p}_0 = \mathbf{z}_0$
+5. Iterate until convergence:
+   - $\alpha_k = \frac{\mathbf{r}_k^T \mathbf{z}_k}{\mathbf{p}_k^T \mathbf{K} \mathbf{p}_k}$
+   - $\mathbf{u}_{k+1} = \mathbf{u}_k + \alpha_k \mathbf{p}_k$
+   - $\mathbf{r}_{k+1} = \mathbf{r}_k - \alpha_k \mathbf{K} \mathbf{p}_k$
+   - $\mathbf{M}\mathbf{z}_{k+1} = \mathbf{r}_{k+1}$
+   - $\beta_{k+1} = \frac{\mathbf{r}_{k+1}^T \mathbf{z}_{k+1}}{\mathbf{r}_k^T \mathbf{z}_k}$
+   - $\mathbf{p}_{k+1} = \mathbf{z}_{k+1} + \beta_{k+1} \mathbf{p}_k$
+
+#### Performance Characteristics
+
+- **Iteration Count**: Scales linearly with problem size for well-conditioned systems
+- **Memory Usage**: $\mathcal{O}(N)$ vs. $\mathcal{O}(N^2)$ for direct methods
+- **Preconditioning**: Critical for convergence rate; Jacobi or incomplete Cholesky common choices
+
+![CG Iterations Analysis](images/proj4_Figure_4.png)
+*Figure 4.4: Number of PCG iterations vs number of elements Ne, showing linear scaling.*
+
+From the CG iterations vs. $N_e$ plot, the number of PCG iterations grows directly proportional to the number of elements, $N_e$, used. That is, if we are increasing the number of elements the iteration count increases linearly with $N_e$. This is because as we increase $N_e$ the size of the linear system will increase which creates more unknowns leading to more iterations required.
+
+### 4.4 Comparative Analysis of Solution Methods
+
+#### Visual Solution Characteristics
+
+![FEM Solutions with Piecewise Materials](images/proj4_Figure_1.png)
+*Figure 4.1: FEM solutions for different element counts (Ne = 100, 1000, 10000) compared with analytical solution, showing kinks at material interfaces.*
+
+Firstly, the most notable thing is that since the solution is piecewise linear at each element, it creates kinks in the shape which contrasts our previous assignment solution as they were smooth sinusoidal functions. Our solution is of class $C^0$ which is continuous but not differentiable at all places, notably the kinks at $x=0.3$, $x=0.4$, and $x=0.6$. And as we increase the number of finite elements we use, we can capture that kink better especially since for non-smooth functions, $h$-refinement is much more useful than $p$-refinement as under standard assumptions in the classical a priori error estimate for the finite element method, $\|u-u^h\|_{E(\Omega)}\leq \mathcal{C}(u,p)$ where $h^{\min(r-1,p)}\triangleq\gamma$ where $r$ is the regularity or smoothness and $p$ is the complete polynomial order. So it would make sense that as we increase $N_e$ the FEM solution would be able to more accurately capture the non-smooth features.
+
+#### Convergence Rate Analysis
+
+![Convergence Rate Analysis](images/proj4_Figure_2.png)
+*Figure 4.2: Log-log plot of error $e^N$ vs $1/Ne$ for direct and PCG solvers, showing convergence rate differences.*
+
+For coarse meshes (right hand side), we see that both PCG and the Direct solver have identical error values. For the finer meshes we see that the PCG has a worse accuracy as $N_e$ increases. Also since it is a $\log-\log$ plot, they are straight lines with positive slopes so we can say $e^N\sim \mathcal{O}(\frac{1}{N_e}^1)$ for the PCG solver and for the Direct solver, $e^N\sim \mathcal{O}(\frac{1}{N_e}^2)$. This means that the lines actually represents the order of convergence for the energy norm. So as we increase the number of elements, PCG and the Direct solver have the same convergence rate. However, after $N_e=1000$ we see that the direct solver continues to converge with order 2 and the PCG slows down to order 1 convergence. So the Direct solver converges faster.
+
+#### Computational Performance
+
+![Execution Time Comparison](images/proj4_Figure_5.png)
+*Figure 4.5: Execution time vs number of elements Ne for direct and PCG solvers.*
+
+Some general trends that I notice are that both PCG and Direct solvers show a quadratically increasing execution time as the number of elements, $N_e$, increases which is expected as larger problems as they become more computationally expensive. For values of $N_e<2000$ the solvers are comparable and perform similarly with an execution time of around 0.1 to 0.2. However, as $N_e>2000$, the PCG solver becomes slower and takes longer to solve the problem than the Direct solver, and this gap only increases as the number of elements increases. There is a large spike at $N_e=10000$ for the PCG which could indicate that my problem might have had a hard time converging or just some noise in the data due to RAM while running the code. In total, the direct solver is ostensibly more efficient than the PCG solver in $80\%$ of the range of values $N_e$. This is surprising since conjugate gradient type iterative techniques, such as PCG, typically deliver solutions in $\mathcal{O}(N)^2$ operations. Compared to a direct approach, where we reduce a system to upper triangular form plus the cost of back substitution, where the typical solution time is $\mathcal{O}(N)^3$. This is why I would have expected PCG to outperform the direct solver, especially for a large and sparse problem like this. For almost all variants of Gaussian elimination, unless we involve complicated sparsity tracking to eliminate unnecessary operations on the zero entities. However, the backslash operator in MATLAB is extremely optimized and outperforms our rudimentary PCG solver.
+
+**Execution Time Scaling**:
+- Both methods show $\mathcal{O}(N^{2-3})$ scaling with problem size
+- Direct solver more efficient for $N_e < 2000$
+- PCG becomes competitive for larger, sparse systems
+- MATLAB's optimized direct solver often outperforms basic PCG implementations
+
+#### Potential Energy Minimization
+
+![Potential Energy Analysis](images/proj4_Figure_3.png)
+*Figure 4.3: Potential energy $J(u^N)$ vs number of elements Ne for direct and PCG solvers.*
+
+At the coarsest and intermediate fineness mesh, notice that both the direct solver and the PCG solver yield almost the same identical potential energies. At $N_e=100$ we have $\mathcal{J}(u^N)\approx1.27255$ and at $N_e=1000$, $\mathcal{J}(u^N)\approx1.2712$. There is almost no difference in potential energies as $Ne>1000$ but PCG does end up at a lower potential than the Direct solver. We also see that the biggest drop in potential energy was as $N_e=100$ refined to $N_e=1000$ which indicates that the solution had practically converged at that point and more elements was simply not going to reduce the potential by a significant amount. Therefore, this suggests that both methods are equally as effective at minimizing the potential energy functional i.e. getting as close as the true solution as possible which is, in the end, the main goal.
+
+### 4.5 MATLAB Implementation for Efficient Solution Techniques
+
+<details>
+<summary><strong>Efficient Solution Techniques Implementation (Click to Expand)</strong></summary>
+
+```matlab
+clear; close all; clc;
+
+%% MATERIAL CONSTANTS AND GEOMETRIC CONSTRAINTS
+
+x0 = 0;
+L = 1;
+k = 8;
+BC0 = -0.1;        % u(x0) = ?
+BCL = 1.2;         % u(L) = ?
+res = 0;           % Number of resample points
+p = 1;             % Shape function order
+Ne = 20;           % 20 elements to start
+h = (L-x0)/Ne * ones(Ne,1);
+CGTOL = 1E-6;
+
+% Array to see if BC is Dirichlet (1) or Neumann (0)
+% First entry (BCType(1)) is for left boundary
+% Second entry (BCType(2)) is for right boundary
+BCType = [1, 1]; % Both Endpoints are Dirichlet for HW3c
+
+force = @(x) x.^2*k^2.*sin(6*pi*k*x/L);
+
+Efunc = @(x) ...
+    2.25 * (0 < x & x < 0.1) + ...
+    1.50 * (0.1 < x & x < 0.2) + ...
+    2.00 * (0.2 < x & x < 0.3) + ...
+    0.50 * (0.3 < x & x < 0.4) + ...
+    1.25 * (0.4 < x & x < 0.5) + ...
+    0.75 * (0.5 < x & x < 0.6) + ...
+    0.25 * (0.6 < x & x < 0.7) + ...
+    3.50 * (0.7 < x & x < 0.8) + ...
+    2.00 * (0.8 < x & x < 0.9) + ...
+    1.75 * (0.9 < x & x < 1.0);
+
+hFunc = @(x) (L^2 .* (4 .* pi .* k .* L .* x .* cos((6 .* pi .* k .* x) ./ L) ...
+        - (L.^2 - 6 .* pi.^2 * k.^2 * x.^2) .* sin((6 .* pi .* k .* x) ./ L))) ...
+        / (216 .* pi.^4 .* k^2);
+
+% Vector of E values throughout domain
+
+Evec = Efunc(0.05:0.1:1);
+
+% we will solve for constants by setting up a system of equations:
+% Ac = b --> constants = A\b
+% Constructing A Matrix
+
+A = zeros(11);
+
+for i = 1:10
+    A(i+1, i) = 1 ./ Evec(i);
+    A(i, i) = -1 ./ Evec(i);
+end
+
+% Creating last column of A matrix (coefficients of C)
+
+% helper terms 1/E_i, 1/E_{i+1}
+
+Ei_inv = 1./(Evec(1:end-1)); % 1/E_i
+
+Eip1_inv = 1./(Evec(2:end)); % 1/E_{i+1}
+
+% leave Ccol(1) = 0 to enforce left dirichlet condition
+
+% uTrue(x=0) = h0/E_10 + c*(0)/E_10 + d_10/E_10 --> C's coeff is 0
+
+Ccol = zeros(11,1);
+
+% we enforce the right dirichlet condition by plugging in x=1 into utrue
+
+% uTrue(x=1) = h(1)/E_10 + C*(1)/E_10 + d_10/E_10 --> C's coeff is 1/E_10
+
+Ccol(end) = 1/Evec(end);
+
+% equations resulting from element interface continuity (see discussion 6)
+
+Ccol(2:end-1) = linspace(0.1,.9,9) .* (Ei_inv - Eip1_inv);
+
+A(:,end) = Ccol;
+
+% Creating b column
+
+x_bounds = 0:0.1:1;
+
+hVec = hFunc(x_bounds);
+
+b = zeros(11,1);
+
+b(1) = hFunc(0)/Evec(1) - BC0; % left dirichlet
+
+b(2:end-1) = hVec(2:end-1) .* (Eip1_inv - Ei_inv);
+
+b(end) = BCL - hFunc(1.0)/Evec(end); % right dirichlet
+
+% Solving for Constants d1,...,d10 and C
+
+constants = A \ b;
+
+d = constants(1:end-1);
+
+C = constants(end);
+
+uTrue = @(x) ...
+    -0.1 * (x == 0) + ...
+    1/Evec(1)*(hFunc(x) + C.*x + d(1)) .* (0 < x & x < 0.1) + ...
+    1/Evec(2)*(hFunc(x) + C.*x + d(2)) .* (0.1 < x & x < 0.2) + ...
+    1/Evec(3)*(hFunc(x) + C.*x + d(3)) .* (0.2 < x & x < 0.3) + ...
+    1/Evec(4)*(hFunc(x) + C.*x + d(4)) .* (0.3 < x & x < 0.4) + ...
+    1/Evec(5)*(hFunc(x) + C.*x + d(5)) .* (0.4 < x & x < 0.5) + ...
+    1/Evec(6)*(hFunc(x) + C.*x + d(6)) .* (0.5 < x & x < 0.6) + ...
+    1/Evec(7)*(hFunc(x) + C.*x + d(7)) .* (0.6 < x & x < 0.7) + ...
+    1/Evec(8)*(hFunc(x) + C.*x + d(8)) .* (0.7 < x & x < 0.8) + ...
+    1/Evec(9)*(hFunc(x) + C.*x + d(9)) .* (0.8 < x & x < 0.9) + ...
+    1/Evec(10)*(hFunc(x) + C.*x + d(10)) .* (0.9 < x & x < 1.0) + ...
+    1.2 * (x==1);
+
+gFunc = @(x) -(L.^3.*cos((6.*pi.*k.*x)./L))./(108.*pi.^3.*k)...
+    -(L.^2.*x.*sin((6.*pi.*k.*x)./L))./(18*pi.^2)...
+    + (k.*L.*x.^2.*cos((6.*pi.*k.*x)./L))./(6.*pi);
+
+duTrue = @(x) ...
+    1/Evec(1)*(gFunc(x) + C) .* (0 < x & x < 0.1) + ...
+    1/Evec(2)*(gFunc(x) + C) .* (0.1 < x & x < 0.2) + ...
+    1/Evec(3)*(gFunc(x) + C) .* (0.2 < x & x < 0.3) + ...
+    1/Evec(4)*(gFunc(x) + C) .* (0.3 < x & x < 0.4) + ...
+    1/Evec(5)*(gFunc(x) + C) .* (0.4 < x & x < 0.5) + ...
+    1/Evec(6)*(gFunc(x) + C) .* (0.5 < x & x < 0.6) + ...
+    1/Evec(7)*(gFunc(x) + C) .* (0.6 < x & x < 0.7) + ...
+    1/Evec(8)*(gFunc(x) + C) .* (0.7 < x & x < 0.8) + ...
+    1/Evec(9)*(gFunc(x) + C) .* (0.8 < x & x < 0.9) + ...
+    1/Evec(10)*(gFunc(x) + C) .* (0.9 < x & x < 1.0);
+
+% Ensure plots use LaTex
+
+set(groot, 'defaultTextInterpreter', 'latex');
+
+set(groot, 'defaultLegendInterpreter', 'latex');
+
+%% ===================== PROBLEM 2A: PLOT FEM CG SOLUTION VS TRUE SOLUTION =====================
+
+Ne_values = [100, 1000, 10000];
+
+for i = 1:length(Ne_values)
+    Ne = Ne_values(i);
+    h = (L-x0)/Ne * ones(Ne,1);
+
+    [xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h);
+
+    [uN, error_val, PE_val, CGIter] = myFEMCG(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, duTrue, CGTOL, BCType);
+
+    figure;
+    xTrue = linspace(0,1,1000);
+    plot(xTrue, uTrue(xTrue), "LineWidth", 2);
+    hold on;
+    plot(xglobe, uN, 'Marker', '*');
+    hold off;
+
+    xlabel('$x$');
+    ylabel('$u^N$');
+    legend('True Solution', sprintf('$u^N_{\\mathrm{CG}}(x)$ $(N_e=%d)$', Ne), 'Location', 'northwest');
+    title(sprintf('FEM Solution vs. True Solution for $N_e=%d$', Ne));
+end
+
+%% ===================== PROBLEM 2B: PLOT eN vs. 1/Ne SOLUTION VS TRUE SOLUTION =====================
+
+errCGvec = zeros(length(Ne_values),1);
+errDirectvec = zeros(length(Ne_values),1);
+
+for i = 1:length(Ne_values)
+    Ne = Ne_values(i);
+    h = (L-x0)/Ne * ones(Ne,1);
+
+    [xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h);
+
+    % PCG solver
+    [uN_CG, errorCG, PE_CG, CGIter] = myFEMCG(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, duTrue, CGTOL, BCType);
+    errCGvec(i) = errorCG;
+
+    % Direct solver
+    [uN_direct, errDirect, PE_direct] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue);
+    errDirectvec(i) = errDirect;
+end
+
+% Create the log–log plot
+
+f2 = figure;
+set(gca, "YScale", "log", "XScale", "log");
+loglog(1./Ne_values, errCGvec, 'bo-');
+hold on;
+loglog(1./Ne_values, errDirectvec, 'rs--');
+xlabel('$1/N_e$');
+ylabel('$e^N$');
+legend('$e^N_{\mathrm{CG}}$', '$e^N_{\mathrm{Direct}}$', 'Location', 'southwest');
+title('$\log$-$\log$ Plor of Error vs. $1/N_e$', 'Interpreter', 'latex');
+grid on;
+hold off;
+
+%% ===================== PROBLEM 2C: PLOT POTENTIAL ENERGY FOR EACH NE FOR BOTH PCG AND DIRECT SOLVERS =====================
+
+PE_CGvec = zeros(length(Ne_values),1);
+PE_Directvec = zeros(length(Ne_values),1);
+
+for i = 1:length(Ne_values)
+    Ne = Ne_values(i);
+    h = (L-x0)/Ne * ones(Ne,1);
+
+    [xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h);
+
+    % PCG solver
+    [uN_CG, errorCG, PE_CG, CGIter] = myFEMCG(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, duTrue, CGTOL, BCType);
+    PE_CGvec(i) = PE_CG;
+
+    %Direct solver
+    [uN_direct, error, PE_direct] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue);
+    PE_Directvec(i) = PE_direct;
+end
+
+% Create the potential energy plots
+
+f3 = figure;
+plot(Ne_values, PE_CGvec, 'bo-');
+hold on;
+plot(Ne_values, PE_Directvec, 'rs-');
+xlabel('$N_e$');
+ylabel('$\mathcal{J}(u^N)$');
+legend('$\mathcal{J}(u^N)$ PCG', '$\mathcal{J}(u^N)$ Direct', 'Location', 'northeast');
+title('Potential Energy $\mathcal{J}(u^N)$ vs. $N_e$');
+grid on;
+hold off;
+
+%% ===================== PROBLEM 2D: PLOT PCG-SOLVER ITERATIONS PER NE =====================
+
+Iterations_CGvec = zeros(length(Ne_values),1);
+Iterations_Direct = zeros(length(Ne_values),1);
+
+for i = 1:length(Ne_values)
+    Ne = Ne_values(i);
+    h = (L-x0)/Ne * ones(Ne,1);
+
+    [xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h);
+
+    % PCG solver
+    [uN_CG, errorCG, PE_CG, CGIter] = myFEMCG(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, duTrue, CGTOL, BCType);
+    Iterations_CGvec(i) = CGIter;
+
+    % Direct solver
+    %[uN_direct, error, PE_direct] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue);
+    %errDirect(i) = min(error);
+end
+
+% Create the potential energy plots
+
+f3 = figure;
+plot(Ne_values, Iterations_CGvec, 'bo-');
+hold on;
+xlabel('$N_e$');
+ylabel('Iterations');
+title('CG Iterations vs. $N_e$');
+grid on;
+hold off;
+
+%% ===================== PROBLEM 3: PLOT EXECUTION TIME vs. NE =====================
+
+Ne_range = linspace(100, 10000, 100);
+
+time_PCG = zeros(length(Ne_range), 1);
+time_Direct = zeros(length(Ne_range), 1);
+
+for i = 1:length(Ne_range)
+    Ne = Ne_range(i);
+    h = (L-x0)/Ne * ones(Ne,1);
+
+    [xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h);
+
+    % PCG solver
+    tic;
+    [uN_CG, errorCG, PE_CG, CGIter] = myFEMCG(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, duTrue, CGTOL, BCType);
+    time_PCG(i) = toc;
+
+    %Direct solver
+    tic;
+    [uN_direct, error, PE_direct] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue);
+    time_Direct(i) = toc;
+end
+
+% Create execution time plots
+
+f4 = figure;
+plot(Ne_range, time_PCG, 'bo-');
+hold on;
+plot(Ne_range, time_Direct, 'rs-');
+xlabel('$N_e$');
+ylabel('Execution Time (s)');
+legend('PCG Solver', 'Direct Solver', 'Location', 'northwest');
+title('Execution Time vs. $N_e$');
+grid on;
+hold off;
+
+%% ===================== MESHER FUNCTION  =====================
+
+function [xglobe, Nn, conn] = Mesh1D(p, Ne, x0, h)
+    % Number of nodes in domain
+    Nn = p * Ne + 1;
+
+    % Initializing real domain positions
+    xglobe = x0 * ones(1,Nn);
+
+    % Number of nodes per element
+    Nne = p + 1;
+
+    % Iterate each next node position based on previous position + element length
+    for node = 1:Nn-1
+        xglobe(node+1) = xglobe(node) + h(floor((p+node)/Nne))/p;
+    end
+
+    % Initializing connectivity matrix
+    conn = zeros(Ne, Nne);
+
+    for c = 1:Nne % Columns
+        conn(:,c) = (c : p : (Nn - (p - c + 1)))';
+    end
+end
+
+%% ===================== EVALUATE SHAPE FUNCTIONS  =====================
+
+function [ShapeFunc, ShapeDer] = evalShape(p,pts)
+    switch p
+        case 1
+        % Linear Shape Functions
+        ShapeFunc = [(1-pts)./2, (1+pts)./2];
+        ShapeDer = [-1/2, 1/2].*ones(size(pts));
+    end
+end
+
+function [uN, error, PE, count] = myFEMCG(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, duTrue, CGTOL, BCType)
+    % Defining location and number of Gauss points and their respective weights
+    [wts, pts] = myGauss(p);
+
+    % Evaluating shape functions and their derivatives
+    [ShapeFunc, ShapeDer] = evalShape(p,pts);
+
+    % Allocate space for K, R, and T (preconditioner)
+    K = zeros(Ne, 3);
+    R = zeros(Nn, 1);
+    T = zeros(Nn, 1);
+
+    for e = 1:Ne
+        % Extracting element id from conn matrix
+        id = conn(e,:); % <- whole row
+        Ke = zeros(2,2);
+        for q = 1:numel(pts)
+            x_zeta = xglobe(id) * ShapeFunc(q,:)';
+            % Evaluating Jacobian
+            J = xglobe(id) * ShapeDer(q,:)';
+            % Evaluating elemental stiffness matrix (2 x 2)
+            Ke = Ke + wts(q) * (Efunc(x_zeta) / J) * (ShapeDer(q,:)' * ShapeDer(q,:));
+            % Evaluating forcing function
+            Re = force(x_zeta) * ShapeFunc(q,:)' * J * wts(q);
+            % Evaluating elemental loading terms
+            R(id) = R(id) + Re;
+        end
+        K(e, 1) = K(e, 1) + Ke(1, 1);
+        K(e, 2) = K(e, 2) + Ke(1, 2);
+        K(e, 3) = K(e, 3) + Ke(2, 2);
+    end
+
+    % Save K and R before BC modifications for PE calculations
+    KPE = K;
+    RPE = R;
+
+    % Boundary conditions
+    if BCType(1) % Left Dirichlet BC
+        uN(1) = BC0;
+        R(1) = uN(1);
+        R(2) = R(2) - K(1,2) * uN(1);
+        K(1,2) = 0;
+        K(1,1) = 1;
+    end
+
+    if BCType(2)% Right Dirichlet BC
+        uN(Nn) = BCL;
+        R(Nn) = uN(Nn);
+        R(Nn-1) = R(Nn-1) - K(Nn-1,2) * uN(Nn);
+        K(Nn-1,2) = 0;
+        K(Nn-1,3) = 1;
+    end
+
+    % Assemble preconditioner
+    T(1) =  1/sqrt(KPE(1,1)); % First value
+    T(end) = 1/sqrt(KPE(end,end)); % Last value
+    for i = 2:Nn-1 % Middle values where Ke's overlap
+        T(i) = 1/sqrt(KPE(i-1, 3) + KPE(i, 1));
+    end
+
+    % Apply preconditioner to K to make K_Hat = T' * K * T
+    for e = 1:Ne
+        id = conn(e, :);
+        K(e, 1) = K(e, 1) * T(id(1))^2;
+        K(e, 2) = K(e, 2) * T(id(1)) * T(id(2));
+        K(e, 3) = K(e, 3) * T(id(2))^2;
+    end
+
+    % Apply preconditioner to R to make R_Hat = T' * R
+    R = T .* R;
+
+    a = zeros(Nn,1); % Initialize a_Hat
+    CGerr = 1; % Initilize CG error
+
+    % Calculate initial search direction z = r = -GRAD_a(PI)
+    % Step 1 in Eq. 5.18 in book
+    Ka = matrixM(K,a);
+    r = R - Ka;
+    % Step 2 in Eq. 5.18 in book
+    z = r;
+    Kz = matrixM(K,z);
+    lambda = (z' * r)/(z' * Kz);
+    % Step 3 in Eq. 5.18 in book
+    a = a + lambda * z;
+    count = 1; % Initialize CG iteration counter to 1
+
+    % Step 4 in Eq. 5.18 in book
+    while CGerr > CGTOL
+        Ka = matrixM(K, a);
+        r = R - Ka;
+        theta = - (r' * Kz) / (z' * Kz);
+        z =  r + theta * z;
+        Kz = matrixM(K, z);
+        lambda = (z' * r) / (z' * Kz);
+        anew =  a + lambda * z;
+        % Step 5 in Eq. 5.18 in book
+        CGerr = abs(lambda) * sqrt((z' * Kz) / (a' * Ka));
+        if CGerr > CGTOL
+            count = count + 1;
+        end
+        a = anew;
+    end
+
+    uN = a .* T; % Post process a_Hat to uN
+    PE = 0.5 * uN' * matrixM(KPE, uN) - uN'* RPE;
+
+    % Evaluating Error
+    % Initialize error numerator and denominator
+    errNum = 0;
+    errDen = 0;
+
+    % Calculate Error
+    for e = 1:Ne
+        % Extract element ID
+        id = conn(e, :);
+        % Loop through Gauss points
+        for gauss_pt = 1:numel(pts)
+            x_zeta = xglobe(id) * ShapeFunc(gauss_pt,:)';
+            J = xglobe(id) * ShapeDer(gauss_pt,:)';
+            % Derivative of numerical solution
+            duN = (ShapeDer(gauss_pt,:) / J) * uN(id);
+            % Derivative of true solution duTrue is input into
+            % myFEM1D
+            % Error numerator and denominator
+            errNum = errNum + (duTrue(x_zeta) - duN).^2 * Efunc(x_zeta) * J * wts(gauss_pt);
+            errDen = errDen + (duTrue(x_zeta)).^2  * Efunc(x_zeta) * J * wts(gauss_pt);
+        end
+    end
+
+    % Final error
+    error = sqrt(errNum/errDen);
+end
+
+%% [K]{s}
+function Ks = matrixM(K, s)
+    Nn = size(s,1);
+    Ks = zeros(Nn,1);
+    Ks(1) = K(1,1)*s(1) + K(1,2)*s(2);
+    Ks(end) = K(end,2)*s(end-1) + K(end,3)*s(end);
+    for i = 2:Nn-1
+        Ks(i) = K(i-1,2)*s(i-1) + K(i-1,3)*s(i) + K(i,1)*s(i) + K(i,2)*s(i+1);
+    end
+end
+
+function [uN, error, PE] = myFEM1D(p, Ne, Nn, conn, xglobe, force, Efunc, BC0, BCL, BCType, duTrue)
+    % Defining weights and Gauss points
+    [wts, pts] = myGauss(p);
+
+    % Evaluating shape functions and their derivatives
+    [ShapeFunc, ShapeDer] = evalShape(p,pts);
+
+    % Initializing stiffness Matrix
+    K = zeros(Nn,Nn);
+
+    % Initializing FEM solution vector
+    uN = zeros(Nn,1);
+
+    % Initializing Forcing vector
+    R = zeros(Nn,1);
+    for e = 1:Ne
+        % Extracting element id from conn matrix
+        id = conn(e,:); % <- whole row
+        for q = 1:numel(pts) % Loop through Gauss points
+            x_zeta = xglobe(id) * ShapeFunc(q,:)';
+            J = xglobe(id) * ShapeDer(q,:)';
+            K_e = wts(q) * (Efunc(x_zeta) / J) * (ShapeDer(q,:)' * ShapeDer(q,:));
+            R_e = force(x_zeta) * ShapeFunc(q,:)' * J * wts(q);
+            K(id, id) = K(id, id) + K_e;
+            R(id) = R(id) + R_e;
+        end
+    end
+
+    KPE = K;
+    RPE = R;
+
+    % Boundary conditions
+    if BCType(1) % Left Dirichlet BC
+        uN(1) = BC0;
+        % Adjust loading terms
+        switch p
+            case 1 % Linear
+                R(2) = R(2) - K(2,1) * uN(1);
+        end
+    else % for Left Neumann BC
+        R(1) = R(1) + BC0;
+    end
+
+    if BCType(2) % Right Dirichlet BC
+        uN(Nn) = BCL;
+        % Adjust loading terms
+        switch p
+            case 1 % Linear
+                R(Nn-1) = R(Nn-1) - K(Nn-1,Nn)*uN(Nn);
+        end
+    else % Right Neumann BC
+        R(Nn) = R(Nn) + BCL;
+    end
+
+    % Calculating uh (with refomated K and R)
+    uN(2:end-1) = K(2:end-1,2:end-1) \ R(2:end-1);
+
+    % Calculating PE
+    PE = 0.5 * uN' * KPE * uN - uN' * RPE;
+
+    % Evaluating Error
+    % Initialize error numerator and denominator
+    errNum = 0;
+    errDen = 0;
+
+    for e = 1:Ne
+        % Extract element ID
+        id = conn(e, :);
+
+        % Loop through Gauss points
+        for gauss_pt = 1:numel(pts)
+            x_zeta = xglobe(id) * ShapeFunc(gauss_pt,:)'; % Eq. 3.26
+            J = xglobe(id) * ShapeDer(gauss_pt,:)';
+            % Derivative of numerical solution
+            duN = (ShapeDer(gauss_pt,:) / J) * uN(id);
+            % Derivative of true solution duTrue is input into myFEM1D
+            % Error numerator and denominator
+            errNum = errNum + (duTrue(x_zeta) - duN).^2 * Efunc(x_zeta) * J * wts(gauss_pt);
+            errDen = errDen + (duTrue(x_zeta)).^2  * Efunc(x_zeta) * J * wts(gauss_pt);
+        end
+    end
+
+    % Final error
+    error = sqrt(errNum/errDen);
+end
+
+function [wts,pts] = myGauss(p)
+    ptsNeed = 5;
+
+    switch ptsNeed
+        case 1
+            wts = 2;
+            pts = 0;
+        case 2
+            wts = [1; 1];
+            pts = [-0.5773502691896257; 0.5773502691896257];
+        case 3
+            wts = [0.8888888888888888; 0.5555555555555556; ...
+                0.5555555555555556];
+            pts = [0; -0.7745966692414834; 0.7745966692414834];
+        case 4
+            wts = [0.6521451548625461; 0.6521451548625461; ...
+                0.3478548451374538; 0.3478548451374538];
+            pts = [-0.3399810435848563; 0.3399810435848563; ...
+                -0.8611363115940526; 0.8611363115940526];
+        case 5
+            wts = [0.5688888888888889; 0.4786286704993665;...
+                0.4786286704993665; 0.2369268850561891; ...
+                0.2369268850561891];
+            pts = [0; -0.5384693101056831;  0.5384693101056831;...
+                -0.9061798459386640; 0.9061798459386640];
+    end
+end
+```
+</details>
+
+### 4.6 Performance Analysis and Recommendations
+
+#### Solution Method Selection Criteria
+
+**Choose Direct Methods When**:
+- Problem size is small to medium ($N < 2000$)
+- High accuracy is required
+- Memory is not a constraint
+- Simple implementation is preferred
+
+**Choose Iterative Methods When**:
+- Problem size is large ($N > 5000$)
+- System is sparse
+- Memory efficiency is critical
+- Multiple right-hand sides need solving
+
+#### Preconditioning Strategies
+
+**Jacobi Preconditioning**: Simple diagonal scaling, effective for well-conditioned systems
+**Incomplete Cholesky**: More sophisticated, better for ill-conditioned problems
+**Algebraic Multigrid**: Advanced preconditioning for complex geometries
+
+#### Computational Considerations
+
+**Memory Requirements**:
+- Direct: $\mathcal{O}(N^2)$ storage for full matrix
+- PCG: $\mathcal{O}(N)$ storage for sparse operations
+
+**Scalability**:
+- Direct methods scale poorly for large problems
+- Iterative methods maintain efficiency with problem size
+
+**Accuracy vs. Efficiency Trade-offs**:
+- Direct methods provide exact solutions within machine precision
+- Iterative methods provide solutions within specified tolerance
+- Choice depends on required accuracy and computational constraints
+
+This implementation demonstrates the practical considerations for selecting appropriate solution techniques in finite element analysis, balancing computational efficiency with solution accuracy for engineering applications.
 
 ## 5. 3D Formulation for Linear Elasticity and Thermodynamics Problem
 
-*(Section 5 content to be added)*
+We will set up a 3D linear elasticity and thermodynamics problem using the finite element method for the following geometry
+
+![Geometry](images/proj5_Figure_1.png)
+
+Given this tubular multiphase structure with an elasticity of $\boldsymbol{E}(x,y,z)$, and with dimensions shown in the figure. It is clamped on one end and externally traction loaded everywhere else, including on the interior surface. The SMALL deformation of the body is governed by (strong form):
+
+$$\nabla \cdot (\boldsymbol{E}:\nabla u) + \rho \mathbf{g}=0$$
+
+where $\boldsymbol{E}$ and $\rho$ are spatial variables and where $\boldsymbol{g}=\boldsymbol{g}(x,y,z)$ is given data. We can then develop a weak form as follows. We start witht eh governing equation for the deformation denoted in strong form. We assume linear elastic deformation so $\mathbf{\sigma}=\mathbf{E}:\mathbf{\epsilon}=\mathbf{E}:\nabla \mathbf{u}$ where $\matbf{\sigma}$ is the Cauchy stress tensor, $\mathbf{E}$ is the 4th order elasticity tensor, and $\nabla \mathbf{u}$ is the gradient of the displacement vector. 
+$$\nabla \cdot (\mathbf E : \nabla \mathbf u)$$
 
 ## 6. Modeling and Simulation of Time-Dependent Laser Processing - Meshing, Gaussian Quadrature, and Shape Functions
 
@@ -1634,10 +2489,3 @@ end
 *(Section 8 content to be added)*
 
 ---
-
-## References
-
-1. Bathe, K. J. (1996). *Finite Element Procedures*. Prentice Hall.
-2. Cook, R. D., Malkus, D. S., Plesha, M. E., & Witt, R. J. (2001). *Concepts and Applications of Finite Element Analysis*. Wiley.
-3. Zienkiewicz, O. C., & Taylor, R. L. (2000). *The Finite Element Method: Volume 1*. Butterworth-Heinemann.
-4. Reddy, J. N. (2005). *An Introduction to the Finite Element Method*. McGraw-Hill.
