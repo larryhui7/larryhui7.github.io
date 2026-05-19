@@ -95,4 +95,7 @@ hideMeta: true
 <div class="publication-item">
 1. L. Hui, M. Tan, S Eleanor-Heiles, A. Kakde, A. Panggabean, K. Eyvazi, H. K. Taylor <em>"Evaluation of Measurement Reliability and Statistical Characterization of Thin Carbon Fibre Laminates under Quasi-Static Tension."</em> Measurement Science and Technology (IOP Publishing), in preparation, 2025
 </div>
+<div class="publication-item">
+2. L. Hui, J. Kam, W. Su, J. Zhou <em>"Hamilton-Jacobi Reachability for Spacecraft Collision Avoidance."</em> 20th IEEE International Conference on Control & Automation (ICCA), Almaty, Kazakhstan, accepted, 2026. [<a href="/research/hj-reachability-spacecraft/">project page</a>] [<a href="/ICCA_HJ_26.pdf">PDF</a>]
+</div>
 </div>

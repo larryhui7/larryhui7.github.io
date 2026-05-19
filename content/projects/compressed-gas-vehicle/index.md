@@ -485,3 +485,4 @@ If redesigning from scratch, our largest focus would be **weight reduction**:
 
 3. Mohammed, I. K. (9 October 2023). ME2-DMF: Autumn Group Project 2023-2024; Project Brief.
 
+

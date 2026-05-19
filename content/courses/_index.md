@@ -22,7 +22,7 @@ Dynamic modeling, control theory, estimation, and autonomous systems.
 - **MECENG 132** – *Dynamic Systems & Feedback* taught by [Dr. George Anwar](https://me.berkeley.edu/people/george-anwar/)
 - **MECENG 193B** – *Feedback Control of Legged Robots* taught by [Professor Koushil Sreenath](https://me.berkeley.edu/people/koushil-sreenath/)
 - **MECENG 233** – *Advanced Control Theory II (Graduate)* taught by [Professor Masayoshi Tomizuka](https://me.berkeley.edu/people/masayoshi-tomizuka/)
-- **MECENG 237** – *Nonlinear Systems (Graduate)* taught by [Professor Koushil Sreenath](https://me.berkeley.edu/people/koushil-sreenath/)
+- **MECENG 235** – *Design of Microprocessor-Based Mechanical Systems (Graduate)* taught by [Dr. George Anwar](https://me.berkeley.edu/people/george-anwar/)
 - **EECS C106A** – *Introduction to Robotics* taught by [Professor Roberto Horowitz](https://me.berkeley.edu/people/roberto-horowitz/) and [Dr. Jean-Peaul Tennant](https://www2.eecs.berkeley.edu/Faculty/Homepages/jptennant.html)
 - **MECENG 100** – *Electronics for the Internet of Things* taught by [Dr. George Anwar](https://me.berkeley.edu/people/george-anwar/)
 - **ELENG 120** – *Signals and Systems* taught by [Professor Kannan Ramchandran](https://people.eecs.berkeley.edu/~kannanr/)
@@ -89,4 +89,4 @@ Courses broadening cultural, historical, and creative literacy.
 ## Microfabrication & Emerging Technologies
 Fabrication, MEMS, and semiconductor processes.  
 - **ELENG 143** – *Microfabrication Technology* taught by [Professor Grigory Tikhomirov](https://www2.eecs.berkeley.edu/Faculty/Homepages/grisha.html)
-- **ELENG 194** – *Special Topics in Electrical Engineering: Finance* taught by [Dr. Jean-Peaul Tennant](https://www2.eecs.berkeley.edu/Faculty/Homepages/jptennant.html)  
+- **ELENG C235** – *Nanoscale Fabrication (Graduate)* taught by [Professor Grigory Tikhomirov](https://www2.eecs.berkeley.edu/Faculty/Homepages/grisha.html)  
