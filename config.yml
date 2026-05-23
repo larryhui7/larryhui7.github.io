@@ -135,6 +135,8 @@ params:
       url: https://www.linkedin.com/in/larryhui7/
     - name: GitHub
       url: https://github.com/larryhui7
+    - name: GoogleScholar
+      url: https://scholar.google.com/citations?user=spIEKAQAAAAJ&hl=en
     - name: kaggle
       url: https://www.kaggle.com/larryhui7
     - name: spotify
