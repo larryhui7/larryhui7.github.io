@@ -22,6 +22,8 @@ editPost:
 
 This work was **accepted for publication at the 20th IEEE International Conference on Control & Automation (ICCA 2026)**, held in Almaty, Kazakhstan. The full paper is available [here](/ICCA_HK_26.pdf).
 
++ [Conference Presentation (PDF)](/ICCA_HJ_PRESENTATION.pdf)
+
 **Authors:** Larry Hui$^{1}$, Jordan Kam$^{2}$, William Su$^{2}$, Jianshu Zhou$^{3}$ *(Member, IEEE)*  
 $^{1}$Department of Mechanical Engineering, UC Berkeley  
 $^{2}$Aerospace Engineering Program, UC Berkeley  

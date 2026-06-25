@@ -2,6 +2,7 @@
 title: "Other"
 description: "Travel, Food, Music, Flying, and More"
 hideMeta: true
+draft: true
 ---
 
 <style>

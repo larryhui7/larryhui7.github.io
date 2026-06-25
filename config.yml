@@ -27,9 +27,6 @@ menu:
     - name: Teaching
       url: teaching/
       weight: 5
-    - name: Other
-      url: other/
-      weight: 6
 
 params:
   description: "This website hosts Larry Hui's research papers, books, course materials, data, curriculum vitae, and contact information."
@@ -47,7 +44,7 @@ params:
   ShowBreadCrumbs: false
   ShowCodeCopyButtons: true
   ShowAllPagesInArchive: false
-  MainSections: ["other", "courses", "projects", "research", "teaching"]
+  MainSections: ["courses", "projects", "research", "teaching"]
   ShowToc: false
   disableScrollToTop: true
   TocOpen: true
@@ -123,8 +120,6 @@ params:
         url: skills/
       - name: Teaching
         url: teaching/
-      - name: Other
-        url: other/
 
   socialIcons:
     - name: CV
