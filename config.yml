@@ -107,8 +107,7 @@ params:
       </script>
 
     imageUrl: "LarryProfilePic_new.png"
-    imageWidth: 155
-    imageHeight: 160
+    imageWidth: 160
     buttons:
       - name: Projects
         url: projects/
