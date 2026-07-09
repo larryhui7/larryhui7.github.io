@@ -106,7 +106,7 @@ params:
         localStorage.setItem('funFactIndex', currentIndex);
       </script>
 
-    imageUrl: "LarryProfilePic.png"
+    imageUrl: "LarryProfilePic_new.png"
     imageWidth: 155
     imageHeight: 160
     buttons:
