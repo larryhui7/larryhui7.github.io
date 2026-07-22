@@ -27,6 +27,9 @@ menu:
     - name: Teaching
       url: teaching/
       weight: 5
+    - name: Road Trip
+      url: larrold-and-cristoffs-adventure/
+      weight: 6
 
 params:
   description: "This website hosts Larry Hui's research papers, books, course materials, data, curriculum vitae, and contact information."
@@ -119,6 +122,8 @@ params:
         url: skills/
       - name: Teaching
         url: teaching/
+      - name: Road Trip
+        url: larrold-and-cristoffs-adventure/
 
   socialIcons:
     - name: CV

@@ -70,7 +70,7 @@ hideMeta: true
 </tr>
 <tr>
 <td>Programming Languages</td>
-<td>MATLAB, Python, Java, C++, Git, Linux, LaTeX</td>
+<td>MATLAB, Python, Java, C++, LabVIEW, Git, Linux, LaTeX</td>
 </tr>
 <tr>
 <td>Frameworks/Libraries</td>
@@ -93,9 +93,13 @@ hideMeta: true
 <div class="skills-section">
 <h2>Journal Publications (In Preparation)</h2>
 <div class="publication-item">
-1. L. Hui, M. Tan, S Eleanor-Heiles, A. Kakde, A. Panggabean, K. Eyvazi, H. K. Taylor <em>"Evaluation of Measurement Reliability and Statistical Characterization of Thin Carbon Fibre Laminates under Quasi-Static Tension."</em> Measurement Science and Technology (IOP Publishing), in preparation, 2025
+1. <strong>L. Hui</strong>, M. Tan, S Eleanor-Heiles, A. Kakde, A. Panggabean, K. Eyvazi, H. K. Taylor <em>"Evaluation of Measurement Reliability and Statistical Characterization of Thin Carbon Fibre Laminates under Quasi-Static Tension."</em> Measurement Science and Technology (IOP Publishing), in preparation, 2025
 </div>
+</div>
+
+<div class="skills-section">
+<h2>Conference Publications</h2>
 <div class="publication-item">
-2. L. Hui, J. Kam, W. Su, J. Zhou <em>"Hamilton-Jacobi Reachability for Spacecraft Collision Avoidance."</em> 20th IEEE International Conference on Control & Automation (ICCA), Almaty, Kazakhstan, accepted, 2026. [<a href="/research/hj-reachability-spacecraft/">project page</a>] [<a href="/ICCA_HJ_26.pdf">PDF</a>]
+1. <strong>L. Hui</strong>, J. Kam, W. Su, J. Zhou <em>"Hamilton-Jacobi Reachability for Spacecraft Collision Avoidance."</em> 20th IEEE International Conference on Control & Automation (ICCA), Almaty, Kazakhstan, accepted, 2026. [<a href="/research/hj-reachability-spacecraft/">project page</a>] [<a href="/ICCA_HJ_26.pdf">PDF</a>]
 </div>
 </div>
