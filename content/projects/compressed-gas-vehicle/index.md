@@ -183,40 +183,40 @@ By making an appropriate assumption for turbine RPM, pulleys were selected for o
 
 **Pulley Selection Calculations:**
 
-Selected pulleys: $PCD\_1 = 45\text{mm}$ (48T), $PCD\_2 = 23\text{mm}$ (20T)
+Selected pulleys: $PCD_1 = 45\text{mm}$ (48T), $PCD_2 = 23\text{mm}$ (20T)
 
 Speed Ratio:
-$$R = \frac{z\_1}{z\_2} = \frac{48}{20} = 2.4$$
+$$R = \frac{z_1}{z_2} = \frac{48}{20} = 2.4$$
 
 RPM estimates: slower shaft ~200 RPM, faster shaft ~480 RPM
 
 Initial force from canister:
 $$F = PA = 5.5 \times 10^5 \times 3.16 \times 10^{-5} = 17.14\text{ N}$$
 
-Service factor $C\_0 = 1.9$ (soft start due to turbine, runs >16 hours, heavy duty due to gas impulse).
+Service factor $C_0 = 1.9$ (soft start due to turbine, runs >16 hours, heavy duty due to gas impulse).
 
 ![Pitch Selection Chart](images/pitch_selection.png)
 
 Calculating design power:
-$$T\_1 = Fr\_1 = 17.1 \times (22.5 \times 10^{-3}) = 0.386\text{ Nm}$$
+$$T_1 = Fr_1 = 17.1 \times (22.5 \times 10^{-3}) = 0.386\text{ Nm}$$
 
-$$P\_1 = T\_1\omega\_1 = 0.386 \times \left(200 \times \frac{2\pi}{60}\right) = 8.08\text{ W}$$
+$$P_1 = T_1\omega_1 = 0.386 \times \left(200 \times \frac{2\pi}{60}\right) = 8.08\text{ W}$$
 
-$$P\_D = P\_1 \times C\_0 = 8.08 \times 1.9 = 15.3\text{ W}$$
+$$P_D = P_1 \times C_0 = 8.08 \times 1.9 = 15.3\text{ W}$$
 
 From pitch selection chart: acceptable belt pitch = **5M**
 
 Check teeth in mesh on small pulley (must be >6):
-$$z\_e = \frac{z\_1}{6}\left(3 - \frac{D\_2 - D\_1}{CD}\right) = \frac{20}{6}\left(3 - \frac{(45-23) \times 10^{-3}}{130 \times 10^{-3}}\right) = 9.435 > 6 \checkmark$$
+$$z_e = \frac{z_1}{6}\left(3 - \frac{D_2 - D_1}{CD}\right) = \frac{20}{6}\left(3 - \frac{(45-23) \times 10^{-3}}{130 \times 10^{-3}}\right) = 9.435 > 6 \checkmark$$
 
 #### Torque Requirements
 
 Estimate rolling resistance (car weight ~8kg), coefficient of friction for concrete $\mu = 0.02$:
 
-$$F\_{roll} = \mu W = 0.02 \times (8 \times 9.81) = 1.77\text{ N}$$
+$$F_{roll} = \mu W = 0.02 \times (8 \times 9.81) = 1.77\text{ N}$$
 
 Power requirement to run car:
-$$P\_{req} = Fv = 1.77 \times \frac{480 \times \pi \times 80.3 \times 10^{-3}}{60} = 3.56\text{ W}$$
+$$P_{req} = Fv = 1.77 \times \frac{480 \times \pi \times 80.3 \times 10^{-3}}{60} = 3.56\text{ W}$$
 
 Required torque:
 $$\tau = \frac{Pr}{v} = \frac{3.56 \times (11.5 \times 10^{-3})}{480 \times \pi \times 80.3 \times 10^{-3} \div 60} = 0.00203\text{ Nm} < 0.385\text{ Nm} \checkmark$$
@@ -235,12 +235,12 @@ The two main shafts were designed to withstand applied torques whilst being as l
 
 Bearing selection calculation for main shafts:
 
-$$L\_{10} = L\_{10h} \times n \times 60 = 100 \times 200 \times 60 = 1,200,000\text{ revolutions} = 1.2\text{ Mrev}$$
+$$L_{10} = L_{10h} \times n \times 60 = 100 \times 200 \times 60 = 1,200,000\text{ revolutions} = 1.2\text{ Mrev}$$
 
 Minimum required dynamic loading (k = 3 for ball bearings):
-$$C\_{min} \geq F(L\_{10})^{1/k} = 171.43(1.2)^{1/3} = 182.17\text{ N}$$
+$$C_{min} \geq F(L_{10})^{1/k} = 171.43(1.2)^{1/3} = 182.17\text{ N}$$
 
-For shaft diameter 15mm, $C\_{min} = 5.5\text{ kN} \geq 182.17\text{ N}$ ✓
+For shaft diameter 15mm, $C_{min} = 5.5\text{ kN} \geq 182.17\text{ N}$ ✓
 
 **Bearing Constraint Models:**
 
@@ -288,10 +288,10 @@ Despite unlikelihood due to 6082 Aluminium T6 (max tensile strength 260 MPa, she
 Potential failure modes include fatigue and sudden impact from compressed gas. The casing prevents broken turbine parts from interfering with the pulley.
 
 Force acting on turbine:
-$$F\_t = P\_g \cdot A\_t = P\_g \cdot 2A\_{bucket}$$
+$$F_t = P_g \cdot A_t = P_g \cdot 2A_{bucket}$$
 
-With $A\_{bucket} = 129.05\text{ mm}^2$ and $P\_g = 5.5\text{ bar}$:
-$$F\_t = 154.872\text{ N}$$
+With $A_{bucket} = 129.05\text{ mm}^2$ and $P_g = 5.5\text{ bar}$:
+$$F_t = 154.872\text{ N}$$
 
 FEA using Mohr-Coulomb Safety Criteria for brittle materials showed max stress of 30.24 MPa, well below ABS yield strength (60 MPa). **Factor of Safety = 1.18 > 1** — failure unlikely.
 

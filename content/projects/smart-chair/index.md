@@ -235,9 +235,9 @@ The equivalent stress from FEA aligned well with analytical calculations based o
 
 ### Analytical Stress Analysis
 
-The raw readings for left and right leg loads, $W\_L$ and $W\_R$ (in pounds), are decoded and summed, then converted to Newtons:
+The raw readings for left and right leg loads, $W_L$ and $W_R$ (in pounds), are decoded and summed, then converted to Newtons:
 
-$$F = (W\_L + W\_R) \times 4.44822$$
+$$F = (W_L + W_R) \times 4.44822$$
 
 **Nominal Bending Stress** per leg (assuming equal load sharing):
 
@@ -247,23 +247,23 @@ where $A$ is the cross-sectional area of one leg.
 
 **Euler Critical Buckling Load** (pinned-pinned column):
 
-$$P\_{\text{crit}} = \frac{\pi^2 E I}{(K L)^2}$$
+$$P_{\text{crit}} = \frac{\pi^2 E I}{(K L)^2}$$
 
 where $E$ is Young's modulus, $I$ is second moment of area, $L$ is unsupported length, and $K$ is the effective length factor.
 
 **Critical Stress:**
 
-$$\sigma\_{\text{crit}} = \frac{P\_{\text{crit}}}{A}$$
+$$\sigma_{\text{crit}} = \frac{P_{\text{crit}}}{A}$$
 
 **Fatigue Life Estimation** using Basquin's relation:
 
-$$N\_f = 0.5 \left( \frac{\sigma}{\sigma\_f'} \right)^{1/b}$$
+$$N_f = 0.5 \left( \frac{\sigma}{\sigma_f'} \right)^{1/b}$$
 
-where $\sigma\_f'$ is the fatigue strength coefficient and $b$ is the fatigue exponent.
+where $\sigma_f'$ is the fatigue strength coefficient and $b$ is the fatigue exponent.
 
 **Miner's Rule** for damage accumulation:
 
-$$D = \frac{N\_c}{N\_f}$$
+$$D = \frac{N_c}{N_f}$$
 
 When $D$ approaches unity, the component has reached its fatigue life.
 

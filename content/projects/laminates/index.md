@@ -90,11 +90,11 @@ Unlike metals, carbon fiber laminates are brittle and have low fracture toughnes
 
 Weibull analysis, which accounts for data randomness, is thus frequently used in fragile materials, as the distribution of damage plays an important role in the fracture process. Consequently, variations in crack length in each sample show a statistical variation in strength as given by:
 
-$$\sigma\_{\text{TS}}\approx \frac{K\_{IC}}{\sqrt{\pi a\_c}}$$
+$$\sigma_{\text{TS}}\approx \frac{K_{IC}}{\sqrt{\pi a_c}}$$
 
-where TS denotes the tensile strength, $K\_{IC}$ is the fracture toughness in mode I (tension) loading, and $a\_c$ is the critical crack length. Multiple tensile tests will produce a distribution of strength. Determining the Weibull shape parameter or modulus ($m$) is necessary for determining the survival rate probability given by the simplified equation:
+where TS denotes the tensile strength, $K_{IC}$ is the fracture toughness in mode I (tension) loading, and $a_c$ is the critical crack length. Multiple tensile tests will produce a distribution of strength. Determining the Weibull shape parameter or modulus ($m$) is necessary for determining the survival rate probability given by the simplified equation:
 
-$$P\_s(V)=\exp\left(-\frac{1}{\sigma\_0^mV\_0}\int\_V \sigma^m dV\right)=\exp\left(-\frac{V}{V\_0}\left(\frac{\sigma}{\sigma\_0}\right)^m\right)$$
+$$P_s(V)=\exp\left(-\frac{1}{\sigma_0^mV_0}\int_V \sigma^m dV\right)=\exp\left(-\frac{V}{V_0}\left(\frac{\sigma}{\sigma_0}\right)^m\right)$$
 
 10 or more tests are required to make a Weibull modulus estimation; 30 tests are required to make a statistically sound estimation. We can estimate the Weibull parameters in 2 ways:
 
@@ -106,7 +106,7 @@ $$\ln(-\ln(1-F(x)))=m\ln(x)-m\ln(\lambda)$$
 
 **ii) Maximum Likelihood Estimation (MLE)** approach involves maximizing the likelihood function of the Weibull PDF:
 
-$$\max L(m, \lambda)=\max \prod\_{i=1}^n f(x\_i; m, \lambda)$$
+$$\max L(m, \lambda)=\max \prod_{i=1}^n f(x_i; m, \lambda)$$
 
 In this paper, we utilize the LS approach in determining the parameters; however, for the K-S test, we use the MLE approach. Both methods yield similar results but the MLE achieves the Cramér-Rao lower-bound when $n \to \infty$.
 
@@ -116,10 +116,10 @@ In some circumstances, we can analytically determine the sampling distributions 
 
 Since our sample size is less than 30 (but i.i.d.) for each of the laminates, we cannot use the central limit theorem to assume the sampling distribution as normal. Even though K-S and Levene's tests validate a Weibull distribution, the estimates of the scale parameters for a Weibull distribution would have significant bias or variability and thus be difficult to derive a sampling distribution analytically using an MLE approach.
 
-In this case, we resort to simulation to estimate the sampling distribution and obtain statistically viable Weibull modulus and shape parameters. We used the Monte Carlo algorithm for resampling, given a sample $x\_1, \dots, x\_n$:
+In this case, we resort to simulation to estimate the sampling distribution and obtain statistically viable Weibull modulus and shape parameters. We used the Monte Carlo algorithm for resampling, given a sample $x_1, \dots, x_n$:
 
-1. Resample the data with replacement. The size of the resample must be equal to the size of the original data set to get $x\_{\pi(1)},\dots,x\_{\pi(n)}$ where $\pi$ is an $n\times1$ vector of independently and uniformly sampled from $1, \dots, n$
-2. Calculate the statistic of interest, $t(x\_{\pi(1)},\dots,x\_{\pi(n)})$
+1. Resample the data with replacement. The size of the resample must be equal to the size of the original data set to get $x_{\pi(1)},\dots,x_{\pi(n)}$ where $\pi$ is an $n\times1$ vector of independently and uniformly sampled from $1, \dots, n$
+2. Calculate the statistic of interest, $t(x_{\pi(1)},\dots,x_{\pi(n)})$
 3. Repeat (1) and (2) many times to get a bootstrap distribution of the statistic.
 
 ![Bootstrapped Distribution](images/fig6.png)
@@ -153,7 +153,7 @@ Following the experimentations, before conducting statistical tests, we need to 
 
 The conformity of tensile strength data to a Weibull distribution was evaluated using a Kolmogorov-Smirnov (K-S) test. The Shapiro-Wilk test (SW) was employed to assess whether the tensile strength data follows a normal distribution:
 
-$$SW=\frac{\left(\sum\_{i=1}^n a\_ix\_{(i)}\right)^2}{\sum\_{i=1}^n(x\_i-\overline{x})^2}$$
+$$SW=\frac{\left(\sum_{i=1}^n a_ix_{(i)}\right)^2}{\sum_{i=1}^n(x_i-\overline{x})^2}$$
 
 For our tensile strength data:
 - **Transverse laminates:** $SW=0.84$, $p=0.005$ at significance level 5%, which violates normality ($p<0.05$)
@@ -161,13 +161,13 @@ For our tensile strength data:
 
 Therefore, ANOVA cannot be used, and an alternative method must be considered. The homogeneity of variances across groups was evaluated using Levene's test:
 
-$$L=\frac{N-k}{k-1}\cdot \frac{\sum\_{i=1}^k N\_i(\overline{Z}\_{i.}-\overline{Z\_{..}})^2}{\sum\_{i=1}^k\sum\_{j=1}^{N\_i}(Z\_{ij}-\overline{Z}\_{i.})^2}$$
+$$L=\frac{N-k}{k-1}\cdot \frac{\sum_{i=1}^k N_i(\overline{Z}_{i.}-\overline{Z_{..}})^2}{\sum_{i=1}^k\sum_{j=1}^{N_i}(Z_{ij}-\overline{Z}_{i.})^2}$$
 
-For our data, $L=4.1$. Since $L>F\_{\alpha, k-1, N-k}$, the assumption of homoscedasticity was met.
+For our data, $L=4.1$. Since $L>F_{\alpha, k-1, N-k}$, the assumption of homoscedasticity was met.
 
 Finally, we performed a Kolmogorov-Smirnov (KS) test to check whether the tensile strength data follows a Weibull distribution. The K-S test statistic:
 
-$$D=\max\_x|S(x)-F(x;m,\lambda)|$$
+$$D=\max_x|S(x)-F(x;m,\lambda)|$$
 
 The KS test statistic was calculated with a corresponding $p$-value of 0.297 for the transverse samples and 0.723 for longitudinal. Since $p>\alpha=0.05$, we fail to reject our null hypothesis that the tensile strength samples follow a Weibull Distribution.
 
@@ -204,12 +204,12 @@ The hazard rate curve for 3-ply transverse shown in Figure 11 suggests that stay
 To evaluate if a transverse or longitudinal fiber orientation plays a significant role in the tensile strength of carbon fiber laminates, a Kruskal-Wallis H test was performed. This non-parametric test was chosen because it does not require assumptions of normality.
 
 **Hypotheses:**
-- $H\_0$: There is no difference in the distributions of tensile strength for transverse and longitudinal orientations.
-- $H\_a$: The distributions of tensile strength for transverse and longitudinal orientations are different.
+- $H_0$: There is no difference in the distributions of tensile strength for transverse and longitudinal orientations.
+- $H_a$: The distributions of tensile strength for transverse and longitudinal orientations are different.
 
 The Kruskal-Wallis H test statistic:
 
-$$H=\frac{12}{n(n+1)}\sum\_{i=1}^k\frac{R\_i^2}{n\_i}-3(n+1)$$
+$$H=\frac{12}{n(n+1)}\sum_{i=1}^k\frac{R_i^2}{n_i}-3(n+1)$$
 
 | Source | SS | DoF | MS | χ² | p-value |
 |:-------|:--:|:---:|:--:|:--:|:-------:|
@@ -241,37 +241,37 @@ At lower tensile strengths (approximately 4–5 MPa), the survival probability r
 | Property | Value |
 |:---------|:------|
 | Fiber Type | K13C2U |
-| Resin Mass Fraction ($M\_m$) | 41% |
+| Resin Mass Fraction ($M_m$) | 41% |
 | Fiber Areal Weight (FAW) | 45 gsm |
-| Void Fraction ($V\_v$) | 0.5% |
+| Void Fraction ($V_v$) | 0.5% |
 | Surface Texture Thickness (Peel Ply) | 70 μm |
 | Number of Layers | 3 |
 | Layer Orientation | 0/90/0 |
-| Fiber Axial Modulus ($E\_{1f}$) | 896 GPa |
-| Fiber Transverse Modulus ($E\_{2f}$) | 7 GPa |
-| Fiber Poisson's Ratio ($\nu\_{12f}$) | 0.3 |
-| Fiber Density ($\rho\_f$) | 2.19 g/cm³ |
-| Matrix Modulus ($E\_m$) | 4.4 GPa |
-| Matrix Poisson's Ratio ($\nu\_m$) | 0.35 |
-| Matrix Density ($\rho\_m$) | 1.17 g/cm³ |
+| Fiber Axial Modulus ($E_{1f}$) | 896 GPa |
+| Fiber Transverse Modulus ($E_{2f}$) | 7 GPa |
+| Fiber Poisson's Ratio ($\nu_{12f}$) | 0.3 |
+| Fiber Density ($\rho_f$) | 2.19 g/cm³ |
+| Matrix Modulus ($E_m$) | 4.4 GPa |
+| Matrix Poisson's Ratio ($\nu_m$) | 0.35 |
+| Matrix Density ($\rho_m$) | 1.17 g/cm³ |
 
 The fiber volume fraction:
 
-$$V\_f=\frac{1-V\_v}{1+\frac{\rho\_f(M\_m)}{\rho\_m(1-M\_m)}}$$
+$$V_f=\frac{1-V_v}{1+\frac{\rho_f(M_m)}{\rho_m(1-M_m)}}$$
 
 The matrix volume fraction:
 
-$$V\_m=1-V\_f-V\_v$$
+$$V_m=1-V_f-V_v$$
 
 The composite modulus in the transverse direction:
 
-$$E\_{22}=\frac{E\_{2f}\sqrt{V\_f}+E\_m(1-\sqrt{V\_f})}{\sqrt{V\_f}}+\frac{1-\sqrt{V\_f}}{E\_m}$$
+$$E_{22}=\frac{E_{2f}\sqrt{V_f}+E_m(1-\sqrt{V_f})}{\sqrt{V_f}}+\frac{1-\sqrt{V_f}}{E_m}$$
 
-The calculations based on the manufacturer's specifications yield: $V\_f = 43.2\%$, $V\_m= 56.3\%$, and $E\_{22}=5.4$ GPa/mm. The calculated laminate thickness is 71.6 μm, corresponding to a 9.6 GPa modulus.
+The calculations based on the manufacturer's specifications yield: $V_f = 43.2\%$, $V_m= 56.3\%$, and $E_{22}=5.4$ GPa/mm. The calculated laminate thickness is 71.6 μm, corresponding to a 9.6 GPa modulus.
 
 **Experimental Results:**
-- **Experimental mean transverse modulus** $\overline{E}\_{22}$ = 2.23 GPa (excluding specimens 5 and 19)
-- **Experimental mean longitudinal modulus** $\overline{E}\_{11}$ = 3.33 GPa (excluding specimens 5 and 6)
+- **Experimental mean transverse modulus** $\overline{E}_{22}$ = 2.23 GPa (excluding specimens 5 and 19)
+- **Experimental mean longitudinal modulus** $\overline{E}_{11}$ = 3.33 GPa (excluding specimens 5 and 6)
 
 **Primary Hypotheses for Discrepancies:**
 

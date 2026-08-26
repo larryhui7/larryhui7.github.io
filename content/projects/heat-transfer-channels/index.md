@@ -29,7 +29,7 @@ We present a numerical investigation of fully developed heat transfer in channel
 This project will focus on hydrodynamically and thermally developed convection heat transfer from non-circular flow passages with a constant rate of heat input at the walls per unit length of the channel.
 
 ![Constant Wall Temperature with Uniform Heat Input](images/151bp1fig1.png)
-*Figure 1: Constant Wall Temperature $T\_w$ with Uniform Heat Input*
+*Figure 1: Constant Wall Temperature $T_w$ with Uniform Heat Input*
 
 As a first step, consider flow in the rectangular passage shown above. The governing equations for fully developed flow and heat transfer are:
 
@@ -44,7 +44,7 @@ $$
 Note that $u$ and $v$ are zero and $z$ derivatives are zero, except for $\partial T/\partial z$, which is constant for constant heat addition at the walls per unit length. The continuity equation is satisfied for these conditions since all terms are zero. Recall that for fully developed heat transfer with uniform heat addition at the walls,
 
 $$
-\frac{\partial T}{\partial z}=\frac{dT\_m}{dz}
+\frac{\partial T}{\partial z}=\frac{dT_m}{dz}
 $$
 
 Also, the $u$ and $v$ momentum equations reduce to the pressure gradient in each direction equaling zero, which means the pressure is uniform across any cross section of the tube and $\partial P/\partial z$ in the flow is equal to the imposed pressure gradient $dP/dz$. The governing equations can therefore be written as
@@ -54,7 +54,7 @@ $$
 $$
 
 $$
-\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2T}{\partial y^2}=\frac{w}{\alpha}\frac{dT\_m}{dz}
+\frac{\partial^2 T}{\partial x^2}+\frac{\partial^2T}{\partial y^2}=\frac{w}{\alpha}\frac{dT_m}{dz}
 $$
 
 These are both variations of the Poisson equation, and in this project, we will be adopting a numerical scheme that is flexible enough to use for a variety of non-circular geometries.
@@ -62,42 +62,42 @@ These are both variations of the Poisson equation, and in this project, we will 
 Using central differences for the second order derivatives, the above equations can be converted to the following finite-difference equations:
 
 $$
-\frac{w\_{i+1,j}-2w\_{i,j}+w\_{i-1,j}}{(\Delta x)^2}+\frac{w\_{i,j+1}-2w\_{i,j}+w\_{i,j-1}}{(\Delta y)^2}=\frac{1}{\rho \nu}\left(\frac{dP}{dz}\right)
+\frac{w_{i+1,j}-2w_{i,j}+w_{i-1,j}}{(\Delta x)^2}+\frac{w_{i,j+1}-2w_{i,j}+w_{i,j-1}}{(\Delta y)^2}=\frac{1}{\rho \nu}\left(\frac{dP}{dz}\right)
 $$
 
 $$
-\frac{T\_{i+1,j}-2T\_{i,j}+T\_{i-1,j}}{(\Delta x)^2}+\frac{T\_{i,j+1}-2T\_{i,j}+T\_{i,j-1}}{(\Delta y)^2}=\frac{w\_{i,j}}{\alpha}\left(\frac{dT\_m}{dz}\right)
+\frac{T_{i+1,j}-2T_{i,j}+T_{i-1,j}}{(\Delta x)^2}+\frac{T_{i,j+1}-2T_{i,j}+T_{i,j-1}}{(\Delta y)^2}=\frac{w_{i,j}}{\alpha}\left(\frac{dT_m}{dz}\right)
 $$
 
-Solving the above equations for $w\_{i,j}$ and $T\_{i,j}$, respectively, yields:
+Solving the above equations for $w_{i,j}$ and $T_{i,j}$, respectively, yields:
 
 $$
-w\_{i,j}=\frac{(\Delta y/\Delta x)^2(w\_{i+1,j}+w\_{i-1,j})+w\_{i,j+1}+w\_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{(dP/dz)(\Delta y)^2}{\rho \nu [2(\Delta y/\Delta x)^2+2]}
+w_{i,j}=\frac{(\Delta y/\Delta x)^2(w_{i+1,j}+w_{i-1,j})+w_{i,j+1}+w_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{(dP/dz)(\Delta y)^2}{\rho \nu [2(\Delta y/\Delta x)^2+2]}
 $$
 
 $$
-T\_{i,j}=\frac{(\Delta y/\Delta x)^2(T\_{i+1,j}+T\_{i-1,j})+T\_{i,j+1}+T\_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{w\_{i,j}(dT\_m/dz)(\Delta y)^2}{\alpha  [2(\Delta y/\Delta x)^2+2]}
+T_{i,j}=\frac{(\Delta y/\Delta x)^2(T_{i+1,j}+T_{i-1,j})+T_{i,j+1}+T_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{w_{i,j}(dT_m/dz)(\Delta y)^2}{\alpha  [2(\Delta y/\Delta x)^2+2]}
 $$
 
 The **Gauss-Seidel method** is used in this project assignment. In this solution scheme, the computation iteratively sweeps through the array from lower $i$ and $j$ to higher values (bottom to top), computing improved values of $w$ or $T$ at each node $(i,j)$. Values of $w$ or $T$ from adjacent nodes are used to evaluate the right side of the above relations. A single array is used to store the $w$ or $T$ values. Note that in sweeping from top to bottom, the terms on the right side with $i-1$ or $j-1$ indices will already have been updated for the current iteration. We designate values updated in the current iteration as primed variables. With this designation the relations are written as:
 
 $$
-w\_{i,j}'=\frac{(\Delta y/\Delta x)^2(w\_{i+1, j}+w\_{i-1,j}')+w\_{i, j+1}+w\_{i,j-1}'}{2(\Delta y/\Delta x)^2+2}-\frac{(dP/dz)(\Delta y)^2}{\rho \nu[2(\Delta y/\Delta x)^2+2]}
+w_{i,j}'=\frac{(\Delta y/\Delta x)^2(w_{i+1, j}+w_{i-1,j}')+w_{i, j+1}+w_{i,j-1}'}{2(\Delta y/\Delta x)^2+2}-\frac{(dP/dz)(\Delta y)^2}{\rho \nu[2(\Delta y/\Delta x)^2+2]}
 $$
 
 $$
-T\_{i,j}'=\frac{(\Delta y/\Delta x)^2(T\_{i+1, j}+T\_{i-1,j}')+T\_{i, j+1}+T\_{i,j-1}'}{2(\Delta y/\Delta x)^2+2}-\frac{w\_{i,j}(dT\_m/dz)(\Delta y)^2}{\alpha [2(\Delta y/\Delta x)^2+2]}
+T_{i,j}'=\frac{(\Delta y/\Delta x)^2(T_{i+1, j}+T_{i-1,j}')+T_{i, j+1}+T_{i,j-1}'}{2(\Delta y/\Delta x)^2+2}-\frac{w_{i,j}(dT_m/dz)(\Delta y)^2}{\alpha [2(\Delta y/\Delta x)^2+2]}
 $$
 
 The use of information from the new iteration values in computation of new values makes the method somewhat implicit. The other geometries that were considered in this study include a 2:1 aspect ratio passage shown below in Figure 2.
 
 ![2:1 Aspect Ratio with Adiabatic Right Wall](images/151bp1fig2.png)
-*Figure 2: Constant Wall Temperature $T\_w$ with Uniform Heat Input and Adiabatic Right Wall*
+*Figure 2: Constant Wall Temperature $T_w$ with Uniform Heat Input and Adiabatic Right Wall*
 
 We finally consider a complex cross section where we analyze the fully developed flow and heat transfer for the passage in Figure 3 below.
 
 ![Complex Cross Section](images/151bp1fig3.png)
-*Figure 3: Constant Wall Temperature $T\_w$ with Uniform Heat Input and Adiabatic Bottom Wall*
+*Figure 3: Constant Wall Temperature $T_w$ with Uniform Heat Input and Adiabatic Bottom Wall*
 
 ### Work Division and Tasks
 
@@ -105,7 +105,7 @@ This project is split into 3 tasks as follows:
 
 1. **Task I**: Theoretical Derivations of the finite-difference equations for both the velocity and temperature fields from the governing equations and implementation of the Gauss-Seidel method for a 4:1 aspect ratio rectangular passage. From this, we generate 3D surface plots of $w(x,y)$ and $T(x,y)$ as well as the variation of the heat transfer coefficient along the short and long walls as a function of $x$ and $y$. Additionally, we find the hydraulic diameter, the Nusselt number, the Reynolds number and do analysis on these properties. We also make modifications to $dx$ and $dy$, and perform a sensitivity study for a mixture of ethylene glycol and water.
 
-2. **Task II**: We modified our Task I program to the 2:1 aspect ratio passage shown in Figure 2. Changes were made to the boundary conditions as we now had an adiabatic right wall. We plotted the 3D surface plots of $w(x,y)$ and $T(x,y)$. Additionally, we find the hydraulic diameter, the Nusselt number, and compared it to the tabulated Nusselt numbers. We then calculated the hydraulic diameter based on the heated perimeter $D\_H=4A\_0/p\_h$ for which we also computed the fully developed Nusselt number and compared it to the tabulated Nusselt numbers.
+2. **Task II**: We modified our Task I program to the 2:1 aspect ratio passage shown in Figure 2. Changes were made to the boundary conditions as we now had an adiabatic right wall. We plotted the 3D surface plots of $w(x,y)$ and $T(x,y)$. Additionally, we find the hydraulic diameter, the Nusselt number, and compared it to the tabulated Nusselt numbers. We then calculated the hydraulic diameter based on the heated perimeter $D_H=4A_0/p_h$ for which we also computed the fully developed Nusselt number and compared it to the tabulated Nusselt numbers.
 
 3. **Task III**: The last task was to modify Task I again with a complex geometry and an adiabatic bottom wall. The mean velocities and mean temperatures were found in all three sections as well as the fully developed heat transfer coefficient and Nusselt number. The Reynolds number and fully developed Nusselt number were also determined using this geometry but we used the flow conditions specified in Task I.
 
@@ -118,33 +118,33 @@ We can derive the finite-difference equations (**Task I**) for both the velocity
 Starting off with the finite-difference form of velocity:
 
 $$
-\frac{w\_{i+1,j}-2w\_{i,j}+w\_{i-1,j}}{(\Delta x)^2}+\frac{w\_{i,j+1}-2w\_{i,j}+w\_{i,j-1}}{(\Delta y)^2}=\frac{1}{\rho \nu}\left(\frac{dP}{dz}\right)
+\frac{w_{i+1,j}-2w_{i,j}+w_{i-1,j}}{(\Delta x)^2}+\frac{w_{i,j+1}-2w_{i,j}+w_{i,j-1}}{(\Delta y)^2}=\frac{1}{\rho \nu}\left(\frac{dP}{dz}\right)
 $$
 
 We can multiply both sides by $(\Delta y)^2$ and then distribute to yield:
 
 $$
-\frac{(\Delta y)^2}{(\Delta x)^2}(w\_{i+1,j}-2w\_{i,j}+w\_{i-1,j})+(w\_{i,j+1}-2w\_{i,j}+w\_{i,j-1})=\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
+\frac{(\Delta y)^2}{(\Delta x)^2}(w_{i+1,j}-2w_{i,j}+w_{i-1,j})+(w_{i,j+1}-2w_{i,j}+w_{i,j-1})=\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
 $$
 
 $$
-\left(\frac{\Delta y}{\Delta x}\right)^2w\_{i+1,j}-2\left(\frac{\Delta y}{\Delta x}\right)^2w\_{i,j}+\left(\frac{\Delta y}{\Delta x}\right)^2w\_{i-1,j} +w\_{i,j+1}-2w\_{i,j}+w\_{i,j-1} =\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
+\left(\frac{\Delta y}{\Delta x}\right)^2w_{i+1,j}-2\left(\frac{\Delta y}{\Delta x}\right)^2w_{i,j}+\left(\frac{\Delta y}{\Delta x}\right)^2w_{i-1,j} +w_{i,j+1}-2w_{i,j}+w_{i,j-1} =\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
 $$
 
 $$
-\left(\frac{\Delta y}{\Delta x}\right)^2w\_{i+1,j}+\left(\frac{\Delta y}{\Delta x}\right)^2w\_{i-1,j}+w\_{i,j+1}+w\_{i,j-1}-w\_{i,j}\left[2\left(\frac{\Delta y}{\Delta x}\right)^2+2\right]=\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
+\left(\frac{\Delta y}{\Delta x}\right)^2w_{i+1,j}+\left(\frac{\Delta y}{\Delta x}\right)^2w_{i-1,j}+w_{i,j+1}+w_{i,j-1}-w_{i,j}\left[2\left(\frac{\Delta y}{\Delta x}\right)^2+2\right]=\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
 $$
 
-Rearranging for $w\_{i,j}$:
+Rearranging for $w_{i,j}$:
 
 $$
-w\_{i,j}\left[2\left(\frac{\Delta y}{\Delta x}\right)^2+2\right]=\left(\frac{\Delta y}{\Delta x}\right)^2w\_{i+1,j}+\left(\frac{\Delta y}{\Delta x}\right)^2w\_{i-1,j}+w\_{i,j+1}+w\_{i,j-1}-\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
+w_{i,j}\left[2\left(\frac{\Delta y}{\Delta x}\right)^2+2\right]=\left(\frac{\Delta y}{\Delta x}\right)^2w_{i+1,j}+\left(\frac{\Delta y}{\Delta x}\right)^2w_{i-1,j}+w_{i,j+1}+w_{i,j-1}-\frac{(\Delta y)^2}{\rho \nu}\left(\frac{dP}{dz}\right)
 $$
 
 This can be separated and cleaned up into the desired form:
 
 $$
-w\_{i,j}=\frac{(\Delta y/\Delta x)^2(w\_{i+1,j}+w\_{i-1,j})+w\_{i,j+1}+w\_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{(dP/dz)(\Delta y)^2}{\rho \nu [2(\Delta y/\Delta x)^2+2]}
+w_{i,j}=\frac{(\Delta y/\Delta x)^2(w_{i+1,j}+w_{i-1,j})+w_{i,j+1}+w_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{(dP/dz)(\Delta y)^2}{\rho \nu [2(\Delta y/\Delta x)^2+2]}
 $$
 
 #### Derivation of Temperature Field Equation
@@ -152,23 +152,23 @@ $$
 The finite-difference form of the temperature field can be proved in the same manner. Starting off with:
 
 $$
-\frac{T\_{i+1,j}-2T\_{i,j}+T\_{i-1,j}}{(\Delta x)^2}+\frac{T\_{i,j+1}-2T\_{i,j}+T\_{i,j-1}}{(\Delta y)^2}=\frac{w\_{i,j}}{\alpha}\left(\frac{dT\_m}{dz}\right)
+\frac{T_{i+1,j}-2T_{i,j}+T_{i-1,j}}{(\Delta x)^2}+\frac{T_{i,j+1}-2T_{i,j}+T_{i,j-1}}{(\Delta y)^2}=\frac{w_{i,j}}{\alpha}\left(\frac{dT_m}{dz}\right)
 $$
 
 We can multiply both sides by $(\Delta y)^2$ and then distribute to yield:
 
 $$
-\frac{(\Delta y)^2}{(\Delta x)^2}(T\_{i+1,j}-2T\_{i,j}+T\_{i-1,j})+(T\_{i,j+1}-2T\_{i,j}+T\_{i,j-1})=\frac{w\_{i,j}(\Delta y)^2}{\alpha}\left(\frac{dT\_m}{dz}\right)
+\frac{(\Delta y)^2}{(\Delta x)^2}(T_{i+1,j}-2T_{i,j}+T_{i-1,j})+(T_{i,j+1}-2T_{i,j}+T_{i,j-1})=\frac{w_{i,j}(\Delta y)^2}{\alpha}\left(\frac{dT_m}{dz}\right)
 $$
 
 $$
-\left(\frac{\Delta y}{\Delta x}\right)^2T\_{i+1,j}+\left(\frac{\Delta y}{\Delta x}\right)^2T\_{i-1,j}+T\_{i,j+1}+T\_{i,j-1}-T\_{i,j}\left[2\left(\frac{\Delta y}{\Delta x}\right)^2+2\right]=\frac{w\_{i,j}(\Delta y)^2}{\alpha}\left(\frac{dT\_m}{dz}\right)
+\left(\frac{\Delta y}{\Delta x}\right)^2T_{i+1,j}+\left(\frac{\Delta y}{\Delta x}\right)^2T_{i-1,j}+T_{i,j+1}+T_{i,j-1}-T_{i,j}\left[2\left(\frac{\Delta y}{\Delta x}\right)^2+2\right]=\frac{w_{i,j}(\Delta y)^2}{\alpha}\left(\frac{dT_m}{dz}\right)
 $$
 
-Rearranging for $T\_{i,j}$:
+Rearranging for $T_{i,j}$:
 
 $$
-T\_{i,j}=\frac{(\Delta y/\Delta x)^2(T\_{i+1,j}+T\_{i-1,j})+T\_{i,j+1}+T\_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{w\_{i,j}(dT\_m/dz)(\Delta y)^2}{\alpha  [2(\Delta y/\Delta x)^2+2]}
+T_{i,j}=\frac{(\Delta y/\Delta x)^2(T_{i+1,j}+T_{i-1,j})+T_{i,j+1}+T_{i,j-1}}{2(\Delta y/\Delta x)^2+2}-\frac{w_{i,j}(dT_m/dz)(\Delta y)^2}{\alpha  [2(\Delta y/\Delta x)^2+2]}
 $$
 
 ---
@@ -181,7 +181,7 @@ The following section will be a summary of our analysis organization including a
 
 Firstly, our code organization and analysis is modular in design—we structured it into clear segments: parameter definitions, field initialization, iteration loops until convergence, post-processing, and finally visualization of results. This was particularly helpful for debugging and for running different cases.
 
-The purpose of the initialization section was that it helped set up our simulation by defining all the necessary geometric and material parameters so we could keep track of all of them. Additionally, we kept the convergence criteria in case we needed to adjust them in the future. We define the grid resolution i.e. the number of nodes in the $x$ and $y$ directions and the element sizes $dx$ and $dy$. The material constants include the pressure gradient $dP/dz$, the mean temperature gradient $dT\_m/dz$, and the wall temperature from the constant heat input $T\_w$, as well as fluid and thermal properties.
+The purpose of the initialization section was that it helped set up our simulation by defining all the necessary geometric and material parameters so we could keep track of all of them. Additionally, we kept the convergence criteria in case we needed to adjust them in the future. We define the grid resolution i.e. the number of nodes in the $x$ and $y$ directions and the element sizes $dx$ and $dy$. The material constants include the pressure gradient $dP/dz$, the mean temperature gradient $dT_m/dz$, and the wall temperature from the constant heat input $T_w$, as well as fluid and thermal properties.
 
 ```matlab
 %% Define Material Constants and Geometric Parameters
@@ -207,7 +207,7 @@ epsilon_w = 0.0005;
 epsilon_T = 0.05;
 ```
 
-The next section focused on initializing and pre-allocating our variables for faster runtime. The velocity and temperature fields are initialized. We set the velocity fields to zero, while the temperature field is uniformly set at $70°C$ and then adjusted along the boundaries to match the wall temperature of $90°C$. Note that we defined $N\_x$ as the number of rows and $N\_y$ as the number of columns.
+The next section focused on initializing and pre-allocating our variables for faster runtime. The velocity and temperature fields are initialized. We set the velocity fields to zero, while the temperature field is uniformly set at $70°C$ and then adjusted along the boundaries to match the wall temperature of $90°C$. Note that we defined $N_x$ as the number of rows and $N_y$ as the number of columns.
 
 ```matlab
 %% Initializing Initial Fields
@@ -227,7 +227,7 @@ The main part of this code is the iterative Solvers, in our case, the Gauss-Seid
 
 **Velocity Field Update:**
 
-For the velocity field, we loop over the interior nodes. The new velocity value is found based on the derived equation. The loop continues until the maximum change across all nodes falls below $\epsilon\_w$, the convergence criteria.
+For the velocity field, we loop over the interior nodes. The new velocity value is found based on the derived equation. The loop continues until the maximum change across all nodes falls below $\epsilon_w$, the convergence criteria.
 
 ```matlab
 converged_w_flag = false;
@@ -284,25 +284,25 @@ end
 The next section is related to post-processing and analysis of the data. Once Gauss-Seidel converges, we compute the mean velocity, mean temperature, local heat fluxes, and heat transfer coefficients. Additionally, we also calculate the fully developed Nusselt and Reynolds numbers. For the numerical integration, we calculate the area with each grid node. Boundary nodes are treated with half the area to account for their partial representation in the full domain. The mean quantities are then computed as follows:
 
 $$
-w\_m=\frac{1}{A\_0}\int wdA\_0=\frac{1}{A\_0}\sum\_{\text{all nodes}}wA\_{\text{node}}
+w_m=\frac{1}{A_0}\int wdA_0=\frac{1}{A_0}\sum_{\text{all nodes}}wA_{\text{node}}
 $$
 
 $$
-T\_m=\frac{1}{w\_mA\_0}\int wTdA\_0=\frac{1}{wA\_0}\sum\_{\text{all nodes}}wTA\_{\text{node}}
+T_m=\frac{1}{w_mA_0}\int wTdA_0=\frac{1}{wA_0}\sum_{\text{all nodes}}wTA_{\text{node}}
 $$
 
-where at the wall, $A\_{\text{node}}=\frac{1}{2}\Delta x\Delta y$. Otherwise $A\_{\text{node}}=\Delta x\Delta y$. As for the local heat flux and heat transfer coefficients, the heat flux $q\_w$ is calculated using Fourier's Law and the heat transfer coefficient $h$ is computed from the local heat flux and the difference between the wall temperature and the mean temperature by Newton's Law of Cooling.
+where at the wall, $A_{\text{node}}=\frac{1}{2}\Delta x\Delta y$. Otherwise $A_{\text{node}}=\Delta x\Delta y$. As for the local heat flux and heat transfer coefficients, the heat flux $q_w$ is calculated using Fourier's Law and the heat transfer coefficient $h$ is computed from the local heat flux and the difference between the wall temperature and the mean temperature by Newton's Law of Cooling.
 
 The dimensionless numbers were then calculated. The hydraulic diameter was calculated as:
 
 $$
-D\_h=\frac{2ab}{a+b}
+D_h=\frac{2ab}{a+b}
 $$
 
 and the Nusselt and Reynolds number were calculated simply by plugging in values determined by the code:
 
 $$
-Nu=\frac{\bar{h}D\_h}{k}\text{ and }Re=\frac{w\_mD\_h}{\nu}
+Nu=\frac{\bar{h}D_h}{k}\text{ and }Re=\frac{w_mD_h}{\nu}
 $$
 
 ### Task II
@@ -373,7 +373,7 @@ In Task I, we were asked to generate 3D surface plots of the $w$ and $T$ fields,
 We also determined that the highest heat transfer coefficient was found at the center of the long walls, which also correspond to the point at which the velocity vector is the greatest. This heat transfer coefficient is $422.175 \, W/m^2 \cdot °C$ and is shown graphically in Figure 7. The lowest heat transfer coefficient is found next to the corners of the channels, where the velocity of the fluid is the lowest due to the frictional no slip boundary condition. This results in a minimum heat transfer coefficient $51.421 \, W/m^2 \cdot °C$ which can be seen in both Figures 6 and 7. The hydraulic diameter was computed to be:
 
 $$
-D\_h=\frac{4A\_0}{p\_w}=11.4 \, \mathrm{mm}
+D_h=\frac{4A_0}{p_w}=11.4 \, \mathrm{mm}
 $$
 
 ![Nusselt Number Comparison Task I](images/task1.5.png)
@@ -413,7 +413,7 @@ For the ethylene glycol and water mixture, the new values of the mean heat trans
 
 For Task II, the 3D surface plots of the $w$ and $T$ fields are shown above in Figures 9 and 10 respectively. The wetted hydraulic diameter of the new geometry is 12.5 mm for the 21 by 41 node channel. A new boundary condition was introduced by making the rightmost wall adiabatic. This was achieved by setting the wall temperature at each node on the right wall equal to the temperature of the node immediately to its left. With no temperature difference between adjacent nodes, no heat flux occurs, thus creating an adiabatic wall.
 
-In this new channel, the fully developed average heat transfer coefficient is $162.23 \, W/m^2 \cdot °C$. When calculating the Nusselt number, both heated and wetted values were determined. The wetted Nusselt number is calculated using the wetted hydraulic diameter, multiplying it by the average heat transfer coefficient, and dividing by the thermal conductivity, following the same method as before. In contrast, the heated Nusselt number requires calculating the heated hydraulic diameter, which excludes adiabatic walls when determining the perimeter. The result is a heated Nusselt number of $\mathrm{Nu}\_h=4.98$, while the wetted Nusselt number is $\mathrm{Nu}\_w=3.33$. The heated hydraulic diameter is 18.7 mm. Comparing the wetted Nusselt number to a square cross section with uniform wall temperature, we see that our Nusselt number of $3.33>2.976$. The error in the terms lies in the fact that we do not have uniform wall temperature and we are also not using a square cross section.
+In this new channel, the fully developed average heat transfer coefficient is $162.23 \, W/m^2 \cdot °C$. When calculating the Nusselt number, both heated and wetted values were determined. The wetted Nusselt number is calculated using the wetted hydraulic diameter, multiplying it by the average heat transfer coefficient, and dividing by the thermal conductivity, following the same method as before. In contrast, the heated Nusselt number requires calculating the heated hydraulic diameter, which excludes adiabatic walls when determining the perimeter. The result is a heated Nusselt number of $\mathrm{Nu}_h=4.98$, while the wetted Nusselt number is $\mathrm{Nu}_w=3.33$. The heated hydraulic diameter is 18.7 mm. Comparing the wetted Nusselt number to a square cross section with uniform wall temperature, we see that our Nusselt number of $3.33>2.976$. The error in the terms lies in the fact that we do not have uniform wall temperature and we are also not using a square cross section.
 
 ![Nusselt Number Comparison Task II](images/Task2.5.png)
 *Figure 11: Calculated Nusselt Number for Task II/I vs. Tabulated Nusselt Numbers*

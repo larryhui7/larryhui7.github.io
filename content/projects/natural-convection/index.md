@@ -42,7 +42,7 @@ $$
 $$
 
 $$
-\frac{\partial u}{\partial t}+u\frac{\partial u}{\partial x}+v\frac{\partial u}{\partial y}=g\beta (T-T\_{\infty})+\nu \frac{\partial^2 u}{\partial y^2}
+\frac{\partial u}{\partial t}+u\frac{\partial u}{\partial x}+v\frac{\partial u}{\partial y}=g\beta (T-T_{\infty})+\nu \frac{\partial^2 u}{\partial y^2}
 $$
 
 $$
@@ -50,10 +50,10 @@ $$
 $$
 
 **Initial and Boundary Conditions:**
-- At $t = 0$: $u = v = 0$, $T = T\_{\infty}$ for all $x, y$
-- For $t > 0$: at $y = 0$: $u = v = 0$, $\frac{\partial T}{\partial y} = -\frac{q\_w}{k}$; at $y = \infty$: $u = 0$, $T = T\_{\infty}$
+- At $t = 0$: $u = v = 0$, $T = T_{\infty}$ for all $x, y$
+- For $t > 0$: at $y = 0$: $u = v = 0$, $\frac{\partial T}{\partial y} = -\frac{q_w}{k}$; at $y = \infty$: $u = 0$, $T = T_{\infty}$
 
-The initial and boundary conditions model the time-varying buoyancy-driven flow and heat transfer resulting from sudden application of the uniform heat flux at the surface at time $t=0$, with zero $u$ velocity and $T=T\_{\infty}$ everywhere at $t=0$.
+The initial and boundary conditions model the time-varying buoyancy-driven flow and heat transfer resulting from sudden application of the uniform heat flux at the surface at time $t=0$, with zero $u$ velocity and $T=T_{\infty}$ everywhere at $t=0$.
 
 ---
 
@@ -73,46 +73,46 @@ In the first approach, the system of equations, initial conditions and boundary 
 First-order upwind differences are used for the first derivatives in the convection terms. Otherwise, backward differences are used for first derivatives. For second order derivatives, central differences are used. The resulting finite difference equations are:
 
 $$
-\frac{T'\_{i,j}-T\_{i,j}}{\Delta t}+u\_{i,j}\frac{T\_{i,j}-T\_{i-1,j}}{\Delta x}+v\_{i,j}\frac{T\_{i,j+1}-T\_{i,j}}{\Delta y}=\alpha \frac{T\_{i,j+1}-2T\_{i,j}+T\_{i,j-1}}{(\Delta y)^2}
+\frac{T'_{i,j}-T_{i,j}}{\Delta t}+u_{i,j}\frac{T_{i,j}-T_{i-1,j}}{\Delta x}+v_{i,j}\frac{T_{i,j+1}-T_{i,j}}{\Delta y}=\alpha \frac{T_{i,j+1}-2T_{i,j}+T_{i,j-1}}{(\Delta y)^2}
 $$
 
 $$
-\frac{u'\_{i,j}-u\_{i,j}}{\Delta t}+u\_{i,j}\frac{u\_{i,j}-u\_{i-1,j}}{\Delta x}+v\_{i,j}\frac{u\_{i,j+1}-u\_{i,j}}{\Delta y}=g\beta(T'\_{i,j}-T\_{\infty}) \frac{u\_{i,j+1}-2u\_{i,j}+u\_{i,j-1}}{(\Delta y)^2}
+\frac{u'_{i,j}-u_{i,j}}{\Delta t}+u_{i,j}\frac{u_{i,j}-u_{i-1,j}}{\Delta x}+v_{i,j}\frac{u_{i,j+1}-u_{i,j}}{\Delta y}=g\beta(T'_{i,j}-T_{\infty}) \frac{u_{i,j+1}-2u_{i,j}+u_{i,j-1}}{(\Delta y)^2}
 $$
 
 $$
-\frac{u'\_{i,j}-u'\_{i-1,j}}{\Delta x}+\frac{v'\_{i,j}-v'\_{i,j-1}}{\Delta y}=0
+\frac{u'_{i,j}-u'_{i-1,j}}{\Delta x}+\frac{v'_{i,j}-v'_{i,j-1}}{\Delta y}=0
 $$
 
 We rearrange the above equations to solve for $u$, $v$ and $T$ at the next time step:
 
 $$
-T'\_{i,j} = T\_{i,j} + \left[\alpha\frac{T\_{i,j+1} - 2T\_{i,j} + T\_{i,j-1}}{(\Delta y)^2} - u\_{i,j}\frac{T\_{i,j} - T\_{i-1,j}}{\Delta x} - v\_{i,j}\frac{T\_{i,j+1} - T\_{i,j}}{\Delta y}\right]\Delta t
+T'_{i,j} = T_{i,j} + \left[\alpha\frac{T_{i,j+1} - 2T_{i,j} + T_{i,j-1}}{(\Delta y)^2} - u_{i,j}\frac{T_{i,j} - T_{i-1,j}}{\Delta x} - v_{i,j}\frac{T_{i,j+1} - T_{i,j}}{\Delta y}\right]\Delta t
 $$
 
 $$
-u'\_{i,j} = u\_{i,j} + \left[g\beta(T\_{i,j} - T\_{\infty}) + \nu\frac{u\_{i,j+1} - 2u\_{i,j} + u\_{i,j-1}}{(\Delta y)^2} - u\_{i,j}\frac{u\_{i,j} - u\_{i-1,j}}{\Delta x} - v\_{i,j}\frac{u\_{i,j+1} - u\_{i,j}}{\Delta y}\right]\Delta t
+u'_{i,j} = u_{i,j} + \left[g\beta(T_{i,j} - T_{\infty}) + \nu\frac{u_{i,j+1} - 2u_{i,j} + u_{i,j-1}}{(\Delta y)^2} - u_{i,j}\frac{u_{i,j} - u_{i-1,j}}{\Delta x} - v_{i,j}\frac{u_{i,j+1} - u_{i,j}}{\Delta y}\right]\Delta t
 $$
 
 $$
-v'\_{i,j} = v'\_{i,j-1} - \left[\frac{u'\_{i,j} - u'\_{i-1,j}}{\Delta x}\right]\Delta y
+v'_{i,j} = v'_{i,j-1} - \left[\frac{u'_{i,j} - u'_{i-1,j}}{\Delta x}\right]\Delta y
 $$
 
 The heat flux boundary condition at $y = 0$ is represented in finite difference form as:
 
 $$
-\frac{-q\_w}{k}=\frac{T\_{i,2}-T\_{i,1}}{\Delta y}
+\frac{-q_w}{k}=\frac{T_{i,2}-T_{i,1}}{\Delta y}
 $$
 
 **FTCS Algorithm Steps:**
 
-1. Create arrays to store the old (unprimed) and new (primed) field variables at each node: $u\_{i,j}$, $v\_{i,j}$, $T\_{i,j}$, $u'\_{i,j}$, $v'\_{i,j}$, $T'\_{i,j}$ where $1 \leq i \leq 51$ and $1 \leq j \leq 51$.
+1. Create arrays to store the old (unprimed) and new (primed) field variables at each node: $u_{i,j}$, $v_{i,j}$, $T_{i,j}$, $u'_{i,j}$, $v'_{i,j}$, $T'_{i,j}$ where $1 \leq i \leq 51$ and $1 \leq j \leq 51$.
 
-2. Initialize old and new fields everywhere to: $u\_{i,j} = 0$, $v\_{i,j} = 0$, $T\_{i,j} = T\_{\infty}$
+2. Initialize old and new fields everywhere to: $u_{i,j} = 0$, $v_{i,j} = 0$, $T_{i,j} = T_{\infty}$
 
 3. Compute the fields at the next time step at all non-boundary points using the equations above.
 
-4. The temperatures along the wall at $y = 0$ at the next time step are computed as: $T'\_{i,1} = \frac{q\_w}{k}\Delta y + T'\_{i,2}$
+4. The temperatures along the wall at $y = 0$ at the next time step are computed as: $T'_{i,1} = \frac{q_w}{k}\Delta y + T'_{i,2}$
 
 5. If time has exceeded the specified limit, exit the algorithm. If not, store new field values in old field variables and return to step 3.
 
@@ -121,15 +121,15 @@ $$
 For the similarity analysis, we define the similarity variables as follows:
 
 $$
-\eta\triangleq\frac{y}{x}\left(\frac{g\beta q\_w x^4}{5k\nu^2}\right)^{1/5}
+\eta\triangleq\frac{y}{x}\left(\frac{g\beta q_w x^4}{5k\nu^2}\right)^{1/5}
 $$
 
 $$
-\psi\triangleq5\nu\left(\frac{g\beta q\_w x^4}{5k\nu^2}\right)^{1/5}F(\eta)
+\psi\triangleq5\nu\left(\frac{g\beta q_w x^4}{5k\nu^2}\right)^{1/5}F(\eta)
 $$
 
 $$
-H(\eta)\triangleq\frac{T-T\_{\infty}}{q\_w x/k}\left(\frac{g \beta q\_w x^4}{5k\nu^2}\right)^{1/5}
+H(\eta)\triangleq\frac{T-T_{\infty}}{q_w x/k}\left(\frac{g \beta q_w x^4}{5k\nu^2}\right)^{1/5}
 $$
 
 We can show that the replacement of $y$, $u$, $v$, and $T$ with transform variables satisfies the continuity equation and converts the *steady forms* of the $u$-momentum and energy equations to:
@@ -164,7 +164,7 @@ By Clairaut's Theorem, for any smooth continuous function $\psi(x,y)$ of differe
 
 **Derivation of u-Momentum Equation:**
 
-For notational convenience, let $\xi = \left(\frac{g\beta q\_w}{5k\nu^2}\right)^{1/5}$. Expanding the velocity components in terms of stream functions:
+For notational convenience, let $\xi = \left(\frac{g\beta q_w}{5k\nu^2}\right)^{1/5}$. Expanding the velocity components in terms of stream functions:
 
 $$
 u = 5\nu \xi^2 x^{3/5}F'(\eta)
@@ -180,7 +180,7 @@ $$
 F''' - 3F'^2 + 4FF'' + H = 0
 $$
 
-This confirms that $C\_{2.1} = 3$ and $C\_{2.2} = 4$.
+This confirms that $C_{2.1} = 3$ and $C_{2.2} = 4$.
 
 **Derivation of Energy Equation:**
 
@@ -201,13 +201,13 @@ $$
 When we construct an $x$-direction force-momentum balance on a segment of the boundary layer with buoyancy effects and zero free stream velocity:
 
 $$
-\frac{d}{dx}\int\_{0}^\delta u^2 dy = -\nu\left[\frac{\partial u}{\partial y}\right]\_{y=0}+\int\_{0}^\delta g \beta (T-T\_{\infty})dy
+\frac{d}{dx}\int_{0}^\delta u^2 dy = -\nu\left[\frac{\partial u}{\partial y}\right]_{y=0}+\int_{0}^\delta g \beta (T-T_{\infty})dy
 $$
 
 The integral form of the energy equation:
 
 $$
-\frac{d}{dx}\int\_{0}^\delta u(T\_{\infty}-T)dy=\alpha\left[\frac{\partial T}{\partial y}\right]\_{y=0}
+\frac{d}{dx}\int_{0}^\delta u(T_{\infty}-T)dy=\alpha\left[\frac{\partial T}{\partial y}\right]_{y=0}
 $$
 
 Assuming the following functional forms:
@@ -217,7 +217,7 @@ u=\hat{U}\frac{y}{\delta}\left(1-\frac{y}{\delta}\right)^2, \quad \text{where }\
 $$
 
 $$
-T-T\_{\infty}=\Delta T\left(1-\frac{y}{\delta}\right)^2
+T-T_{\infty}=\Delta T\left(1-\frac{y}{\delta}\right)^2
 $$
 
 $$
@@ -249,28 +249,28 @@ $$
 Substituting the exponents back into the balance equations:
 
 $$
-B = \left(\frac{72\alpha k(4\alpha + 5\nu)}{g\beta q\_w}\right)^{1/5}
+B = \left(\frac{72\alpha k(4\alpha + 5\nu)}{g\beta q_w}\right)^{1/5}
 $$
 
 $$
-A = 60\alpha \left(\frac{g\beta q\_w}{72\alpha k(4\alpha+5\nu)}\right)^{2/5}
+A = 60\alpha \left(\frac{g\beta q_w}{72\alpha k(4\alpha+5\nu)}\right)^{2/5}
 $$
 
 **Complete Solutions:**
 
 The boundary layer thickness:
 $$
-\delta(x) = \left(\frac{72\alpha k(4\alpha + 5\nu)}{g\beta q\_w}\right)^{1/5}x^{0.2}
+\delta(x) = \left(\frac{72\alpha k(4\alpha + 5\nu)}{g\beta q_w}\right)^{1/5}x^{0.2}
 $$
 
 The velocity field:
 $$
-u(x,y/\delta) = 60\alpha \left(\frac{g\beta q\_w}{72\alpha k(4\alpha+5\nu)}\right)^{2/5}x^{0.6} \cdot \frac{y}{\delta}\left(1-\frac{y}{\delta}\right)^2
+u(x,y/\delta) = 60\alpha \left(\frac{g\beta q_w}{72\alpha k(4\alpha+5\nu)}\right)^{2/5}x^{0.6} \cdot \frac{y}{\delta}\left(1-\frac{y}{\delta}\right)^2
 $$
 
 The temperature field:
 $$
-T(x, y/\delta) = T\_{\infty}+\frac{q\_w}{2k}\left(\frac{72\alpha k(4\alpha + 5\nu)}{g\beta q\_w}\right)^{1/5}x^{0.2}\left(1-\frac{y}{\delta}\right)^2
+T(x, y/\delta) = T_{\infty}+\frac{q_w}{2k}\left(\frac{72\alpha k(4\alpha + 5\nu)}{g\beta q_w}\right)^{1/5}x^{0.2}\left(1-\frac{y}{\delta}\right)^2
 $$
 
 ---
@@ -447,9 +447,9 @@ T_int_03 = @(y) T_inf + (q_w/(2*k)) * B*x1^n .* (1 - (y/delta1)).^2;
 
 ### FTCS Finite-Difference Results
 
-We used 3 different heat fluxes $q\_w=220$ W/m², $q\_w=300$ W/m², and $q\_w=150$ W/m² to study transient behavior including temperature and velocity profiles.
+We used 3 different heat fluxes $q_w=220$ W/m², $q_w=300$ W/m², and $q_w=150$ W/m² to study transient behavior including temperature and velocity profiles.
 
-| $q\_w$ (W/m²) | $t\_{LE}$ (s) | $t\_{99\%}$ (s) | $T\_{peak}$ (°C) | $t\_{T,peak}$ (s) | $u\_{peak}$ (m/s) | $T\_{SS}$ (°C) | $u\_{SS}$ (m/s) |
+| $q_w$ (W/m²) | $t_{LE}$ (s) | $t_{99\%}$ (s) | $T_{peak}$ (°C) | $t_{T,peak}$ (s) | $u_{peak}$ (m/s) | $T_{SS}$ (°C) | $u_{SS}$ (m/s) |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | 220 | 0.1615 | 0.7860 | 73.50 | 0.9300 | 0.0614 | 70.99 | 0.0584 |
 | 300 | 0.1215 | 0.6905 | 85.84 | 0.8185 | 0.0735 | 82.55 | 0.0735 |
@@ -457,10 +457,10 @@ We used 3 different heat fluxes $q\_w=220$ W/m², $q\_w=300$ W/m², and $q\_w=15
 
 *Table 1: Transient Behavior Characteristics for Various Heat Fluxes*
 
-For $q\_w=220$ W/m², the time for the leading-edge effect to reach the top edge is 0.1615 seconds. The time for the flow to reach 99% of its steady state surface temperature is 0.7860 seconds. These times are quicker for higher heat fluxes because the greater heat flux heats the gas to a higher temperature, causing it to expand more and increasing the velocity.
+For $q_w=220$ W/m², the time for the leading-edge effect to reach the top edge is 0.1615 seconds. The time for the flow to reach 99% of its steady state surface temperature is 0.7860 seconds. These times are quicker for higher heat fluxes because the greater heat flux heats the gas to a higher temperature, causing it to expand more and increasing the velocity.
 
 ![Surface Temperature vs Time](images/SteadyState220/Figure_1.png)
-*Figure 3: Variation of Surface Temperature at Top Edge for $q\_w=220$ W/m²*
+*Figure 3: Variation of Surface Temperature at Top Edge for $q_w=220$ W/m²*
 
 The temperature does not rise monotonically. Initially, the temperature rises sharply and overshoots, before eventually settling/converging on a value a few degrees below the peak temperature. The FTCS method initially overshoots because its way of approximating derivatives introduces small errors, causing temporary oscillations. Over time, numerical diffusion smooths out these oscillations allowing convergence.
 
@@ -499,20 +499,20 @@ The series of contours show a detailed picture of how the field variables change
   </figure>
 </div>
 
-For $q\_w=220$ W/m², all field variables are higher than those where $q\_w=150$ W/m², which makes sense as we generate a larger temperature difference implying stronger buoyancy forces so our boundary layer velocity is higher and thicker. As we increase the downstream distance, velocities and temperatures increase.
+For $q_w=220$ W/m², all field variables are higher than those where $q_w=150$ W/m², which makes sense as we generate a larger temperature difference implying stronger buoyancy forces so our boundary layer velocity is higher and thicker. As we increase the downstream distance, velocities and temperatures increase.
 
 **Laminar Flow Verification:**
 
 Transition in a free convection boundary layer depends on the relative magnitude of buoyancy and viscous forces. We calculate the Rayleigh number:
 
 $$
-\text{Ra}\_x = \text{Gr}\_x \cdot \text{Pr} = \frac{g\beta (T\_s-T\_{\infty})x^3}{\nu\alpha}
+\text{Ra}_x = \text{Gr}_x \cdot \text{Pr} = \frac{g\beta (T_s-T_{\infty})x^3}{\nu\alpha}
 $$
 
-For $q\_w=220$ W/m² with maximum $T\_w-T\_{\infty} \approx 41°$C:
+For $q_w=220$ W/m² with maximum $T_w-T_{\infty} \approx 41°$C:
 
 $$
-\text{Ra}\_L = \frac{(9.81)(0.0033)(41)(0.1)^3}{(1.613\times 10^{-5})(2.2\times 10^{-5})} = 3.74\times 10^6 < 10^9
+\text{Ra}_L = \frac{(9.81)(0.0033)(41)(0.1)^3}{(1.613\times 10^{-5})(2.2\times 10^{-5})} = 3.74\times 10^6 < 10^9
 $$
 
 Since both Ra values are below the critical Rayleigh number, we are in the laminar region. This is verified by the smooth velocity profiles showing gradual variations without abrupt fluctuations.
@@ -534,7 +534,7 @@ These graphs show our similarity solutions to the boundary layer equations. The 
 The RK4 solution matches well with our FD solution at various downstream locations; they tend to collapse onto the similarity solution especially for temperature. For velocity, we notice a slight discrepancy when $\eta>2$.
 
 ![Log-log Temperature](images/Task2/Figure_3.png)
-*Figure 12: log-log plot of $T\_w-T\_{\infty}$ vs. $x$ for $q\_w=220$ W/m²*
+*Figure 12: log-log plot of $T_w-T_{\infty}$ vs. $x$ for $q_w=220$ W/m²*
 
 There is a significant difference between the two approaches as the similarity and FD solutions have an offset in temperature differences especially near the leading edge. The FD boundary conditions use the raw boundary layer equations rather than making idealized assumptions as the similarity variables do. However, it still shows similar scaling behavior for the wall surface temperature.
 
@@ -547,8 +547,8 @@ Using the integral solutions for $u$ and $T$, we predicted profiles at $x = 30$ 
 - $\nu = 1.613\times 10^{-5}$ m²/s (kinematic viscosity)
 - $\alpha = 2.200\times 10^{-5}$ m²/s (thermal diffusivity)
 - $k = 0.0261$ W/(m·K) (thermal conductivity)
-- $T\_\infty = 30°$C (ambient temperature)
-- $q\_w = 220$ W/m² (surface heat flux)
+- $T_\infty = 30°$C (ambient temperature)
+- $q_w = 220$ W/m² (surface heat flux)
 
 The boundary layer thickness at both locations:
 - $\delta(0.03\text{ m}) = 0.00783$ m
@@ -567,7 +567,7 @@ The curves for different streamwise locations nearly overlap perfectly when the 
 ![Wall Temperature Variation](images/Task3.2.Fig3.png)
 *Figure 15: Variation of Wall Temperature $H(0)$ with Integral and Similarity solutions*
 
-Both methods show that $T\_{\text{wall}}$ changes with streamwise location $x$. The solutions collapse into one graph indicating that both methods equivalently predict the growth of the vertical surface plate temperature. The steep rise when $x$ is near 0 reflects the local effect of heating at the leading edge; the temperature profile tapers as $x$ increases, suggesting the boundary layer grows thicker and wall temperature levels off.
+Both methods show that $T_{\text{wall}}$ changes with streamwise location $x$. The solutions collapse into one graph indicating that both methods equivalently predict the growth of the vertical surface plate temperature. The steep rise when $x$ is near 0 reflects the local effect of heating at the leading edge; the temperature profile tapers as $x$ increases, suggesting the boundary layer grows thicker and wall temperature levels off.
 
 ### Electronic Device Cooling Application
 
@@ -578,19 +578,19 @@ Consider a thin electronic device mounted on a vertical circuit board that is 3 
 For a $3\text{ cm} \times 5\text{ cm}$ device dissipating 0.3 W uniformly, we verify boundary layer theory is appropriate by checking:
 
 $$
-10^4 < \text{Gr}\_x < 10^9
+10^4 < \text{Gr}_x < 10^9
 $$
 
 Using the Nusselt number correlation for laminar free convection:
 
 $$
-\overline{\text{Nu}}\_L = 0.59(\text{Gr}\_L \cdot \text{Pr})^{1/4}
+\overline{\text{Nu}}_L = 0.59(\text{Gr}_L \cdot \text{Pr})^{1/4}
 $$
 
 A bisection algorithm was implemented to find $\Delta T = 26.76$ K. Then:
 
 $$
-\text{Gr}\_L = \frac{g\beta \Delta T L^3}{\nu^2} = \frac{(9.8)(0.0033)(26.76)(0.03)^3}{(1.613\times 10^{-5})^2} = 8.98\times10^4
+\text{Gr}_L = \frac{g\beta \Delta T L^3}{\nu^2} = \frac{(9.8)(0.0033)(26.76)(0.03)^3}{(1.613\times 10^{-5})^2} = 8.98\times10^4
 $$
 
 This confirms we are in the laminar free convection regime where boundary layer theory applies.
@@ -600,21 +600,21 @@ This confirms we are in the laminar free convection regime where boundary layer 
 If the maximum allowable surface temperature is $70°$C with ambient at $30°$C, using the boundary layer analysis expressions:
 
 $$
-\max q\_{w} = \frac{80k}{Bx^n} = \frac{80(0.0261)}{(0.015785)(0.03)^{0.2}} = 266.72 \text{ W/m}^2
+\max q_{w} = \frac{80k}{Bx^n} = \frac{80(0.0261)}{(0.015785)(0.03)^{0.2}} = 266.72 \text{ W/m}^2
 $$
 
 Maximum rate of heat generation:
 
 $$
-\max \dot{Q} = \max q\_{w} \cdot A = 266.72 \cdot (0.03 \times 0.05) = 0.4 \text{ W}
+\max \dot{Q} = \max q_{w} \cdot A = 266.72 \cdot (0.03 \times 0.05) = 0.4 \text{ W}
 $$
 
 **Including Radiative Heat Exchange:**
 
-We modified the boundary condition to include radiation exchange with surroundings at $T\_{\infty}$:
+We modified the boundary condition to include radiation exchange with surroundings at $T_{\infty}$:
 
 $$
-\frac{-q\_e}{k}=\frac{T\_{i,2}-T\_{i,1}}{\Delta y}-\frac{\sigma \varepsilon\_s}{k}(T\_{i,1}^4-T\_{\infty}^4)
+\frac{-q_e}{k}=\frac{T_{i,2}-T_{i,1}}{\Delta y}-\frac{\sigma \varepsilon_s}{k}(T_{i,1}^4-T_{\infty}^4)
 $$
 
 where $\sigma=5.67\times10^{-8}$ W/m²K⁴ is the Stefan-Boltzmann constant. With surface emissivity of 0.85, the maximum heat generation rate that can be rejected by natural convection and radiation is **0.32 W**.

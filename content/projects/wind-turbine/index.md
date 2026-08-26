@@ -361,7 +361,7 @@ $$P = \frac{1}{2}(1.2)(0.0183)(11.2)^3 = 15.4 \text{ W}$$
 
 **Efficiency:**
 
-$$\eta = \frac{P\_{\text{actual}}}{P\_{\text{theoretical}}} = \frac{1.95}{15.4} = 0.127 = \mathbf{12.7\\%}$$
+$$\eta = \frac{P_{\text{actual}}}{P_{\text{theoretical}}} = \frac{1.95}{15.4} = 0.127 = \mathbf{12.7\%}$$
 
 ---
 

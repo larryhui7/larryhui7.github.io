@@ -31,7 +31,7 @@ During my internship at [Outer Rim Exploration Inc. (ORE)](https://ore.green/), 
 
 | Result | Details |
 |:-------|:--------|
-| **$200K Seed Funding** | Secured startup funding by validating technology idea to investors |
+| **\$200K Seed Funding** | Secured startup funding by validating technology idea to investors |
 | **40% Cost Reduction** | Shifted design to COTS (commercial off-the-shelf) parts |
 | **First Pilot Study** | Secured first pilot study contract for the prototype |
 
@@ -77,7 +77,7 @@ During my internship at [Outer Rim Exploration Inc. (ORE)](https://ore.green/), 
 
 | Requirement | Target |
 |:------------|:-------|
-| Price | < $2,000 |
+| Price | < \$2,000 |
 | Power | Solar-powered |
 | Payload capacity | Based on Aurelia X6 (5 kg) |
 | Flight time | ~30 min |
@@ -87,7 +87,7 @@ During my internship at [Outer Rim Exploration Inc. (ORE)](https://ore.green/), 
 
 | Requirement | Target |
 |:------------|:-------|
-| Price | < $1,000 |
+| Price | < \$1,000 |
 | PCB size | < 5 cm per module |
 | Operation | Fully autonomous |
 | Observation duration | < 1 day per waypoint |

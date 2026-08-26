@@ -46,9 +46,9 @@ For turbulent flow at high Prandtl number, a steep temperature gradient is expec
 
 $$\frac{\partial}{\partial y}\left[\alpha \frac{\partial \overline{T}}{\partial y}-\overline{\nu'T'}\right]=0$$
 
-Adopting the usual definition of eddy diffusivity, $\epsilon\_H=-\overline{\nu'T'}/(\partial\overline{T}/\partial y)$, this becomes
+Adopting the usual definition of eddy diffusivity, $\epsilon_H=-\overline{\nu'T'}/(\partial\overline{T}/\partial y)$, this becomes
 
-$$\frac{\partial }{\partial y}\left[(\alpha+\epsilon\_H)\frac{\partial \overline{T}}{\partial y}\right]=0$$
+$$\frac{\partial }{\partial y}\left[(\alpha+\epsilon_H)\frac{\partial \overline{T}}{\partial y}\right]=0$$
 
 ### Task Descriptions
 
@@ -68,9 +68,9 @@ This project is split into 5 tasks which are briefly described below.
 
 ### Task II Code
 
-The only necessary piece of code in this part of the project was a numerical integration scheme to calculate $I\_2$. We first discretize the interval $[a,b]$ into $N$ equally spaced sub-intervals with a width of $\delta=\frac{b-a}{N}$. We then evaluate the integrand $f(\eta) = \frac{\eta^{-2/3}}{1+\eta}$ at all $N+1$ nodes, and we apply the trapezoid rule in a single pass.
+The only necessary piece of code in this part of the project was a numerical integration scheme to calculate $I_2$. We first discretize the interval $[a,b]$ into $N$ equally spaced sub-intervals with a width of $\delta=\frac{b-a}{N}$. We then evaluate the integrand $f(\eta) = \frac{\eta^{-2/3}}{1+\eta}$ at all $N+1$ nodes, and we apply the trapezoid rule in a single pass.
 
-$$\int\_a^bf(x)dx \approx \frac{\Delta x}{2}\sum\_{k=1}^N(f(x\_{k-1})+f(x\_k))=\Delta x \left(\frac{f(x\_N)+f(x\_0)}{2}+\sum\_{k=1}^{N-1}f(x\_k)\right)$$
+$$\int_a^bf(x)dx \approx \frac{\Delta x}{2}\sum_{k=1}^N(f(x_{k-1})+f(x_k))=\Delta x \left(\frac{f(x_N)+f(x_0)}{2}+\sum_{k=1}^{N-1}f(x_k)\right)$$
 
 Since we just summed all the terms exactly once, the time complexity scales linearly as $\mathcal{O}(N)$. We chose $N=100,000$ since it gave us good accuracy without taking too much computing power.
 
@@ -80,13 +80,13 @@ Since we just summed all the terms exactly once, the time complexity scales line
    $$N \gets 100000,\quad lb \gets 0.01,\quad ub \gets 100,\quad \delta \gets \frac{ub - lb}{N}$$
 
 2. **Compute sample points:**
-   $$\text{for }i = 0,1,\dots,N:\quad \eta\_i \leftarrow lb + i\,\delta$$
+   $$\text{for }i = 0,1,\dots,N:\quad \eta_i \leftarrow lb + i\,\delta$$
 
 3. **Evaluate integrand:**
-   $$\text{for }i = 0,1,\dots,N:\quad f\_i \leftarrow \frac{\eta\_i^{-2/3}}{1 + \eta\_i}$$
+   $$\text{for }i = 0,1,\dots,N:\quad f_i \leftarrow \frac{\eta_i^{-2/3}}{1 + \eta_i}$$
 
 4. **Apply trapezoidal rule:**
-   $$I \leftarrow \frac{1}{3}\,\delta\;\Bigl(\tfrac{1}{2}f\_{0} + \sum\_{i=1}^{N-1}f\_{i} + \tfrac{1}{2}f\_{N}\Bigr)$$
+   $$I \leftarrow \frac{1}{3}\,\delta\;\Bigl(\tfrac{1}{2}f_{0} + \sum_{i=1}^{N-1}f_{i} + \tfrac{1}{2}f_{N}\Bigr)$$
 
 **Output:** $I$ (approximate value of the integral).
 
@@ -98,79 +98,79 @@ This section aims to give an overview of the quantitative outcomes of the turbul
 
 For this task, by integrating Equation (2) twice, changing the second integration variable to $y^+$, we obtain a relation of the form
 
-$$\frac{(T\_w-T\_i)k\sqrt{\tau\_w/\rho\_l}}{q\_w\nu}=\int\_0^{\delta\_{nw}^+}\frac{dy^+}{1+F\_I(\mathrm{Pr}, \nu)\frac{\epsilon\_M(y^+)}{\mathrm{Pr}\_t}}$$
+$$\frac{(T_w-T_i)k\sqrt{\tau_w/\rho_l}}{q_w\nu}=\int_0^{\delta_{nw}^+}\frac{dy^+}{1+F_I(\mathrm{Pr}, \nu)\frac{\epsilon_M(y^+)}{\mathrm{Pr}_t}}$$
 
-where $q\_w$ is the wall heat flux and $F\_I(\mathrm{Pr, \nu})$ is a function of Pr and $\nu$. Note that $\delta\_{nw}$ and $\delta\_{nw}^+$ correspond to a thermal boundary layer thickness that is smaller than the film thickness $\delta$.
+where $q_w$ is the wall heat flux and $F_I(\mathrm{Pr, \nu})$ is a function of Pr and $\nu$. Note that $\delta_{nw}$ and $\delta_{nw}^+$ correspond to a thermal boundary layer thickness that is smaller than the film thickness $\delta$.
 
 **Task I. Integral form of the wall-heat-flux relation:** Firstly, we start from the time-averaged boundary layer form of the energy equation in the near-wall region.
 
 *Derivation:* We integrate Eq. 2 with respect to $y$ to get the axial heat flux
 
-$$\frac{\partial }{\partial y}\left[(\alpha+\epsilon\_H)\frac{\partial \overline{T}}{\partial y}\right]=0$$
+$$\frac{\partial }{\partial y}\left[(\alpha+\epsilon_H)\frac{\partial \overline{T}}{\partial y}\right]=0$$
 
-$$(\alpha+\epsilon\_H)\frac{\partial \overline{T}}{\partial y}=C\_1$$
+$$(\alpha+\epsilon_H)\frac{\partial \overline{T}}{\partial y}=C_1$$
 
-At the wall, the no-slip condition implies that the velocity fluctuations are gone $\Rightarrow \epsilon\_H=0$. Therefore, if we apply Fourier's law of heat conduction to enforce the constant wall heat flux
+At the wall, the no-slip condition implies that the velocity fluctuations are gone $\Rightarrow \epsilon_H=0$. Therefore, if we apply Fourier's law of heat conduction to enforce the constant wall heat flux
 
-$$q\_w=-k\frac{\partial \overline{T}}{\partial y}\Big|\_{y=0}\Rightarrow -\frac{q\_w}{k}=\frac{\partial \overline{T}}{\partial y}\Big|\_{y=0}$$
+$$q_w=-k\frac{\partial \overline{T}}{\partial y}\Big|_{y=0}\Rightarrow -\frac{q_w}{k}=\frac{\partial \overline{T}}{\partial y}\Big|_{y=0}$$
 
 Then substituting this into our axial heat flux expression yields
 
-$$\alpha \frac{\partial \overline{T}}{\partial y}\Big|\_{y=0}=C\_1 \Rightarrow C\_1=-\alpha \frac{q\_w}{k}$$
+$$\alpha \frac{\partial \overline{T}}{\partial y}\Big|_{y=0}=C_1 \Rightarrow C_1=-\alpha \frac{q_w}{k}$$
 
 Therefore, the region near the wall obeys
 
-$$(\alpha+\epsilon\_H)\frac{\partial \overline{T}}{\partial y}=-\alpha \frac{q\_w}{k}$$
+$$(\alpha+\epsilon_H)\frac{\partial \overline{T}}{\partial y}=-\alpha \frac{q_w}{k}$$
 
 We rearrange and integrate again w.r.t. $y$
 
-$$T\_w-T\_i =\frac{\alpha q\_w}{k}\int\_0^{\delta\_{nw}}\frac{1}{\alpha+\epsilon\_H}dy$$
+$$T_w-T_i =\frac{\alpha q_w}{k}\int_0^{\delta_{nw}}\frac{1}{\alpha+\epsilon_H}dy$$
 
 We introduce the following non-dimensional variables
 
-$$u^+\triangleq \frac{u}{u\_\tau}=\frac{u}{\sqrt{\tau\_w/\rho\_l}}\quad , \quad y^+\triangleq \frac{yu\_{\tau}}{\nu}=\frac{y\sqrt{\tau\_w/\rho\_l}}{\nu}$$
+$$u^+\triangleq \frac{u}{u_\tau}=\frac{u}{\sqrt{\tau_w/\rho_l}}\quad , \quad y^+\triangleq \frac{yu_{\tau}}{\nu}=\frac{y\sqrt{\tau_w/\rho_l}}{\nu}$$
 
-Note that the characteristic velocity $u\_\tau \triangleq \sqrt{\tau\_w/\rho\_l}$. By the definition of kinematic viscosity as well as the definition of the Prandtl number, we also have the following expressions
+Note that the characteristic velocity $u_\tau \triangleq \sqrt{\tau_w/\rho_l}$. By the definition of kinematic viscosity as well as the definition of the Prandtl number, we also have the following expressions
 
-$$\nu \triangleq \mu/\rho\_l\quad , \quad \mathrm{Pr}=\frac{\nu}{\alpha}\Rightarrow \alpha =\frac{\nu}{\mathrm{Pr}}$$
+$$\nu \triangleq \mu/\rho_l\quad , \quad \mathrm{Pr}=\frac{\nu}{\alpha}\Rightarrow \alpha =\frac{\nu}{\mathrm{Pr}}$$
 
 Recall that the turbulent Prandtl number is defined as
 
-$$\mathrm{Pr}\_t \triangleq \frac{\epsilon\_M}{\epsilon\_H}\Rightarrow\epsilon\_H=\frac{\epsilon\_M}{\mathrm{Pr}\_t}$$
+$$\mathrm{Pr}_t \triangleq \frac{\epsilon_M}{\epsilon_H}\Rightarrow\epsilon_H=\frac{\epsilon_M}{\mathrm{Pr}_t}$$
 
 Combining this all, we can write the denominator of the integrand as
 
-$$\alpha+\epsilon\_H=\frac{\nu}{\mathrm{Pr}}\left(1+\frac{\mathrm{Pr}}{\nu}\frac{\epsilon\_M}{\mathrm{Pr}\_t}\right)$$
+$$\alpha+\epsilon_H=\frac{\nu}{\mathrm{Pr}}\left(1+\frac{\mathrm{Pr}}{\nu}\frac{\epsilon_M}{\mathrm{Pr}_t}\right)$$
 
-We set $F\_I\triangleq \mathrm{Pr}/\nu$, then simplifying we get the final result:
+We set $F_I\triangleq \mathrm{Pr}/\nu$, then simplifying we get the final result:
 
-$$\frac{(T\_w-T\_i)k\sqrt{\tau\_w/\rho\_l}}{q\_w\nu}=\int\_0^{\delta\_{nw}^+}\frac{dy^+}{1+F\_I(\mathrm{Pr}, \nu)\frac{\epsilon\_M(y^+)}{\mathrm{Pr}\_t}}$$
+$$\frac{(T_w-T_i)k\sqrt{\tau_w/\rho_l}}{q_w\nu}=\int_0^{\delta_{nw}^+}\frac{dy^+}{1+F_I(\mathrm{Pr}, \nu)\frac{\epsilon_M(y^+)}{\mathrm{Pr}_t}}$$
 
-where $F\_I(\mathrm{Pr}, \nu)=\frac{\mathrm{Pr}}{\nu}$ and $\delta\_{nw}^+=\frac{\delta\_{nw}u\_{\tau}}{\nu}$.
+where $F_I(\mathrm{Pr}, \nu)=\frac{\mathrm{Pr}}{\nu}$ and $\delta_{nw}^+=\frac{\delta_{nw}u_{\tau}}{\nu}$.
 
-To evaluate the integral on the right side of the above equation, the variation of $\epsilon\_M$ and turbulent Prandtl number $\mathrm{Pr}\_t$ must be known. In the relation we obtained, it is clear that for large Pr, the integrand is small except when $\epsilon\_M$ is sufficiently small that $\mathrm{Pr}\epsilon\_M/\nu=\mathcal{O}(1)$. Thus, to evaluate the integral, an accurate relation for $\epsilon\_M$ is only needed in the region close to the wall (i.e. for small $y^+$), where $\epsilon\_M$ is small. Studies by Tien (1964) and Simonek (1983) indicated that $\epsilon\_M/\nu$ is proportional to $(y^+)^3$ for small $y^+$. For this analysis, we therefore take
+To evaluate the integral on the right side of the above equation, the variation of $\epsilon_M$ and turbulent Prandtl number $\mathrm{Pr}_t$ must be known. In the relation we obtained, it is clear that for large Pr, the integrand is small except when $\epsilon_M$ is sufficiently small that $\mathrm{Pr}\epsilon_M/\nu=\mathcal{O}(1)$. Thus, to evaluate the integral, an accurate relation for $\epsilon_M$ is only needed in the region close to the wall (i.e. for small $y^+$), where $\epsilon_M$ is small. Studies by Tien (1964) and Simonek (1983) indicated that $\epsilon_M/\nu$ is proportional to $(y^+)^3$ for small $y^+$. For this analysis, we therefore take
 
-$$\epsilon\_M/\nu=\gamma(y^+)^3$$
+$$\epsilon_M/\nu=\gamma(y^+)^3$$
 
-Based on the study by Kato, et al. (1968), we will use the recommended value of $5.10\times10^{-4}$ for $\gamma$. Here the turbulent Prandtl number is taken to be one: $\mathrm{Pr}\_t=1.0$.
+Based on the study by Kato, et al. (1968), we will use the recommended value of $5.10\times10^{-4}$ for $\gamma$. Here the turbulent Prandtl number is taken to be one: $\mathrm{Pr}_t=1.0$.
 
 ### Task II Results and Discussion
 
-We continue from the first task. We designate the integral on the right side of Equation (3) as $I$ and defining $\eta=\gamma(y^+)^3\mathrm{Pr}$, change the variable of integration in $I$ to $\eta$, and recognize the resulting modified form of Equation (5) to a relation for the heat transfer coefficient $h=q\_w/(T\_w-T\_i)$ having the form
+We continue from the first task. We designate the integral on the right side of Equation (3) as $I$ and defining $\eta=\gamma(y^+)^3\mathrm{Pr}$, change the variable of integration in $I$ to $\eta$, and recognize the resulting modified form of Equation (5) to a relation for the heat transfer coefficient $h=q_w/(T_w-T_i)$ having the form
 
-$$\frac{h}{k}\left(\frac{\nu}{\sqrt{\tau\_w/\rho\_l}}\right)=\frac{(\gamma\mathrm{Pr})^{1/3}}{I}$$
+$$\frac{h}{k}\left(\frac{\nu}{\sqrt{\tau_w/\rho_l}}\right)=\frac{(\gamma\mathrm{Pr})^{1/3}}{I}$$
 
 where
 
-$$I=\frac{1}{C\_{1.2}}\int\_{0}^{\gamma(\delta\_{nw}^+)^3\mathrm{Pr}}\frac{\eta^{-2/3}}{1+\eta/\mathrm{Pr}\_t}d\eta$$
+$$I=\frac{1}{C_{1.2}}\int_{0}^{\gamma(\delta_{nw}^+)^3\mathrm{Pr}}\frac{\eta^{-2/3}}{1+\eta/\mathrm{Pr}_t}d\eta$$
 
-where $\mathrm{Pr}\_t=1.0$, and $C\_{1.2}=3$ is an integer numerical constant.
+where $\mathrm{Pr}_t=1.0$, and $C_{1.2}=3$ is an integer numerical constant.
 
 To evaluate the integral $I$, we proceed as follows. First, we adopt the idealization that the Prandtl number is high. Since the integrand goes to zero as $\eta$ gets large, we assume we can set the upper limit to infinity with little error. Then, break the integral up into three parts:
 
-$$I=\frac{1}{C\_{1.2}}\int\_0^\infty \frac{\eta^{-2/3}}{1+\eta/\mathrm{Pr}\_t}d\eta$$
+$$I=\frac{1}{C_{1.2}}\int_0^\infty \frac{\eta^{-2/3}}{1+\eta/\mathrm{Pr}_t}d\eta$$
 
-$$I=\frac{1}{C\_{1.2}}\int\_0^{0.01} \frac{\eta^{-2/3}}{1+\eta}d\eta+\frac{1}{C\_{1.2}}\int\_{0.01}^{100} \frac{\eta^{-2/3}}{1+\eta}d\eta+\frac{1}{C\_{1.2}}\int\_{100}^{\infty} \frac{\eta^{-2/3}}{1+\eta}d\eta$$
+$$I=\frac{1}{C_{1.2}}\int_0^{0.01} \frac{\eta^{-2/3}}{1+\eta}d\eta+\frac{1}{C_{1.2}}\int_{0.01}^{100} \frac{\eta^{-2/3}}{1+\eta}d\eta+\frac{1}{C_{1.2}}\int_{100}^{\infty} \frac{\eta^{-2/3}}{1+\eta}d\eta$$
 
 In the first integral, the denominator of the integrand only varies between 1 and 1.01, so set the denominator to its mean value 1.005. For the third integral, $\eta$ is much larger than one over its $\eta$ range, so neglect one compared to $\eta$ in the denominator, making the integrand $\eta^{-5/3}$.
 
@@ -178,25 +178,25 @@ In the first integral, the denominator of the integrand only varies between 1 an
 
 Splitting the integral into 3 parts, we evaluate the first two integrals analytically:
 
-$$I\_1=\frac{1}{3}\int\_0^{0.01}\frac{\eta^{-2/3}}{1.005}d\eta = \frac{1}{3.015}\left[3\eta^{1/3}\right]^{0.01}\_0 \Rightarrow I\_1=0.2144$$
+$$I_1=\frac{1}{3}\int_0^{0.01}\frac{\eta^{-2/3}}{1.005}d\eta = \frac{1}{3.015}\left[3\eta^{1/3}\right]^{0.01}_0 \Rightarrow I_1=0.2144$$
 
 The third integral is evaluated as follows:
 
-$$I\_3=\frac{1}{3}\lim\_{t\rightarrow \infty}\int\_{100}^t \eta^{-5/3}d\eta = -\frac{1}{2}\lim\_{t\rightarrow\infty}[t^{-2/3}-100^{-2/3}] \Rightarrow I\_3=0.02321$$
+$$I_3=\frac{1}{3}\lim_{t\rightarrow \infty}\int_{100}^t \eta^{-5/3}d\eta = -\frac{1}{2}\lim_{t\rightarrow\infty}[t^{-2/3}-100^{-2/3}] \Rightarrow I_3=0.02321$$
 
 The second integral was evaluated using the trapezoidal rule method in MATLAB:
 
-$$I\_2=0.971216$$
+$$I_2=0.971216$$
 
 Therefore, summing up all the individual integrals, we get a final value of:
 
-$$I=\sum\_{i=1}^3I\_i=1.208826$$
+$$I=\sum_{i=1}^3I_i=1.208826$$
 
 ### Task III Results and Discussion
 
 For this next task, we shift focus to the momentum transport. For the boundary layer $U$-momentum equation,
 
-$$U\frac{\partial U}{\partial x}+V\frac{\partial U}{\partial y}=\frac{g\sin \theta(\rho\_l-\rho\_g)}{\rho\_l}+\frac{\partial}{\partial y}\left((\nu+\epsilon\_M)\frac{\partial U}{\partial y}\right)$$
+$$U\frac{\partial U}{\partial x}+V\frac{\partial U}{\partial y}=\frac{g\sin \theta(\rho_l-\rho_g)}{\rho_l}+\frac{\partial}{\partial y}\left((\nu+\epsilon_M)\frac{\partial U}{\partial y}\right)$$
 
 Neglecting the momentum convection terms and integrating this equation across the film to obtain a relation for the wall shear as a function of the film thickness and the other parameters in the equation.
 
@@ -204,25 +204,25 @@ Neglecting the momentum convection terms and integrating this equation across th
 
 Neglecting the convective terms, which is consistent with the assumption of a thin-film liquid, we get:
 
-$$\frac{\partial}{\partial y}\left((\nu+\epsilon\_M)\frac{\partial U}{\partial y}\right)=-\frac{g\sin\theta(\rho\_l-\rho\_g)}{\rho\_l}$$
+$$\frac{\partial}{\partial y}\left((\nu+\epsilon_M)\frac{\partial U}{\partial y}\right)=-\frac{g\sin\theta(\rho_l-\rho_g)}{\rho_l}$$
 
-Also, assuming turbulence is isotropic, we can use the relation: $\tau\_w=\rho\_l(\nu+\epsilon\_M)\frac{dU}{dy}$ to get:
+Also, assuming turbulence is isotropic, we can use the relation: $\tau_w=\rho_l(\nu+\epsilon_M)\frac{dU}{dy}$ to get:
 
-$$\frac{\partial \tau\_w}{\partial y}=-g\sin\theta(\rho\_l-\rho\_g)$$
+$$\frac{\partial \tau_w}{\partial y}=-g\sin\theta(\rho_l-\rho_g)$$
 
 Now integrating from the wall $y=0$ to the free surface at $y=\delta$:
 
-$$\tau\_w(\delta)-\tau\_w(0)=-g\sin\theta(\rho\_l-\rho\_g)\delta$$
+$$\tau_w(\delta)-\tau_w(0)=-g\sin\theta(\rho_l-\rho_g)\delta$$
 
-Since at the free surface, there is no shear force, $\tau\_w(\delta)=0$, and at the wall $\tau\_w(0)=\tau\_w$, hence:
+Since at the free surface, there is no shear force, $\tau_w(\delta)=0$, and at the wall $\tau_w(0)=\tau_w$, hence:
 
-$$\tau\_w=g\sin\theta(\rho\_l-\rho\_g)\delta$$
+$$\tau_w=g\sin\theta(\rho_l-\rho_g)\delta$$
 
 ### Task IV Results and Discussion
 
 By characterizing the wall shear, we are able to determine a mass-flow relation. The mass-flow rate per unit width of the surface (in the $z$ direction) is computed by integrating the $U$ velocity across the film $\Gamma$:
 
-$$\Gamma=\rho\_l \int\_0^\delta Udy$$
+$$\Gamma=\rho_l \int_0^\delta Udy$$
 
 Using the power-law universal velocity profile:
 
@@ -230,59 +230,59 @@ $$u^+=8.75(y^+)^{1/7}$$
 
 to evaluate the integral and obtain a relation for mass flow $\Gamma$ (per unit width of surface) as a function of wall shear, film thickness and properties:
 
-$$\Gamma=C\_{1.4}\rho \nu \left(\frac{\delta}{\nu/\sqrt{\tau\_w/\rho\_l}}\right)^{n\_{1.4}}$$
+$$\Gamma=C_{1.4}\rho \nu \left(\frac{\delta}{\nu/\sqrt{\tau_w/\rho_l}}\right)^{n_{1.4}}$$
 
 **Task IV. Mass-flow rate relation using the power-law universal velocity profile:**
 
 We compute the mass flow rate per unit width of the surface (in the $z$-direction) as follows:
 
-$$\Gamma=\rho\_l\int\_0^\delta Udy$$
+$$\Gamma=\rho_l\int_0^\delta Udy$$
 
 Using the power-law universal velocity profile:
 
-$$U=u\_\tau 8.75\left(\frac{yu\_\tau}{\nu}\right)^{1/7}$$
+$$U=u_\tau 8.75\left(\frac{yu_\tau}{\nu}\right)^{1/7}$$
 
 Substituting into our mass flow integral yields:
 
-$$\Gamma = 8.75\rho\_l u\_\tau^{8/7}\nu^{-1/7}\int\_0^\delta y^{1/7}dy = 8.75\rho\_l u\_\tau^{8/7}\nu^{-1/7}\cdot \frac{7}{8}\delta^{8/7}$$
+$$\Gamma = 8.75\rho_l u_\tau^{8/7}\nu^{-1/7}\int_0^\delta y^{1/7}dy = 8.75\rho_l u_\tau^{8/7}\nu^{-1/7}\cdot \frac{7}{8}\delta^{8/7}$$
 
-$$\Gamma = 7.65625\rho\_l \nu \left(\frac{\delta}{\nu/\sqrt{\tau\_w/\rho\_l}}\right)^{8/7}$$
+$$\Gamma = 7.65625\rho_l \nu \left(\frac{\delta}{\nu/\sqrt{\tau_w/\rho_l}}\right)^{8/7}$$
 
-where $C\_{1.4}=7.65625$ and $n\_{1.4}=8/7$.
+where $C_{1.4}=7.65625$ and $n_{1.4}=8/7$.
 
 ### Task V Results and Discussion
 
-This task is split into two parts (a) and (b). For part (a), we combine the wall-shear equation and mass-flow equation to eliminate the wall shear and obtain a relation between mass flow per unit width of the surface $\Gamma$, film thickness $\delta$, with $\rho\_l$, $\rho\_g$, $\nu$, $g$, $\theta$ appearing as parameters.
+This task is split into two parts (a) and (b). For part (a), we combine the wall-shear equation and mass-flow equation to eliminate the wall shear and obtain a relation between mass flow per unit width of the surface $\Gamma$, film thickness $\delta$, with $\rho_l$, $\rho_g$, $\nu$, $g$, $\theta$ appearing as parameters.
 
 **Task V.a. Elimination of shear stress:**
 
-Modifying the equation for wall shear and using $u\_\tau=\sqrt{\tau\_w/\rho\_l}$, we get:
+Modifying the equation for wall shear and using $u_\tau=\sqrt{\tau_w/\rho_l}$, we get:
 
-$$u\_\tau=\sqrt{\frac{g\sin\theta(\rho\_l-\rho\_g)}{\rho\_l}}\delta^{1/2}$$
+$$u_\tau=\sqrt{\frac{g\sin\theta(\rho_l-\rho_g)}{\rho_l}}\delta^{1/2}$$
 
 Substituting into the $\Gamma$ equation:
 
-$$\Gamma =7.65625\rho\_l^{3/7}((\rho\_l-\rho\_g)g\sin\theta)^{4/7}\nu^{-1/7}\delta^{12/7}$$
+$$\Gamma =7.65625\rho_l^{3/7}((\rho_l-\rho_g)g\sin\theta)^{4/7}\nu^{-1/7}\delta^{12/7}$$
 
 Rearranging for $\delta$:
 
-$$\delta = \left[\frac{\Gamma}{7.65625\rho\_l^{3/7}((\rho\_l-\rho\_g)g\sin\theta)^{4/7}\nu^{-1/7}}\right]^{7/12}$$
+$$\delta = \left[\frac{\Gamma}{7.65625\rho_l^{3/7}((\rho_l-\rho_g)g\sin\theta)^{4/7}\nu^{-1/7}}\right]^{7/12}$$
 
 **Task V.b. Elimination of $\delta$:**
 
 Part (b) requires us to combine the equations to eliminate $\delta$ and obtain a non-dimensional relation for the heat transfer coefficient having the form:
 
-$$\frac{h}{k}\left(\frac{\nu^2\rho\_l}{g\sin\theta(\rho\_l-\rho\_g)}\right)^{1/3}=C\_{1.5}\mathrm{Pr}^{1/3}\mathrm{Re}^{n\_{1.5}}$$
+$$\frac{h}{k}\left(\frac{\nu^2\rho_l}{g\sin\theta(\rho_l-\rho_g)}\right)^{1/3}=C_{1.5}\mathrm{Pr}^{1/3}\mathrm{Re}^{n_{1.5}}$$
 
 where the Reynolds number $\mathrm{Re}$ is defined as:
 
-$$\mathrm{Re}=\frac{4\Gamma}{\rho\_l \nu}$$
+$$\mathrm{Re}=\frac{4\Gamma}{\rho_l \nu}$$
 
 After detailed algebra (combining the heat transfer coefficient relation, wall-shear expression, and mass-flow relation), we obtain:
 
-$$\frac{h}{k}\left(\frac{\nu^2\rho\_l}{g\sin\theta(\rho\_l-\rho\_g)}\right)^{1/3}=0.0244\mathrm{Pr}^{1/3}\mathrm{Re}^{7/24}$$
+$$\frac{h}{k}\left(\frac{\nu^2\rho_l}{g\sin\theta(\rho_l-\rho_g)}\right)^{1/3}=0.0244\mathrm{Pr}^{1/3}\mathrm{Re}^{7/24}$$
 
-where $C\_{1.5}=0.0244$ and $n\_{1.5}=7/24$.
+where $C_{1.5}=0.0244$ and $n_{1.5}=7/24$.
 
 ## Conclusion (Part 1)
 
@@ -297,7 +297,7 @@ We also looked at simplifying the turbulent boundary layer momentum equation to 
 ## Introduction and Theoretical Background
 
 ![Constant Wall Temperature with Uniform Heat Input](images/151bp3fig2.png)
-*Figure 2: Constant Wall Temperature $T\_w$ with Uniform Heat Input*
+*Figure 2: Constant Wall Temperature $T_w$ with Uniform Heat Input*
 
 The second part of this project introduces us to the use of a physics-inspired neural network (PINN) to solve a convective transport problem for which there are governing partial differential equations and associated boundary conditions. Specifically, this project focuses on the type of fully-developed flow and heat transfer considered in Project 1, but with a completely different approach to determining a solution. The project aims to model fully-developed flow and heat transfer in a channel with a specified cross section, uniform temperature around the perimeter at each axial ($z$) location, and uniform heat transfer input per unit length of the channel.
 
@@ -311,15 +311,15 @@ Note that $w$ is the velocity component in the axial direction of the passage. F
 
 Recall that for fully developed heat transfer with uniform heat addition at the walls:
 
-$$\frac{\partial T}{\partial z}=\frac{dT\_m}{dz} \text{ at all }(x,y) \text{ locations.}$$
+$$\frac{\partial T}{\partial z}=\frac{dT_m}{dz} \text{ at all }(x,y) \text{ locations.}$$
 
 The governing equations can therefore be written as:
 
 $$\frac{\partial^2w}{\partial x^2} + \frac{\partial^2w}{\partial y^2}=\frac{1}{\rho\nu}\frac{dP}{dz}$$
 
-$$\frac{\partial^2T}{\partial x^2}+\frac{\partial^2T}{\partial y^2}=\frac{w}{\alpha}\left(\frac{dT\_m}{dz}\right)$$
+$$\frac{\partial^2T}{\partial x^2}+\frac{\partial^2T}{\partial y^2}=\frac{w}{\alpha}\left(\frac{dT_m}{dz}\right)$$
 
-Here we will consider flow of water in which the right side of the above equations contains a fixed constant or a fixed constant multiplying $w$. In addition, here the parameter units will be expressed in mm instead of meters. The following properties for water are used: $\alpha=0.146\ \mathrm{mm^2/s}$, $\rho=9.97\times10^{-7}\ \mathrm{kg/mm^3}$, $\nu=0.826\ \mathrm{mm^2/s}$, $c\_p=4164\ \mathrm{J/kg^\circ C}$, $k=6.06\times10^{-4}\ \mathrm{W/mm^\circ C}$.
+Here we will consider flow of water in which the right side of the above equations contains a fixed constant or a fixed constant multiplying $w$. In addition, here the parameter units will be expressed in mm instead of meters. The following properties for water are used: $\alpha=0.146\ \mathrm{mm^2/s}$, $\rho=9.97\times10^{-7}\ \mathrm{kg/mm^3}$, $\nu=0.826\ \mathrm{mm^2/s}$, $c_p=4164\ \mathrm{J/kg^\circ C}$, $k=6.06\times10^{-4}\ \mathrm{W/mm^\circ C}$.
 
 And, in mm-based units, the values of the constants are:
 
@@ -385,16 +385,16 @@ First, the boundary conditions were modified so that all wall data points were i
 
 The PINN outputs are reported in millimetres and mm/s. All coordinates and velocities were therefore multiplied by $10^{-3}$ to convert them to metres and m/s. The thermal conductivity supplied for the PINN model is $k = 6.06\times10^{-4}\ \text{W mm}^{-1\ \circ\mathrm{C}^{-1}}$, which corresponds to $k = 0.606\ \text{W m}^{-1\ \circ\mathrm{C}^{-1}}$.
 
-$$\frac{\partial T}{\partial n} = \frac{T\_{\text{int}}-T\_{\text{wall}}}{\Delta n}, \qquad q'' = -k\frac{\partial T}{\partial n}, \qquad \Delta n = 0.5\ \text{mm} = 5\times10^{-4}\ \text{m}$$
+$$\frac{\partial T}{\partial n} = \frac{T_{\text{int}}-T_{\text{wall}}}{\Delta n}, \qquad q'' = -k\frac{\partial T}{\partial n}, \qquad \Delta n = 0.5\ \text{mm} = 5\times10^{-4}\ \text{m}$$
 
-| Wall location | $T\_{\text{wall}}$ (°C) | $T\_{\text{int}}$ (°C) | $\partial T/\partial n$ (°C/m) | $q''$ (kW/m²) |
+| Wall location | $T_{\text{wall}}$ (°C) | $T_{\text{int}}$ (°C) | $\partial T/\partial n$ (°C/m) | $q''$ (kW/m²) |
 |---------------|------------------------|------------------------|-------------------------------|---------------|
 | Long wall center (0 mm, 2.5 mm) | 90.100 | 57.638 | $-6.49\times10^{4}$ | 39.3 |
 | Short wall center (1.5 mm, 0 mm) | 89.755 | 69.047 | $-4.14\times10^{4}$ | 25.1 |
 
-The maximum $w$-velocity predicted by the PINN is $w\_{\max}=79.192\ \text{mm/s}=0.0792\ \text{m/s}$, occurring at the point $(1.5\ \text{mm}, 2.5\ \text{mm})$. The coldest fluid temperature in the dataset is $T\_{\min}=32.267°\text{C}$, found at the same location.
+The maximum $w$-velocity predicted by the PINN is $w_{\max}=79.192\ \text{mm/s}=0.0792\ \text{m/s}$, occurring at the point $(1.5\ \text{mm}, 2.5\ \text{mm})$. The coldest fluid temperature in the dataset is $T_{\min}=32.267°\text{C}$, found at the same location.
 
-| Model | $q''\_{\text{long}}$ (kW/m²) | $q''\_{\text{short}}$ (kW/m²) | Peak $\|w\|$ (m/s) | $T\_{\min}$ (°C) |
+| Model | $q''_{\text{long}}$ (kW/m²) | $q''_{\text{short}}$ (kW/m²) | Peak $\|w\|$ (m/s) | $T_{\min}$ (°C) |
 |-------|------------------------------|-------------------------------|-------------------|-----------------|
 | PINN | 39.3 | 25.1 | 0.0792 | 32.27 |
 | Finite difference | 0.58 | 1.5 | 0.0593 | 79.5 |
@@ -422,7 +422,7 @@ To modify the model for the channel with rounded corners, the code was updated t
 
 The plots seem similar to the rectangular plots; however, on this plot there are noticeable discontinuities at the corners. This makes sense since the corners don't physically exist, so when trying to solve them, the model does not know what to do and diverges at the corners.
 
-| Model | $q''\_{\text{long}}$ (kW/m²) | $q''\_{\text{short}}$ (kW/m²) | Peak $\|w\|$ (m/s) | $T\_{\min}$ (°C) |
+| Model | $q''_{\text{long}}$ (kW/m²) | $q''_{\text{short}}$ (kW/m²) | Peak $\|w\|$ (m/s) | $T_{\min}$ (°C) |
 |-------|------------------------------|-------------------------------|-------------------|-----------------|
 | PINN – rectangular | 39.3 | 25.1 | 0.0792 | 32.27 |
 | PINN – round | 38.8 | 25.0 | 0.0804 | 31.39 |
@@ -433,11 +433,11 @@ It can be seen that the mid-wall heat flux values along with the max and min vel
 
 We use a finite one-sided first-order difference between each wall node and the first interior node ($\Delta n = 5.0\times10^{-4}\ \text{m}$) to approximate the normal temperature gradient:
 
-$$\left.\frac{\partial T}{\partial n}\right|\_{\text{wall}} = \frac{T\_{\text{int}}-T\_{\text{wall}}}{\Delta n}, \qquad q'' = -k\frac{\partial T}{\partial n}, \qquad k = 0.606\ \text{W/m}^{-1}\ °\text{C}^{-1}$$
+$$\left.\frac{\partial T}{\partial n}\right|_{\text{wall}} = \frac{T_{\text{int}}-T_{\text{wall}}}{\Delta n}, \qquad q'' = -k\frac{\partial T}{\partial n}, \qquad k = 0.606\ \text{W/m}^{-1}\ °\text{C}^{-1}$$
 
 **Rectangular Channel Corner Heat Flux:**
 
-| Location (m) | $\Delta n$ (m) | $T\_{\text{wall}}$ (°C) | $T\_{\text{int}}$ (°C) | $\partial T/\partial n$ (°C/m) | $q''$ (kW/m²) |
+| Location (m) | $\Delta n$ (m) | $T_{\text{wall}}$ (°C) | $T_{\text{int}}$ (°C) | $\partial T/\partial n$ (°C/m) | $q''$ (kW/m²) |
 |--------------|----------------|------------------------|------------------------|-------------------------------|---------------|
 | (0.000, 0.0005) | $5.0\times10^{-4}$ | 89.984 | 78.127 | $-2.37\times10^{4}$ | 14.4 |
 | (0.0005, 0.000) | $5.0\times10^{-4}$ | 90.010 | 78.127 | $-2.38\times10^{4}$ | 14.4 |
@@ -446,13 +446,13 @@ Away from the corner, mid-wall regions exhibit much steeper normal gradients (sh
 
 **Rounded Channel Corner Heat Flux:**
 
-| Location (m) | $\Delta n$ (m) | $T\_{\text{wall}}$ (°C) | $T\_{\text{int}}$ (°C) | $\partial T/\partial n$ (°C/m) | $q''$ (kW/m²) |
+| Location (m) | $\Delta n$ (m) | $T_{\text{wall}}$ (°C) | $T_{\text{int}}$ (°C) | $\partial T/\partial n$ (°C/m) | $q''$ (kW/m²) |
 |--------------|----------------|------------------------|------------------------|-------------------------------|---------------|
 | (0.0025, 0.005) | $5.0\times10^{-4}$ | 94.442 | 79.049 | $-3.08\times10^{4}$ | 18.7 |
 | (0.003, 0.0045) | $5.0\times10^{-4}$ | 94.821 | 79.049 | $-3.15\times10^{4}$ | 19.1 |
 | (0.003, 0.005) | $7.071\times10^{-4}$ | 103.858 | 79.049 | $-3.51\times10^{4}$ | 21.3 |
 
-**Note:** The normal gradient at the bend was evaluated with $T\_{\text{wall}}(3.0\ \text{mm}, 5.0\ \text{mm})=103.86°\text{C}$ and the first interior point $T\_{\text{int}}(2.5\ \text{mm}, 4.5\ \text{mm})=79.05°\text{C}$ over a normal spacing $\Delta n = \sqrt{2}\times 0.5\ \text{mm}=0.7071\ \text{mm}=7.071\times 10^{-4}\ \text{m}$.
+**Note:** The normal gradient at the bend was evaluated with $T_{\text{wall}}(3.0\ \text{mm}, 5.0\ \text{mm})=103.86°\text{C}$ and the first interior point $T_{\text{int}}(2.5\ \text{mm}, 4.5\ \text{mm})=79.05°\text{C}$ over a normal spacing $\Delta n = \sqrt{2}\times 0.5\ \text{mm}=0.7071\ \text{mm}=7.071\times 10^{-4}\ \text{m}$.
 
 Based on these results, for two channels of the same nominal length and width, it can be reasonably determined that the **rectangular channel is better at transferring heat**. This can be physically seen by the table in Task II, where the rectangular channel has a greater heat flux and greater minimum interior temperature, meaning it has absorbed more heat from its surroundings. The reasons for this difference is because the rounded channels are actually better at transferring heat in the corners. It can be seen in the two tables in Task III that all values of the rounded geometry near the corner are greater than the rectangular, as the rectangular heat flux at the corner approaches 0. Because of this higher corner heat flux, the rounded geometry has a slightly less heat flux in the straight/middle sections of the walls when compared to rectangular. And because there are significantly more walls than there are corners, the rectangular geometry wins out in terms of being the better channel for facilitating heat transfer.
 

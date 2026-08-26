@@ -1718,10 +1718,8 @@ $$
 \end{bmatrix}
 \begin{bmatrix}
 D_1 \\ D_2 \\ D_3 \\ D_4 \\ D_5 \\ D_6 \\ D_7 \\ D_8 \\ D_9 \\ D_{10} \\ C
-\end{bmatrix}
-\\[1.2em]
-=
-\\[1.2em]
+\end{bmatrix} \\[1.2em]
+{} = {} \\[1.2em]
 \begin{bmatrix}
 -0.1E_1 \\
 h(0.1)\left(\frac{1}{E_2}-\frac{1}{E_1}\right) \\
