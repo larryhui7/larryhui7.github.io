@@ -198,26 +198,26 @@ $$
 \hat{\mathbf{T}}^e(\mathbf{C}):\mathbf{D} = \hat{\mathbf{T}}^e(\mathbf{C}):\frac{1}{2}\mathbf{F}^{-\top} \dot{\mathbf{C}} \mathbf{F}^{-1} = \frac{1}{2} \mathbf{F}^{-1}\hat{\mathbf{T}}^e(\mathbf{C})\mathbf{F}^{-\top}:\dot{\mathbf{C}}
 $$
 
-Defining the Second Piola Stress $\mathbf{T}\_{RR}^{e} = J \mathbf{F}^{-1}\mathbf{T}^{e}\mathbf{F}^{-\top}$, we first show:
+Defining the Second Piola Stress $\mathbf{T}_{RR}^{e} = J \mathbf{F}^{-1}\mathbf{T}^{e}\mathbf{F}^{-\top}$, we first show:
 
 $$
-\mathbf{T}\_{RR}^{e} = J \mathbf{F}^{-1}\mathbf{T}^{e}\mathbf{F}^{-\top} = J \mathbf{F}^{-1}(\mathbf{R}\hat{\mathbf{T}}^{e}(\mathbf{C})\mathbf{R}^\top)\mathbf{F}^{-\top}
+\mathbf{T}_{RR}^{e} = J \mathbf{F}^{-1}\mathbf{T}^{e}\mathbf{F}^{-\top} = J \mathbf{F}^{-1}(\mathbf{R}\hat{\mathbf{T}}^{e}(\mathbf{C})\mathbf{R}^\top)\mathbf{F}^{-\top}
 $$
 
 $$
 = J \mathbf{U}^{-1}\hat{\mathbf{T}}^e(\mathbf{C})\mathbf{U}^{-\top} = \det(\sqrt{\mathbf{C}}) \sqrt{\mathbf{C}}^{-1}\hat{\mathbf{T}}^e(\mathbf{C})\sqrt{\mathbf{C}}^{-\top}
 $$
 
-Hence, $\mathbf{T}\_{RR}^{e} = \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C})$, and we reduce to:
+Hence, $\mathbf{T}_{RR}^{e} = \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C})$, and we reduce to:
 
 $$
-\hat{\mathbf{T}}^{e}(\mathbf{C}):\mathbf{D} = \frac{1}{2} J^{-1} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}):\dot{\mathbf{C}}
+\hat{\mathbf{T}}^{e}(\mathbf{C}):\mathbf{D} = \frac{1}{2} J^{-1} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}):\dot{\mathbf{C}}
 $$
 
 Substituting back and grouping terms according to the independent variables of each function and their contraction:
 
 $$
-\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} + \rho \frac{\partial\hat{\psi}}{\partial \mathbf{D}} : \dot{\mathbf{D}} - \hat{\mathbf{T}}^{v}(\mathbf{D}):\mathbf{D} \leq 0
+\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} + \rho \frac{\partial\hat{\psi}}{\partial \mathbf{D}} : \dot{\mathbf{D}} - \hat{\mathbf{T}}^{v}(\mathbf{D}):\mathbf{D} \leq 0
 $$
 
 We notice that this equation is of the general form that allows us to perform the **Coleman-Noll procedure**:
@@ -235,7 +235,7 @@ $$
 This results in the second law relation simplifying to:
 
 $$
-\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} - \hat{\mathbf{T}}^{v}(\mathbf{D}):\mathbf{D} \leq 0
+\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} - \hat{\mathbf{T}}^{v}(\mathbf{D}):\mathbf{D} \leq 0
 $$
 
 While the Coleman-Noll Procedure allows for the $\dot{\mathbf{D}}$ term to go away, the same can't be said for the viscous and elastic portions of the inequality. Firstly, the elastic and viscous portions are contracted by $\dot{\mathbf{C}}$ and $\mathbf{D}$, respectively. We concluded earlier that $\dot{\mathbf{C}}$ and $\mathbf{D}$ are directly related to each other. This groups the viscous and elastic terms together when attempting the Coleman-Noll procedure. Furthermore, the viscous Cauchy stress is defined as a function of the rate-of-deformation tensor, $\mathbf{D}$. As a result, this makes the procedure not be valid for splitting the viscous and elastic portion. However, there is another trick that can be used. We start by defining the rate of deformation tensor to be the same tensor, just multiplied by an arbitrary, positive scalar. Due to the $\dot{\mathbf{C}}$ and $\mathbf{D}$ tensors being directly related, the same can be done to the $\dot{\mathbf{C}}$ tensor.
@@ -247,45 +247,45 @@ $$
 This updates the second law equation to be as follows:
 
 $$
-\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \right] : \alpha\dot{\mathbf{C}} - \hat{\mathbf{T}}^{v}(\alpha\mathbf{D}):\alpha\mathbf{D} \leq 0
+\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \right] : \alpha\dot{\mathbf{C}} - \hat{\mathbf{T}}^{v}(\alpha\mathbf{D}):\alpha\mathbf{D} \leq 0
 $$
 
 Next, we divide both sides of the inequality by $\alpha$:
 
 $$
-\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} - \hat{\mathbf{T}}^{v}(\alpha\mathbf{D}):\mathbf{D} \leq 0
+\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} - \hat{\mathbf{T}}^{v}(\alpha\mathbf{D}):\mathbf{D} \leq 0
 $$
 
 Now, by taking the limit of the equation as $\alpha$ goes to zero, the only term affected is going to be the $\mathbf{T}^v$ term. We know that when alpha is zero, the constant results in the rate of deformation tensor also approaching zero. Knowing this, we can deduce that if there is no rate of deformation occurring, there will not be a viscous stress. This, as a result, simplifies this case to a hyperelastic model, with the following inequality:
 
 $$
-\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} \leq 0
+\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} \leq 0
 $$
 
-Then we may turn our attention to the bracketed terms as the internal functions are now all functions of solely $\mathbf{C}$ while they are contracted with $\dot{\mathbf{C}}$. We use the identity $\rho = \rho\_{R} J^{-1}$ and define $\psi\_{R} = \rho\_{R} \psi$ such that:
+Then we may turn our attention to the bracketed terms as the internal functions are now all functions of solely $\mathbf{C}$ while they are contracted with $\dot{\mathbf{C}}$. We use the identity $\rho = \rho_{R} J^{-1}$ and define $\psi_{R} = \rho_{R} \psi$ such that:
 
 $$
-\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} = J^{-1} \left[ \frac{\partial\hat{\psi}\_{R}}{\partial \mathbf{C}} - \frac{1}{2} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}}
+\left[ \rho \frac{\partial\hat{\psi}}{\partial \mathbf{C}} - \frac{1}{2} J^{-1} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}} = J^{-1} \left[ \frac{\partial\hat{\psi}_{R}}{\partial \mathbf{C}} - \frac{1}{2} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \right] : \dot{\mathbf{C}}
 $$
 
 As the terms within brackets are entirely independent of $\dot{\mathbf{C}}$, which can be varied arbitrarily, Coleman-Noll requires that the bracketed term is the zero function:
 
 $$
-\frac{\partial\hat{\psi}\_{R}}{\partial \mathbf{C}} - \frac{1}{2} \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) = 0
+\frac{\partial\hat{\psi}_{R}}{\partial \mathbf{C}} - \frac{1}{2} \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) = 0
 $$
 
 $$
-2 \frac{\partial\hat{\psi}\_{R}}{\partial \mathbf{C}} = \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C})
+2 \frac{\partial\hat{\psi}_{R}}{\partial \mathbf{C}} = \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C})
 $$
 
 Transforming back from the Elastic Second Piola Stress to the deformed configuration Cauchy Stress:
 
 $$
-\hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) = J \mathbf{F}^{-1}\hat{\mathbf{T}}^{e}(\mathbf{C})\mathbf{F}^{-\top} = 2 \frac{\partial\hat{\psi}\_{R}}{\partial \mathbf{C}}
+\hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) = J \mathbf{F}^{-1}\hat{\mathbf{T}}^{e}(\mathbf{C})\mathbf{F}^{-\top} = 2 \frac{\partial\hat{\psi}_{R}}{\partial \mathbf{C}}
 $$
 
 $$
-\hat{\mathbf{T}}^{e}(\mathbf{C}) = 2J^{-1}\mathbf{F} \frac{\partial\hat{\psi}\_{R}}{\partial \mathbf{C}}\mathbf{F}^\top
+\hat{\mathbf{T}}^{e}(\mathbf{C}) = 2J^{-1}\mathbf{F} \frac{\partial\hat{\psi}_{R}}{\partial \mathbf{C}}\mathbf{F}^\top
 $$
 
 Now that we have shown both the first two terms must equal zero, we arrive at the final constraint that $-\hat{\mathbf{T}}^v(\mathbf{D}):\mathbf{D} \leq 0$. Our final set of constitutive law restrictions is thus:
@@ -368,14 +368,14 @@ $$
 \mathbf{C}' = (\mathbf{FQ})^\top (\mathbf{FQ}) = \mathbf{Q}^\top \mathbf{F}^\top \mathbf{FQ} = \mathbf{Q}^\top \mathbf{CQ}
 $$
 
-Thus, for $\hat{\psi}\_{R}(\mathbf{C})$:
+Thus, for $\hat{\psi}_{R}(\mathbf{C})$:
 
 $$
-\hat{\psi}\_{R}(\mathbf{C}) = \psi\_{R}(\mathbf{C}')
+\hat{\psi}_{R}(\mathbf{C}) = \psi_{R}(\mathbf{C}')
 $$
 
 $$
-\hat{\psi}\_{R}(\mathbf{C}) = \hat{\psi}\_{R}(\mathbf{Q}^\top \mathbf{CQ}) \; \forall \; \mathbf{Q} \in \mathcal{G}
+\hat{\psi}_{R}(\mathbf{C}) = \hat{\psi}_{R}(\mathbf{Q}^\top \mathbf{CQ}) \; \forall \; \mathbf{Q} \in \mathcal{G}
 $$
 
 And for $\hat{\mathbf{T}}^e(\mathbf{C})$:
@@ -385,7 +385,7 @@ $$
 $$
 
 $$
-\mathbf{Q}^\top \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{C}) \mathbf{Q} = \hat{\mathbf{T}}\_{RR}^{e}(\mathbf{Q}^\top \mathbf{CQ}) \; \forall \; \mathbf{Q} \in \mathcal{G}
+\mathbf{Q}^\top \hat{\mathbf{T}}_{RR}^{e}(\mathbf{C}) \mathbf{Q} = \hat{\mathbf{T}}_{RR}^{e}(\mathbf{Q}^\top \mathbf{CQ}) \; \forall \; \mathbf{Q} \in \mathcal{G}
 $$
 
 For $\hat{\mathbf{T}}^v(\mathbf{D})$, we consider how $\mathbf{D}$ is transformed to $\mathbf{D}'$. We also observe that for a *material* symmetry rotation, $\mathbf{Q}$ does not vary with time, and therefore $\dot{\mathbf{C}}' = \mathbf{Q}^\top\dot{\mathbf{C}}\mathbf{Q}$. Beginning with $\mathbf{D} = \frac{1}{2} \mathbf{F}^{-\top} \dot{\mathbf{C}} \mathbf{F}^{-1}$:
@@ -413,7 +413,7 @@ $$
 $$
 
 $$
-\hat{\mathbf{T}}^{e}(\mathbf{C}) = 2J^{-1}\mathbf{F} \frac{\partial\hat{\psi}\_{R}}{\partial \mathbf{C}}\mathbf{F}^\top
+\hat{\mathbf{T}}^{e}(\mathbf{C}) = 2J^{-1}\mathbf{F} \frac{\partial\hat{\psi}_{R}}{\partial \mathbf{C}}\mathbf{F}^\top
 $$
 
 $$
@@ -613,7 +613,7 @@ The VUMAT implementation follows these key algorithmic steps:
 
 #### 1. Deformation Gradient Extraction
 
-The deformation gradients $\mathbf{F}\_{t}$ (old) and $\mathbf{F}\_{\tau}$ (new) are extracted from ABAQUS arrays and assembled into 3×3 matrices:
+The deformation gradients $\mathbf{F}_{t}$ (old) and $\mathbf{F}_{\tau}$ (new) are extracted from ABAQUS arrays and assembled into 3×3 matrices:
 
 ```fortran
 F_T(1,1) = DEFGRAD_OLD(KM,1)
@@ -629,15 +629,15 @@ F_tau(1,1) = DEFGRAD_NEW(KM,1)
 To compute the rate-of-deformation tensor $\mathbf{D}$, we use a **midpoint approximation** for improved accuracy:
 
 $$
-\mathbf{F}\_{\text{avg}} = \frac{1}{2}(\mathbf{F}\_{\tau} + \mathbf{F}\_{t})
+\mathbf{F}_{\text{avg}} = \frac{1}{2}(\mathbf{F}_{\tau} + \mathbf{F}_{t})
 $$
 
 $$
-\mathbf{L}\_{\text{inc}} = (\mathbf{F}\_{\tau} - \mathbf{F}\_{t}) \cdot \mathbf{F}\_{\text{avg}}^{-1}
+\mathbf{L}_{\text{inc}} = (\mathbf{F}_{\tau} - \mathbf{F}_{t}) \cdot \mathbf{F}_{\text{avg}}^{-1}
 $$
 
 $$
-\mathbf{D}\_{\text{inc}} = \frac{1}{2}(\mathbf{L}\_{\text{inc}} + \mathbf{L}\_{\text{inc}}^\top)
+\mathbf{D}_{\text{inc}} = \frac{1}{2}(\mathbf{L}_{\text{inc}} + \mathbf{L}_{\text{inc}}^\top)
 $$
 
 ```fortran
@@ -668,11 +668,11 @@ Dinc = 0.5d0 * (Linc + transpose(Linc))
 The elastic logarithmic (Hencky) strain is computed via spectral decomposition of the right Cauchy-Green tensor:
 
 $$
-\mathbf{C} = \mathbf{F}^\top \mathbf{F} = \sum\_{i=1}^{3} \lambda\_{i}^{2} \, \mathbf{n}\_{i} \otimes \mathbf{n}\_{i}
+\mathbf{C} = \mathbf{F}^\top \mathbf{F} = \sum_{i=1}^{3} \lambda_{i}^{2} \, \mathbf{n}_{i} \otimes \mathbf{n}_{i}
 $$
 
 $$
-\mathbf{E}\_{e} = \frac{1}{2} \ln \mathbf{C} = \sum\_{i=1}^{3} \ln(\lambda\_{i}) \, \mathbf{n}\_{i} \otimes \mathbf{n}\_{i}
+\mathbf{E}_{e} = \frac{1}{2} \ln \mathbf{C} = \sum_{i=1}^{3} \ln(\lambda_{i}) \, \mathbf{n}_{i} \otimes \mathbf{n}_{i}
 $$
 
 ```fortran
@@ -688,10 +688,10 @@ Ee = matmul(matmul(eigvecs,
 The elastic portion follows a Neo-Hookean hyperelastic model:
 
 $$
-\mathbf{T}^{e} = \frac{1}{J} \mathbf{R}\_{e} \left( 2\mu \, \mathbf{E}\_{e}^{0} + \kappa \, \text{tr}(\mathbf{E}\_{e}) \, \mathbf{1} \right) \mathbf{R}\_{e}^\top
+\mathbf{T}^{e} = \frac{1}{J} \mathbf{R}_{e} \left( 2\mu \, \mathbf{E}_{e}^{0} + \kappa \, \text{tr}(\mathbf{E}_{e}) \, \mathbf{1} \right) \mathbf{R}_{e}^\top
 $$
 
-where $\mathbf{E}\_{e}^{0}$ is the deviatoric part of the elastic strain.
+where $\mathbf{E}_{e}^{0}$ is the deviatoric part of the elastic strain.
 
 ```fortran
 tr_Ee = Ee(1,1) + Ee(2,2) + Ee(3,3)
@@ -706,11 +706,11 @@ Te_0 = 2.d0 * mu * Ee0
 The viscous stress is updated incrementally based on the derived constitutive law:
 
 $$
-\Delta \mathbf{T}^{v} = 2\mu\_{v} \, \mathbf{D}\_{\text{inc}}^{0} + \kappa\_{v} \, \text{tr}(\mathbf{D}\_{\text{inc}}) \, \mathbf{1}
+\Delta \mathbf{T}^{v} = 2\mu_{v} \, \mathbf{D}_{\text{inc}}^{0} + \kappa_{v} \, \text{tr}(\mathbf{D}_{\text{inc}}) \, \mathbf{1}
 $$
 
 $$
-\mathbf{T}^{v}\_{\tau} = \mathbf{T}^{v}\_{t} + \Delta \mathbf{T}^{v}
+\mathbf{T}^{v}_{\tau} = \mathbf{T}^{v}_{t} + \Delta \mathbf{T}^{v}
 $$
 
 ```fortran
