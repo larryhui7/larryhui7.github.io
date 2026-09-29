@@ -1,0 +1,30 @@
+/* Figures and interactive animations for /projects/air-hockey-robot/ */
+.ahr-fig { margin: 1.75rem 0; }
+.ahr-fig svg { display: block; width: 100%; height: auto; color: var(--primary); font-family: inherit; }
+.ahr-fig svg text { fill: currentColor; }
+.ahr-cap { text-align: center; font-style: italic; color: var(--secondary); font-size: 0.9em; margin-top: 0.5rem; line-height: 1.45; }
+
+.ahr-demo { border: 1px solid var(--border); border-radius: 8px; background: var(--entry); overflow: hidden; }
+.ahr-demo canvas { display: block; width: 100%; touch-action: none; user-select: none; -webkit-user-select: none; }
+.ahr-controls { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; align-items: center; padding: 0.55rem 0.8rem; border-top: 1px solid var(--border); font-size: 0.82em; color: var(--secondary); }
+.ahr-controls label { display: inline-flex; align-items: center; gap: 0.45rem; margin: 0; }
+.ahr-controls input[type="range"] { width: 120px; accent-color: #2563eb; margin: 0; }
+.ahr-controls output { font-variant-numeric: tabular-nums; color: var(--primary); min-width: 3.2em; }
+.ahr-controls button { font: inherit; color: var(--primary); background: var(--theme); border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.7rem; cursor: pointer; }
+.ahr-controls button:hover { border-color: var(--secondary); }
+.ahr-controls .ahr-hint { margin-left: auto; font-style: italic; }
+
+/* Pipeline diagram */
+@keyframes ahr-flow { to { stroke-dashoffset: -18; } }
+.ahr-flow { stroke-dasharray: 6 3; animation: ahr-flow 0.9s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .ahr-flow { animation: none; } }
+
+/* State machine: the game simulation highlights the active node */
+.hsd-node rect { fill: var(--entry); stroke: currentColor; stroke-width: 1.3; transition: fill 0.15s, stroke 0.15s, stroke-width 0.15s; }
+.hsd-node.active rect { stroke-width: 2.6; }
+.hsd-node.active[data-hsd="IDLE"] rect { fill: rgba(100, 116, 139, 0.22); stroke: #64748b; }
+.hsd-node.active[data-hsd="DEFEND"] rect { fill: rgba(37, 99, 235, 0.18); stroke: #2563eb; }
+.hsd-node.active[data-hsd="STRIKE"] rect { fill: rgba(220, 38, 38, 0.16); stroke: #dc2626; }
+.hsd-node.active[data-hsd="RECOVER"] rect { fill: rgba(8, 145, 178, 0.18); stroke: #0891b2; }
+
+.ahr-guards table { font-size: 0.9em; }
