@@ -3,7 +3,7 @@ title: "Cable-Actuated Air Hockey Robot"
 date: 2026-05-01
 draft: false
 author: ["Thomas Yu", "Athul Krishnan", "Eric Yamaguchi", "Larry Hui"]
-tags: ["robotics", "mechatronics", "cable-driven", "BLDC", "computer vision", "EKF", "MPC", "trajectory planning", "CoreXY", "moteus", "Jetson", "ME 102B"]
+tags: ["robotics", "mechatronics", "cable-driven", "BLDC", "computer vision", "EKF", "MPC", "trajectory planning", "reinforcement learning", "PPO", "Q-learning", "CoreXY", "moteus", "Jetson", "ME 102B"]
 description: "ME 102B final project — a cable-driven air hockey robot using four BLDC motors at the corners of a parallel-cable workspace, with overhead vision, EKF tracking, and quintic-spline MPC for defense and attack."
 summary: "A four-cable parallel robot for air hockey. Four corner-mounted MJ5208 BLDC motors tension cables that meet at the mallet; an overhead camera + EKF tracks puck and mallet; a naive MPC plans quintic-spline strikes."
 showToc: true
@@ -55,7 +55,7 @@ The robot occupies one half of the table. Four corner-mounted BLDC motors each d
 | Simulation correlation | Predicted shot paths score in real life | Real-time tracking works; correlation not quantitatively measured |
 | Drive system | 4× BLDC with belt reduction | 4× BLDC, 1:1 transmission |
 | Sensing | Camera + motor encoders | Single overhead camera + encoders, fused via EKF |
-| Control strategy | RL agent for mallet placement | Naive MPC with quintic-spline trajectories (RL did not tune in time) |
+| Control strategy | RL agent for mallet placement | Naive MPC with quintic-spline trajectories on hardware (RL did not tune in time; Q-learning and PPO agents were later trained in simulation, see [below](#reinforcement-learning-in-simulation)) |
 
 The largest gap was strike velocity: tuning the cable-drive loop above ~800 mm/s exposed cable-slack and tension-tracking issues that we never fully resolved in the project window.
 
@@ -403,6 +403,163 @@ The full FSM and game-control code lives on GitHub: [`https://github.com/thomasz
 
 ---
 
+## Reinforcement Learning in Simulation
+
+Our original spec called for an RL agent to place the mallet, but we shipped the naive MPC instead because the RL player did not tune in time. After the course I went back to it. I built a simulator from the robot's own calibration and trained two agents: **tabular Q-learning** as the naive baseline, and **PPO** (Proximal Policy Optimization). Everything in this section runs in simulation. Both policies are wired into the robot code behind a flag, but neither has been run on hardware yet.
+
+<iframe src="/me102b/rl_sim.html#embed" title="Air hockey RL replay" loading="lazy" style="width: 100%; height: 620px; border: 0;"></iframe>
+<p style="text-align: center; font-style: italic; color: var(--secondary);">Interactive replay: 30-second rallies against a scripted shooter. The robot defends the left goal (orange mallet, arrow = chosen action). Switch between PPO, Q-learning, and a hand-coded goalie. <a href="/me102b/rl_sim.html">Open full screen</a> for the sweep tables and curves.</p>
+
+### The Simulator
+
+The sim is a vectorized 2D model written in NumPy that runs 512 tables in parallel. Table geometry is loaded from the same `table_calibration.json` and `config.py` the real robot uses:
+
+| Quantity | Value |
+| :--- | :--- |
+| Puck-center range | $x \in [-407, 419]$ mm, $y \in [-217, 204]$ mm |
+| Goal mouth | $\lvert y \rvert < 80$ mm at each end wall |
+| Safe mallet workspace | $x \in [-381, -101]$ mm, $y \in [-212, 195]$ mm (corners inset 80 mm) |
+| Defense line | $x = -262$ mm |
+| Physics tick / decision rate | $\Delta t = 10$ ms / one action every 3 ticks (~33 Hz) |
+
+**Puck.** The puck flies with light air drag, $\mathbf{v}_{k+1} = (1 - c_d \Delta t)\,\mathbf{v}_k$ with $c_d = 0.15\ \text{s}^{-1}$. It reflects off the walls with restitution $e_w = 0.9$ unless it crosses an end wall inside the goal mouth. The mallet is treated as infinitely massive. When the puck overlaps it ($\lVert \mathbf{p} - \mathbf{m} \rVert < r_p + r_m = 55$ mm), the puck is pushed back to contact and receives the normal impulse
+
+$$
+\mathbf{v}^{+} = \mathbf{v} - (1 + e_m)\,\min\!\big(0,\ (\mathbf{v} - \dot{\mathbf{m}})\cdot\hat{\mathbf{n}}\big)\,\hat{\mathbf{n}}, \qquad \hat{\mathbf{n}} = \frac{\mathbf{p} - \mathbf{m}}{\lVert \mathbf{p} - \mathbf{m} \rVert},\quad e_m = 0.7
+$$
+
+**Mallet.** The policy picks one of 10 discrete actions: hold, one of 8 compass directions at $v_{\max} = 700$ mm/s, or "home" (a P-controller back to the defense spot). The mallet tracks the desired velocity $\mathbf{v}^\star$ under an acceleration limit, which stands in for the cable drive:
+
+$$
+\dot{\mathbf{m}}_{k+1} = \dot{\mathbf{m}}_k + \operatorname{sat}_{a_{\max}\Delta t}\!\big(\mathbf{v}^\star - \dot{\mathbf{m}}_k\big), \qquad a_{\max} = 5000\ \text{mm/s}^2
+$$
+
+The new position is then clamped to the safe workspace.
+
+**Opponent.** A scripted shooter fires from the far half at 300–1100 mm/s, aiming anywhere within $\pm 1.4\times$ the goal half-width, so some shots miss on their own. 30% of shots are bank shots, aimed at the mirror image of the goal across a side wall. Another 15% are slow drifters (80–250 mm/s) that the robot should go and attack.
+
+**Reward.** An episode is one shot:
+
+| Event | Reward |
+| :--- | ---: |
+| Robot scores | $+1$ |
+| Robot concedes | $-1$ |
+| Puck cleared to the far wall without a goal | $+0.3$ |
+| First contact with the puck | $+0.1$ |
+| 5 s timeout with the puck still on our half ("stalled") | $-0.3$ |
+| Every decision step | $-0.002$ |
+
+For tuning, I scored every policy on a fixed set of evaluation shots with $J = P(\text{score}) + 0.3\,P(\text{clear}) - P(\text{concede})$.
+
+### Method 1: Tabular Q-Learning
+
+Q-learning estimates the optimal action-value function, which satisfies the Bellman optimality equation
+
+$$
+Q^\star(s, a) = \mathbb{E}\left[\, r + \gamma \max_{a'} Q^\star(s', a') \;\middle|\; s, a \right]
+$$
+
+The "naive" part is the state: a lookup table over coarse, mallet-relative bins. $\phi(s)$ discretizes the puck's offset from the mallet $(\Delta x, \Delta y)$ into 7 × 7 bins, puck $v_x$ into 5 bins (fast incoming → moving away), puck $v_y$ into 3, and the mallet's own position into a 3 × 3 grid. That gives $7 \cdot 7 \cdot 5 \cdot 3 \cdot 3 \cdot 3 = 6{,}615$ states × 10 actions, and training visited 6,074 of the states. Actions are ε-greedy, with ε decaying linearly from 1.0 to 0.05. The update is one-step TD:
+
+$$
+Q(s, a) \leftarrow Q(s, a) + \alpha \Big[\, r + \gamma\,(1 - d)\max_{a'} Q(s', a') - Q(s, a) \Big]
+$$
+
+where $d$ flags a terminal transition. With 512 tables stepping at once, many transitions in a batch land in the same $(s, a)$ cell. Summing their updates would overshoot, so the batch applies the *mean* TD error per cell:
+
+$$
+Q(s,a) \leftarrow Q(s,a) + \alpha \cdot \frac{1}{\lvert B_{s,a} \rvert} \sum_{i \in B_{s,a}} \delta_i
+$$
+
+**Sweep.** I trained 8 configurations for 25,000 decision steps each (× 512 tables), then retrained the best one for 80,000 steps:
+
+| $\alpha$ | $\gamma$ | ε-decay fraction | $J$ | Saves | Scored | Stalled |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **0.05** | **0.99** | **0.8** | **+0.392** | **94.8%** | **30.1%** | **17.0%** |
+| 0.05 | 0.95 | 0.4 | +0.339 | 91.7% | 28.5% | 17.7% |
+| 0.05 | 0.95 | 0.8 | +0.324 | 89.8% | 28.2% | 13.6% |
+| 0.2 | 0.99 | 0.4 | +0.316 | 89.6% | 28.2% | 15.5% |
+| 0.2 | 0.95 | 0.4 | +0.303 | 88.3% | 28.1% | 13.7% |
+| 0.05 | 0.99 | 0.4 | +0.296 | 87.8% | 27.2% | 12.1% |
+| 0.2 | 0.95 | 0.8 | +0.206 | 81.3% | 26.8% | 12.8% |
+| 0.2 | 0.99 | 0.8 | +0.158 | 79.5% | 24.8% | 16.2% |
+
+The smaller learning rate took the top three spots, and the two worst runs both paired $\alpha = 0.2$ with the long exploration schedule. With 512 tables writing into one Q-table, a large step size makes the estimates noisy, and a long stretch of mostly random play feeds that noise.
+
+### Method 2: PPO
+
+PPO replaces the table with two small networks. Both are 64 × 64 tanh MLPs with orthogonal initialization and read a continuous 10-D observation: puck position, puck velocity, mallet position, mallet velocity, and the puck-minus-mallet offset, each scaled to roughly unit range. The actor $\pi_\theta(a \mid s)$ outputs a categorical distribution over the same 10 actions, so it drops into the robot the same way as the Q-table. The critic $V_\psi(s)$ estimates the value of a state.
+
+Each iteration rolls out 64 steps on all 512 tables (32,768 transitions), then computes advantages with Generalized Advantage Estimation:
+
+$$
+\delta_t = r_t + \gamma (1 - d_t)\, V_\psi(s_{t+1}) - V_\psi(s_t), \qquad
+\hat{A}_t = \sum_{l \ge 0} (\gamma \lambda)^l\, \delta_{t+l}
+$$
+
+The policy is updated with the clipped surrogate objective, where $\rho_t$ is the probability ratio between the new and old policy:
+
+$$
+\rho_t(\theta) = \frac{\pi_\theta(a_t \mid s_t)}{\pi_{\theta_\text{old}}(a_t \mid s_t)}, \qquad
+L^{\text{CLIP}}(\theta) = \mathbb{E}_t\Big[ \min\big( \rho_t \hat{A}_t,\ \operatorname{clip}(\rho_t, 1 - \epsilon, 1 + \epsilon)\,\hat{A}_t \big) \Big]
+$$
+
+The full minimized loss adds a value regression term and an entropy bonus that keeps exploration alive:
+
+$$
+\mathcal{L}(\theta, \psi) = -L^{\text{CLIP}}(\theta) + c_v\, \mathbb{E}_t\Big[\tfrac{1}{2}\big(V_\psi(s_t) - \hat{R}_t\big)^2\Big] - c_e\, \mathbb{E}_t\big[\mathcal{H}[\pi_\theta(\cdot \mid s_t)]\big], \qquad \hat{R}_t = \hat{A}_t + V_\psi(s_t)
+$$
+
+Fixed settings: $\gamma = 0.99$, $\lambda = 0.95$, $\epsilon = 0.2$, $c_v = 0.5$, 4 epochs over minibatches of 4,096, advantages normalized per minibatch, gradient norm clipped at 0.5, and Adam with a linearly annealed learning rate.
+
+**Sweep.** I ran 4 configurations for 150 iterations each, then retrained the best one for 500 iterations (~2 minutes on a laptop CPU):
+
+| Learning rate | Entropy coef $c_e$ | $J$ | Saves | Scored | Stalled |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| **1e-3** | **0.003** | **+0.803** | **99.1%** | **74.2%** | **1.4%** |
+| 1e-3 | 0.02 | +0.729 | 98.2% | 67.0% | 5.8% |
+| 3e-4 | 0.003 | +0.548 | 98.3% | 39.0% | 1.1% |
+| 3e-4 | 0.02 | +0.479 | 97.5% | 34.9% | 11.1% |
+
+### Results
+
+Each policy was evaluated greedily (always taking its best action) on the same 10,000 held-out shots. The hand-coded goalie is a simplified version of our DEFEND logic: sit on the defense line at the predicted intercept and poke slow pucks forward.
+
+![Outcome comparison](images/rl_outcomes.png)
+*Figure 8: Where each shot ends up. Right column is save rate.*
+
+| Player | $J$ | Saves | Scored | Cleared | Stalled | Conceded |
+| :--- | ---: | ---: | ---: | ---: | ---: | ---: |
+| **PPO** | **+0.870** | **99.6%** | **82.7%** | 15.9% | 1.0% | 0.4% |
+| Tabular Q-learning | +0.377 | 93.9% | 29.1% | 49.2% | 15.6% | 6.1% |
+| Hand-coded goalie | +0.453 | 100.0% | 29.9% | 51.4% | 18.7% | 0.0% |
+| Random | −0.205 | 62.0% | 11.3% | 20.7% | 29.9% | 38.0% |
+
+![Training curves](images/rl_training_curves.png)
+*Figure 9: Outcome rates during training, including exploration. Left: Q-learning (ε-greedy). Right: PPO (sampling from the policy).*
+
+**What the numbers say.**
+
+- **Q-learning learns to defend but not to aim.** It went from random play (38% conceded) to 94% saves, and it scores at about the same rate as the hand-coded goalie. With 7 × 7 position bins it cannot tell a shot that will go in from one that will hit the post, so it mostly just clears the puck. It also leaves the puck stalled on its own half 16% of the time, because the table has no velocity state for the mallet and no fine position information near the puck.
+- **PPO learns to aim.** With continuous inputs and mallet velocity, it lines up angled shots and bank shots into the goal. By about 10,000 rollout steps it scores on roughly three-quarters of shots, and it almost never stalls. In the 30-second replays, where the shooter returns every puck that is not already on target, PPO scores 8 to 13 goals per rally, against 0 to 5 for the other two players.
+
+**Caveats.**
+
+- **The shooter never defends during training.** PPO's 83% scoring rate is against an open net. A real opponent, or self-play, will cut it substantially.
+- **This is simulation only.** The contact model, cable dynamics, camera latency, and puck tracking noise are all idealized. A policy this precise may be more sensitive to those gaps than the coarse Q-table is.
+
+### Deploying the Policy
+
+Both policies share one module (`rl_core.py`) with the simulator: geometry, state encoding, action set, and mallet model. That way training and deployment cannot drift apart. The PPO actor is exported as plain NumPy weights, so the Jetson runs the forward pass without PyTorch. On the robot, `rl_player.py` picks an action every 3 ticks and integrates the same acceleration-limited model to produce a smooth position and velocity command. The command then goes through the existing inverse kinematics and cable Jacobian. To keep the open-loop command from running away from a lagging cable drive, it is leashed to the EKF mallet estimate $\hat{\mathbf{m}}$:
+
+$$
+\mathbf{m}_\text{cmd} \leftarrow \hat{\mathbf{m}} + (\mathbf{m}_\text{cmd} - \hat{\mathbf{m}}) \cdot \min\!\left(1,\ \frac{80\ \text{mm}}{\lVert \mathbf{m}_\text{cmd} - \hat{\mathbf{m}} \rVert}\right)
+$$
+
+Setting `RL_POLICY = 'ppo'` (or `'q'`) in `air_hockey_player.py` swaps the learned player in for `decide_strategy`. The natural next steps are to test on the table, train against a defending opponent or through self-play, and add domain randomization over restitution, latency, and tracking noise.
+
+---
+
 ## Reflection
 
 ### What Worked Well
@@ -422,22 +579,22 @@ The other change is a **better cable tension detection and maintenance system**.
 ### CAD Renderings
 
 ![Full robot CAD render](images/Full_Robot_CAD_Rendered.png)
-*Figure 8: Full robot — rendered CAD model of the integrated system.*
+*Figure 10: Full robot — rendered CAD model of the integrated system.*
 
 ![Frame CAD render](images/Frame_CAD_Rendered.png)
-*Figure 9: 80/20 aluminum-extrusion frame — rendered CAD model.*
+*Figure 11: 80/20 aluminum-extrusion frame — rendered CAD model.*
 
 ![Corner assembly CAD render — isometric](images/Corner_Assembly_CAD_Rendered_ISOMETRIC.png)
-*Figure 10: Corner assembly — isometric CAD view (motor, spool, tensioner, pulley).*
+*Figure 12: Corner assembly — isometric CAD view (motor, spool, tensioner, pulley).*
 
 ![Corner assembly CAD render — top](images/Corner_Assembly_CAD_Rendered_TOP.png)
-*Figure 11: Corner assembly — top CAD view.*
+*Figure 13: Corner assembly — top CAD view.*
 
 ![Camera subassembly CAD render — view 1](images/Camera_Subassembly_CAD_VIEW1_Rendered.png)
-*Figure 12: Overhead camera mounting subassembly — CAD view 1.*
+*Figure 14: Overhead camera mounting subassembly — CAD view 1.*
 
 ![Camera subassembly CAD render — view 2](images/Camera_Subassembly_CAD_VIEW2_Rendered.png)
-*Figure 13: Overhead camera mounting subassembly — CAD view 2.*
+*Figure 15: Overhead camera mounting subassembly — CAD view 2.*
 
 ### Videos
 
