@@ -1,6 +1,7 @@
 ---
 title: "Pixel Mirror: Real-time Multitasking and Virtual Gloving"
 date: 2026-05-14
+weight: 2
 draft: false
 author: ["Larry Hui", "Steph Akakabota", "Kyle Nelson", "Wen Cao"]
 tags: ["computer vision", "YOLOv8", "MediaPipe", "ESP32", "HUB75", "LED panel", "PyQt6", "embedded systems", "real-time", "serial protocol", "UART", "mechatronics"]

@@ -1,6 +1,7 @@
 ---
 title: "Cable-Actuated Air Hockey Robot"
 date: 2026-05-01
+weight: 1
 draft: false
 author: ["Thomas Yu", "Athul Krishnan", "Larry Hui","Eric Yamaguchi"]
 tags: ["robotics", "mechatronics", "cable-driven", "BLDC", "computer vision", "EKF", "MPC", "trajectory planning", "reinforcement learning", "PPO", "Q-learning", "CoreXY", "moteus", "Jetson", "ME 102B"]
