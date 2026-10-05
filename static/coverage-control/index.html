@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Coverage Control for Mobile Sensing Networks</title>
+    <link rel="stylesheet" href="vendor/katex/katex.min.css">
+    <script src="vendor/katex/katex.min.js"></script>
+    <script src="vendor/katex/auto-render.min.js"></script>
+    <style>
+        :root {
+            --bg: #282b38;
+            --panel: #2f3445;
+            --field: #343a4d;
+            --line: #474e63;
+            --ink: #e6e9ef;
+            --muted: #9aa3b5;
+            --accent: #5ec8e5;
+            --accent-ink: #1d2330;
+            --coral: #ef7f5c;
+            --domain: #23262f
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: var(--bg);
+            font: 14px/1.5 "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif
+        }
+
+        button,
+        input,
+        select {
+            font: inherit
+        }
+
+        button,
+        select {
+            cursor: pointer
+        }
+
+        button {
+            border: 1px solid #6b7389;
+            border-radius: 4px;
+            padding: 8px 14px;
+            background: var(--panel);
+            color: var(--ink);
+            font-weight: 600;
+            font-size: 13px
+        }
+
+        button:hover {
+            border-color: var(--accent);
+            color: #fff
+        }
+
+        button:disabled {
+            opacity: .4;
+            cursor: wait
+        }
+
+        button.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--accent-ink)
+        }
+
+        button.primary:hover {
+            color: var(--accent-ink)
+        }
+
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: var(--panel);
+            padding: 18px 28px;
+            border-bottom: 1px solid #22252f
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 600;
+            color: #fff
+        }
+
+        header .credit {
+            color: var(--muted);
+            font-size: 12px;
+            text-align: right;
+            line-height: 1.5
+        }
+
+        .shell {
+            display: grid;
+            grid-template-columns: 230px minmax(450px, 1fr) 290px;
+            min-height: calc(100vh - 80px)
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: auto;
+            padding: 18px 14px;
+            border-right: 1px solid var(--line)
+        }
+
+        .navgroup {
+            margin: 18px 8px 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted)
+        }
+
+        .navgroup:first-child {
+            margin-top: 0
+        }
+
+        .navbutton {
+            display: block;
+            text-align: left;
+            width: 100%;
+            border: 0;
+            background: none;
+            color: #c9cfdb;
+            border-radius: 0;
+            font-size: 13px;
+            font-weight: 400;
+            padding: 6px 8px;
+            margin: 1px 0
+        }
+
+        .navbutton:hover {
+            background: none;
+            color: #fff
+        }
+
+        .navbutton.active {
+            background: none;
+            color: var(--accent);
+            font-weight: 600
+        }
+
+        main {
+            padding: 24px 28px 36px;
+            min-width: 0
+        }
+
+        .eyebrow {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.25;
+            margin: 4px 0 10px;
+            color: #fff
+        }
+
+        #description {
+            font-size: 14px;
+            color: #c3c9d5;
+            margin: 0 0 14px;
+            max-width: 860px
+        }
+
+        .formula {
+            background: var(--panel);
+            border-left: 3px solid var(--accent);
+            border-right: 3px solid var(--accent);
+            padding: 4px 16px;
+            border-radius: 0;
+            overflow-x: auto;
+            overflow-y: hidden
+        }
+
+        .formula .katex-display {
+            margin: .7em 0
+        }
+
+        .formula .katex {
+            font-size: 1.3em
+        }
+
+        .katex {
+            font-size: 1.08em
+        }
+
+        .card {
+            background: var(--panel);
+            border-radius: 4px
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 18px 0 12px
+        }
+
+        .toolbar .push {
+            margin-left: auto
+        }
+
+        .pill {
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            color: var(--accent);
+            padding: 3px 10px;
+            font-size: 12px
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 10px
+        }
+
+        .step {
+            font-size: 12px;
+            padding: 7px 5px;
+            background: var(--panel);
+            color: var(--muted);
+            text-align: center;
+            border-bottom: 2px solid transparent
+        }
+
+        .step.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent)
+        }
+
+        .step b {
+            margin-right: 5px
+        }
+
+        .viz {
+            padding: 12px 14px 10px;
+            position: relative
+        }
+
+        #world.zoomed {
+            cursor: grab
+        }
+
+        #world.dragging {
+            cursor: grabbing
+        }
+
+        #resetZoom {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            font-size: 12px;
+            padding: 5px 10px
+        }
+
+        #resetZoom[hidden] {
+            display: none
+        }
+
+        #world {
+            width: 100%;
+            height: 440px;
+            display: block;
+            touch-action: none
+        }
+
+        .legend {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            font-size: 12px;
+            color: var(--muted);
+            margin: 2px 4px 4px
+        }
+
+        .legend span {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        .dot {
+            width: 9px;
+            height: 9px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: inline-block
+        }
+
+        .cross {
+            font-weight: 900;
+            color: var(--coral);
+            font-size: 15px
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 1fr 1fr;
+            gap: 8px
+        }
+
+        .metric {
+            padding: 12px 14px;
+            background: var(--panel);
+            border-radius: 4px
+        }
+
+        .metric label {
+            font-size: 12px;
+            color: var(--muted);
+            display: block
+        }
+
+        .metric strong {
+            display: block;
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 2px;
+            font-variant-numeric: tabular-nums;
+            color: #fff
+        }
+
+        .underplot {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 12px;
+            margin-top: 12px
+        }
+
+        .smallcard {
+            padding: 13px 15px
+        }
+
+        .smalltitle {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 6px
+        }
+
+        #chart {
+            display: block;
+            width: 100%;
+            height: 125px
+        }
+
+        .notice {
+            display: none;
+            padding: 11px 14px;
+            margin: 12px 0;
+            border: 1px solid #b88a3e;
+            border-radius: 4px;
+            background: #3d3526;
+            color: #f1dcb3;
+            font-size: 13px
+        }
+
+        .notice.show {
+            display: block
+        }
+
+        .error {
+            background: #43292a;
+            border-color: #c96a5c;
+            color: #f6c6bc
+        }
+
+        aside {
+            padding: 22px 20px;
+            border-left: 1px solid var(--line);
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow: auto
+        }
+
+        .paneltitle {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #fff
+        }
+
+        .control {
+            margin-bottom: 12px
+        }
+
+        .control label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #c9cfdb;
+            margin-bottom: 5px
+        }
+
+        .control select,
+        .control input[type=number] {
+            width: 100%;
+            border: 1px solid #6b7389;
+            border-radius: 4px;
+            background: var(--field);
+            color: var(--ink);
+            padding: 7px 9px;
+            font-size: 13px
+        }
+
+        .control input[type=range] {
+            width: 100%;
+            accent-color: var(--accent)
+        }
+
+        .control label.plain {
+            display: block
+        }
+
+        .control output {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--ink)
+        }
+
+        .sectionline {
+            border-top: 1px solid var(--line);
+            padding-top: 18px;
+            margin-top: 18px
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--muted);
+            margin: 7px 0;
+            line-height: 1.55
+        }
+
+        .toggles {
+            margin-bottom: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            font-size: 13px;
+            gap: 7px;
+            color: #c9cfdb
+        }
+
+        .toggles label {
+            display: flex;
+            align-items: center;
+            gap: 5px
+        }
+
+        .toggles input {
+            accent-color: var(--accent)
+        }
+
+        #apply {
+            width: 100%;
+            margin-top: 5px
+        }
+
+        .dirty {
+            color: var(--coral)
+        }
+
+        details {
+            margin-top: 12px
+        }
+
+        summary {
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        #inspector {
+            font-size: 12px;
+            line-height: 1.8;
+            margin-top: 9px
+        }
+
+        .kv {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            border-bottom: 1px solid var(--line);
+            padding: 2px 0
+        }
+
+        .kv>span:first-child {
+            color: #c9cfdb
+        }
+
+        .kv>span:last-child {
+            font-family: ui-monospace, SFMono-Regular, monospace;
+            text-align: right
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px;
+            margin-top: 8px
+        }
+
+        th {
+            text-align: left;
+            color: var(--muted);
+            font-weight: 600
+        }
+
+        td,
+        th {
+            padding: 4px 3px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .trigger {
+            background: #4a3d24
+        }
+
+        .agentbar {
+            display: flex;
+            gap: 3px;
+            margin: 6px 0;
+            flex-wrap: wrap
+        }
+
+        .agentbar span {
+            width: 18px;
+            height: 18px;
+            font-size: 9px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--line);
+            background: var(--field);
+            border-radius: 3px
+        }
+
+        .agentbar span.on {
+            background: #2c6a5f;
+            border-color: #5fc7a8
+        }
+
+        @media(min-width:1550px) {
+            #world {
+                height: 500px
+            }
+
+            main {
+                padding-left: 36px;
+                padding-right: 36px
+            }
+        }
+
+        @media(max-width:1180px) {
+            .shell {
+                grid-template-columns: 210px minmax(400px, 1fr)
+            }
+
+            aside {
+                grid-column: 2;
+                height: auto;
+                position: static;
+                border-left: 0;
+                border-top: 1px solid var(--line)
+            }
+
+            nav {
+                grid-row: 1/3
+            }
+
+            main {
+                padding: 22px 18px
+            }
+
+            #world {
+                height: 420px
+            }
+
+            #controls {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0 20px
+            }
+        }
+
+        @media(max-width:720px) {
+            header {
+                padding: 14px 16px
+            }
+
+            header h2 {
+                font-size: 22px
+            }
+
+            header .credit {
+                display: none
+            }
+
+            .shell {
+                display: block
+            }
+
+            nav {
+                height: auto;
+                position: static;
+                max-height: 220px;
+                border-right: 0;
+                border-bottom: 1px solid var(--line)
+            }
+
+            #navigation {
+                display: flex;
+                gap: 4px;
+                flex-wrap: wrap
+            }
+
+            .navgroup {
+                display: none
+            }
+
+            .navbutton {
+                width: auto;
+                font-size: 12px;
+                padding: 5px 8px
+            }
+
+            .underplot {
+                grid-template-columns: 1fr
+            }
+
+            h1 {
+                font-size: 22px
+            }
+
+            #world {
+                height: 340px
+            }
+
+            aside {
+                height: auto;
+                position: static;
+                border-left: 0
+            }
+
+            main {
+                padding: 18px 16px
+            }
+
+            .step {
+                font-size: 10px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>Coverage Control for Mobile Sensing Networks</h2>
+        <div class="credit">Cortés, Martínez, Karatas and Bullo | IEEE T-RA 2004<br> MEAM 6240: Distributed Robotics
+        </div>
+    </header>
+    <div class="shell">
+        <nav aria-label="Demo pages">
+            <div id="navigation"></div>
+        </nav>
+        <main>
+            <div class="eyebrow" id="group">Lloyd descent algorithms</div>
+            <h1 id="title">Loading the lab…</h1>
+            <p id="description"></p>
+            <div class="formula">
+                <div id="formula"></div>
+            </div>
+            <div id="error" class="notice error" role="alert"></div>
+            <div id="warning" class="notice" role="status"></div>
+            <div class="toolbar"><button id="fast" class="primary">▶ Play fast</button><button id="play">▶ Play
+                    slowly</button><button id="reset">↺ Reset</button><span class="push pill"
+                    id="runStatus">Paused</span></div>
+            <div class="steps">
+                <div class="step" data-phase="0"><b>1</b>Show cells</div>
+                <div class="step" data-phase="1"><b>2</b>Show centroids</div>
+                <div class="step" data-phase="2"><b>3</b>Move slowly</div>
+                <div class="step" data-phase="3"><b>4</b>Recompute · pause</div>
+            </div>
+            <div class="card viz">
+                <button id="resetZoom" hidden>Reset zoom</button>
+                <canvas id="world" aria-label="Agent positions, Voronoi cells and centroids"></canvas>
+                <div class="legend"><span><i class="dot"></i>Agent</span><span><b class="cross">×</b><span>Cell Centroid</span></span></div>
+            </div>
+            <div class="underplot">
+                <div class="card smallcard">
+                    <div class="smalltitle" id="chartTitle">Cost history</div><canvas id="chart"
+                        aria-label="Coverage cost and energy over time"></canvas>
+                </div>
+                <div class="metrics">
+                    <div class="metric"><label id="costLabel">Coverage cost</label><strong id="cost">—</strong></div>
+                    <div class="metric"><label id="auxLabel">Max centroid error</label><strong id="aux">—</strong></div>
+                    <div class="metric"><label id="timeLabel">Model time</label><strong id="time">0</strong></div>
+                    <div class="metric"><label>Completed cycles</label><strong id="iteration">0</strong></div>
+                </div>
+            </div>
+        </main>
+        <aside>
+            <div>
+                <div class="paneltitle">Adjustable Parameters</div>
+                <div class="toggles"><label><input id="showDensity" type="checkbox" checked>Density</label><label><input
+                            id="showCells" type="checkbox" checked>Cells</label><label><input id="showCentroids"
+                            type="checkbox" checked>Centroids</label><label><input id="showTrails" type="checkbox"
+                            checked>Trails</label><label><input id="showIds" type="checkbox" checked>Agent
+                        IDs</label><label><input id="showLocal" type="checkbox" checked>Local data</label></div>
+                <div class="control"><label for="preset">Preset</label><select id="preset"></select></div>
+                <div id="controls"></div><button id="apply" class="primary">Apply &amp; reset</button>
+                <div id="dirty" class="hint">Changes take effect when you apply and reset.</div>
+            </div>
+            <div class="sectionline">
+                <div class="paneltitle">Agent inspector</div>
+                <div class="control"><label for="selected">Select an agent</label><select id="selected"></select>
+                </div>
+                <div id="inspector"></div>
+            </div>
+        </aside>
+    </div>
+    <script>
+        'use strict';
+        // This page does no math. app.py runs the algorithms (demos.py, geometry.py) and returns states;
+        // the code below builds the controls, asks for the next cycle, and animates between the returned states.
+        //   page     the catalog entry being shown (id, title, desc, formula, defaults)
+        //   session  the server session for that page: id, config, domain, heatmap, latest state
+        //   cycle    the result of one /api/advance call: {before, frames, after, extra}
+        //   visual   the state currently drawn (a snapshot, or an interpolation between two)
+        const $ = id => document.getElementById(id), canvas = $('world'), ctx = canvas.getContext('2d');
+        // Math is written as LaTeX: $…$ inside text is typeset by KaTeX; M() renders one expression to an HTML string.
+        const TEX = { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false };
+        function setTex(el, s) { s = String(s); if (el.dataset.tex === s) return; el.dataset.tex = s; el.textContent = s; renderMathInElement(el, TEX); }
+        const texCache = new Map(), M = s => { if (!texCache.has(s)) texCache.set(s, katex.renderToString(s, { throwOnError: false })); return texCache.get(s); };
+        let catalog = [], page = null, sessions = {}, session = null, visual = null, cycle = null, phase = 0, elapsed = 0;
+        let running = false, autoplay = false, fast = false, busy = false, token = 0, lastTick = 0, lastRender = 0, transform = null, dirty = false;
+        let trails = [], history = [], heatCanvas = null, colors = [];
+        // ---- Parameter controls: [label, min, max, step] for numbers, [value, label] choices for selects ----
+        const numeric = { n: ['Agents', 1, 48, 1], gain: ['Gain $k_{\\mathrm{prop}}$', .01, 15, .1], alpha: ['Lloyd fraction $\\alpha$', .01, 1, .05], beta: ['Gaussian $\\beta$', .05, 12, .25], kappa: ['Density sharpness $\\kappa$', 1, 1000, 10], a: ['Coefficient $a$', .05, 4, .05], b: ['Coefficient $b$', -3, 4, .05], r2: ['Radius squared $r^2$', .01, 2, .01], xc: ['Center $x_c$', -1, 1, .05], yc: ['Center $y_c$', -1, 1, .05], ell: ['Ramp $\\ell$', .1, 50, .5], line_c: ['Line offset $c$', -2, 2, .05], kp: ['Proportional gain $k_p$', .05, 15, .1], kd: ['Damping $k_d$', .01, 12, .1], v0: ['Initial $x$ velocity', -2, 2, .05], horizon: ['Model time / cycle', .02, 2, .02], radius: ['Initial radius $R$', .02, 6, .02], delta0: ['Pulse duration $\\delta_0$', .005, .25, .005], slot: ['Global event spacing', .03, .3, .01], window: ['Control window', .02, 2, .02] };
+        const options = { initial: [['corner', 'Lower-left cluster'], ['spread', 'Spread across the environment']], domain: [['square', 'Square'], ['polygon', 'Convex polygon']], density: [['uniform', 'Uniform'], ['gaussian', 'Gaussian'], ['ellipse', 'Ellipse band'], ['disk', 'Ellipsoidal disk'], ['line', 'Line band']] };
+        const names = { initial: 'Initial layout', domain: 'Environment', density: 'Importance density' };
+        const fmt = x => !Number.isFinite(x) ? '—' : Math.abs(x) >= 100000 || Math.abs(x) > 0 && Math.abs(x) < .0001 ? x.toExponential(3) : x.toLocaleString(undefined, { maximumFractionDigits: 4 });
+        const point = p => `(${p.map(x => Number(x).toFixed(3)).join(', ')})`;
+        const isAsync = () => ['network', 'algo1', 'algo2'].includes(page.id);
+        const isRadius = () => ['radius', 'communication'].includes(page.id);
+        const isEnergy = () => page.id === 'second';
+        const isDiscrete = () => ['lloyd', 'toy2d'].includes(page.id);
+        // ---- Backend ----
+        // Started with `python app.py`, requests go to that local server. On a static website there is no server,
+        // so pyodide_worker.js runs the same demos.py and geometry.py in the browser. connect() uses whichever exists
+        // and returns the page catalog.
+        let worker = null, callId = 0; const calls = new Map();
+        const workerCall = (path, body) => new Promise((resolve, reject) => { calls.set(++callId, { resolve, reject }); worker.postMessage({ id: callId, path, body }); });
+        async function connect() {
+            try { const r = await fetch('api/catalog'); if (r.ok) return await r.json(); } catch (e) { }
+            $('description').textContent = 'Starting Python in your browser. This takes a few seconds the first time.';
+            worker = new Worker('pyodide_worker.js');
+            worker.onmessage = e => { const c = calls.get(e.data.id); calls.delete(e.data.id); if (e.data.error !== undefined) c.reject(Error(e.data.error)); else c.resolve(e.data.result); };
+            worker.onerror = e => { for (const c of calls.values()) c.reject(Error('Could not start Python in the browser. ' + (e.message || ''))); calls.clear(); };
+            return workerCall('api/catalog', {});
+        }
+        async function api(path, body) { if (worker) return workerCall(path, body); const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); const x = await r.json(); if (!r.ok) throw Error(x.error || 'Request failed'); return x; }
+        function error(e) { setTex($('error'), e.message || e); $('error').classList.add('show'); running = false; autoplay = false; updateButtons(); }
+        function clearError() { $('error').classList.remove('show'); }
+        // Which parameters the current page shows in the right-hand panel.
+        function fields() {
+            let f = []; const id = page.id;
+            if (id !== 'toy2d') f.push('n', 'initial', 'domain');
+            if (['lloyd', 'continuous', 'second', 'unicycle', 'algo1', 'algo2', 'network'].includes(id)) f.push('density');
+            if (isDiscrete()) f.push('alpha');
+            if (['continuous', 'ellipse', 'disk', 'line', 'unicycle'].includes(id)) f.push('gain');
+            if (isEnergy()) f.push('kp', 'kd', 'v0');
+            const cfg = readConfig(false); const density = cfg.density || session?.config.density || page.defaults.density;
+            if (density === 'gaussian') f.push('beta', 'xc', 'yc');
+            if (['ellipse', 'disk'].includes(density)) f.push('kappa', 'a', 'b', 'r2', 'xc', 'yc');
+            if (density === 'disk') f.push('ell'); if (density === 'line') f.push('kappa', 'a', 'b', 'line_c');
+            if (isRadius()) f.push('radius');
+            if (isAsync()) f.push('slot', id === 'algo1' ? 'delta0' : 'window');
+            if (!isDiscrete() && !isRadius()) f.push('horizon');
+            return [...new Set(f)];
+        }
+        function readConfig(full = true) { const c = full ? { ...(session?.config || page?.defaults || {}) } : {}; document.querySelectorAll('[data-param]').forEach(el => { c[el.dataset.param] = el.tagName === 'SELECT' ? el.value : Number(el.value); }); return c; }
+        function renderControls(cfg) {
+            const f = fields(); $('controls').innerHTML = ''; for (const key of f) {
+                const d = document.createElement('div'); d.className = 'control'; let label = document.createElement('label'); label.className = 'plain'; label.htmlFor = 'param-' + key; setTex(label, names[key] || numeric[key][0]); d.append(label);
+                let el; if (options[key]) { el = document.createElement('select'); for (const [value, text] of options[key]) { let o = new Option(text, value); el.add(o); } } else { el = document.createElement('input'); el.type = 'number'; el.min = numeric[key][1]; el.max = numeric[key][2]; el.step = numeric[key][3]; }
+                el.id = 'param-' + key; el.dataset.param = key; el.value = cfg[key]; el.addEventListener('change', () => { pausePlayback(); dirty = true; $('dirty').textContent = 'Parameters changed — apply and reset to use them.'; $('dirty').classList.add('dirty'); if (key === 'density') { const next = readConfig(); session.config = next; renderControls(next); } }); d.append(el); $('controls').append(d);
+            }
+        }
+        // ---- Page navigation and sessions ----
+        function presets() { const list = [['default', page.id === 'unicycle' ? 'Requested gain 7' : 'Recommended default']]; if (page.id === 'unicycle') list.push(['journal', 'Journal Fig. 6 · gain 3']); if (['continuous', 'second'].includes(page.id)) list.push(['journal', 'Journal Gaussian · β=1'], ['preprint', 'Preprint Gaussian · β=5']); if (page.id === 'lloyd') list.push(['spread', '10 agents, spread out'], ['gaussian', '32 agents, Gaussian']); return list; }
+        function buildNav() { let last = ''; for (const p of catalog) { if (p.group !== last) { let h = document.createElement('div'); h.className = 'navgroup'; h.textContent = p.group; $('navigation').append(h); last = p.group; } let b = document.createElement('button'); b.className = 'navbutton'; b.dataset.page = p.id; setTex(b, p.title); b.onclick = () => switchPage(p.id); $('navigation').append(b); } }
+        async function switchPage(id) {
+            pausePlayback(); if (cycle && session) session.state = cycle.after; cycle = null; token++; busy = false; page = catalog.find(p => p.id === id) || catalog[0]; history = []; dirty = false; clearError(); setTex($('title'), page.title); $('group').textContent = page.group; setTex($('description'), page.desc); katex.render(page.formula, $('formula'), { displayMode: true, throwOnError: false });
+            document.querySelectorAll('.navbutton').forEach(b => b.classList.toggle('active', b.dataset.page === page.id)); location.hash = page.id;
+            $('preset').innerHTML = ''; for (const [v, t] of presets()) $('preset').add(new Option(t, v));
+            session = sessions[page.id] || null; $('controls').innerHTML = ''; renderControls(session?.config || page.defaults);
+            const phases = isRadius() ? ['Sense / request', 'Candidate cell W', 'Expand radius', 'Test / certify'] : ['Show cells', 'Show centroids', 'Move slowly', 'Recompute · pause'];
+            document.querySelectorAll('.step').forEach((el, i) => el.innerHTML = `<b>${i + 1}</b>${phases[i]}`);
+            if (session) { visual = session.state; history = visual.history || []; makeHeat(); resetTrails(); refreshSelected(); render(); updateButtons(); } else await resetDemo(page.defaults);
+        }
+        async function resetDemo(cfg) { pausePlayback(); cycle = null; const my = ++token; busy = true; clearError(); updateButtons(); try { const x = await api('api/create', { page: page.id, config: cfg || readConfig(), replace: session?.id }); if (my !== token) return; session = x; sessions[page.id] = x; visual = x.state; $('showIds').checked = x.config.n <= 16; history = visual.history || []; dirty = false; $('dirty').textContent = 'Changes take effect when you apply and reset.'; $('dirty').classList.remove('dirty'); $('controls').innerHTML = ''; renderControls(x.config); makeHeat(); resetTrails(); refreshSelected(); phase = 0; elapsed = 0; render(); } catch (e) { if (my === token) error(e); } finally { if (my === token) { busy = false; updateButtons(); } } }
+        function resetTrails() { trails = visual.p.map(p => [p.slice()]); colors = visual.p.map((_, i) => `hsl(${(i * 137.508 + 165) % 360},70%,64%)`); }
+        function refreshSelected() { let value = visual.selected || 0; $('selected').innerHTML = ''; visual.p.forEach((_, i) => $('selected').add(new Option(`Agent ${i + 1}`, i))); $('selected').value = value; }
+        function makeHeat() { const hm = session.heatmap; heatCanvas = document.createElement('canvas'); heatCanvas.width = hm.size; heatCanvas.height = hm.size; const c = heatCanvas.getContext('2d'), im = c.createImageData(hm.size, hm.size); for (let y = 0; y < hm.size; y++)for (let x = 0; x < hm.size; x++) { const v = hm.z[y][x], i = ((hm.size - 1 - y) * hm.size + x) * 4; im.data[i] = 239; im.data[i + 1] = 150 - 50 * Math.max(0, v); im.data[i + 2] = 100; im.data[i + 3] = v < 0 ? 0 : Math.round(150 * Math.pow(v, .55)); } c.putImageData(im, 0, 0); }
+        function pausePlayback() { running = false; autoplay = false; updateButtons(); }
+        function updateButtons() { $('play').textContent = running && !fast ? 'Ⅱ Pause' : cycle && !running ? '▶ Resume slowly' : '▶ Play slowly'; $('play').disabled = busy || !visual || visual.finished && !cycle; $('fast').textContent = running && fast ? 'Ⅱ Pause' : '▶ Play fast'; $('fast').disabled = $('play').disabled; $('reset').disabled = busy; $('apply').disabled = busy; $('selected').disabled = busy; $('runStatus').textContent = busy ? 'Computing…' : running ? (fast ? 'Playing fast' : 'Playing slowly') : visual?.finished ? 'Completed / stopped' : 'Paused'; }
+        // ---- Playback: each cycle steps through 4 phases (cells, centroids, motion, recompute) ----
+        // Fast playback requests the next cycle while the current one animates, so playback never waits on the server.
+        function requestAdvance(s) { return s.pending = api('api/advance', { id: s.id }).then(x => ({ x }), e => ({ e })); }
+        async function takeAdvance(s) { const r = await (s.pending || requestAdvance(s)); s.pending = null; if (r.e) throw r.e; relabel(s, r.x); return r.x; }
+        function relabel(s, x) { if (s.sel === undefined || drivesCycle()) return; for (const v of [x.before, ...x.frames, x.after]) v.selected = s.sel; }
+        async function settle() { if (session?.pending) { const x = await takeAdvance(session); session.state = visual = x.after; history = visual.history || history; } }
+        async function beginCycle(auto, quick = false) { if (busy || !session) return; fast = quick; if (cycle) { running = true; autoplay = auto; updateButtons(); return; } busy = true; autoplay = auto; running = false; clearError(); updateButtons(); const my = token, working = session; try { const x = await takeAdvance(working); if (my !== token) { working.state = x.after; return; } cycle = x; phase = fast ? 2 : 0; elapsed = 0; running = true; visual = x.before; if (fast && autoplay && !x.after.finished && !x.after.warning) requestAdvance(working); render(); } catch (e) { error(e); } finally { if (my === token) { busy = false; updateButtons(); } } }
+        // Linear blend of two snapshots; phaseView picks what to draw for the current phase and progress f.
+        function interpolate(a, b, t) { const lerp = (x, y) => x.map((v, i) => Array.isArray(v) ? lerp(v, y[i]) : v + (y[i] - v) * t); let s = { ...a, p: lerp(a.p, b.p), v: lerp(a.v, b.v), theta: lerp(a.theta, b.theta), t: a.t + (b.t - a.t) * t }; return s; }
+        function phaseView(f) {
+            if (!cycle) return; if (phase < 2) { visual = cycle.before; return; } if (phase === 3) { visual = cycle.after; history = cycle.after.history || history; return; }
+            if (cycle.extra.radius) { visual = f < .5 ? cycle.before : cycle.after; return; }
+            if (cycle.extra.discrete) { visual = interpolate(cycle.before, cycle.after, f); return; }
+            const frames = [cycle.before, ...cycle.frames]; let start = frames[0].t, end = frames.at(-1).t, now = start + (end - start) * f; let k = 0; while (k < frames.length - 2 && frames[k + 1].t < now) k++; let den = frames[k + 1].t - frames[k].t; visual = interpolate(frames[k], frames[k + 1], den > 0 ? Math.min(1, Math.max(0, (now - frames[k].t) / den)) : 1);
+        }
+        const MOTION = 5, STAGE_PAUSE = 1.5; // seconds of motion and of each stage pause when playing slowly
+        const FAST_MOTION = .6; // seconds of motion per cycle when playing fast; stage pauses are skipped
+        function tick(now) {
+            const dt = Math.min(.12, (now - (lastTick || now)) / 1000); lastTick = now;
+            if (running && cycle) {
+                elapsed += dt; const pause = fast ? 0 : STAGE_PAUSE; const duration = phase === 2 ? (fast ? FAST_MOTION : MOTION) : pause; let f = duration > 0 ? Math.min(1, elapsed / duration) : 1; phaseView(f); if (phase === 2 && $('showTrails').checked) { visual.p.forEach((p, i) => { if (!trails[i]) trails[i] = []; let prev = trails[i].at(-1); if (!prev || Math.hypot(p[0] - prev[0], p[1] - prev[1]) > .001) { trails[i].push(p.slice()); if (trails[i].length > 1800) trails[i].shift(); } }); }
+                if (now - lastRender > 35) { render(); lastRender = now; } if (f >= 1) { elapsed = 0; phase++; if (fast && phase !== 2) phase = phase < 2 ? 2 : 4; if (phase > 3) { visual = cycle.after; session.state = visual; history = visual.history || history; cycle = null; running = false; render(); updateButtons(); if (autoplay && !visual.finished && !visual.warning) beginCycle(true, fast); } else { phaseView(0); render(); } }
+            } requestAnimationFrame(tick);
+        }
+        // ---- Drawing: environment, density, cells, trails, per-page overlays, agents ----
+        function setupCanvas(c) { const r = c.getBoundingClientRect(), d = window.devicePixelRatio || 1; c.width = Math.round(r.width * d); c.height = Math.round(r.height * d); const cx = c.getContext('2d'); cx.setTransform(d, 0, 0, d, 0, 0); return [r.width, r.height, cx]; }
+        function drawWorld() {
+            if (!visual || !session) return; let [w, h, c] = setupCanvas(canvas); let poly = session.domain, lo = [Math.min(...poly.map(p => p[0])), Math.min(...poly.map(p => p[1]))], hi = [Math.max(...poly.map(p => p[0])), Math.max(...poly.map(p => p[1]))];
+            const fit = Math.min((w - 75) / (hi[0] - lo[0]), (h - 55) / (hi[1] - lo[1])); const ox = (w - fit * (hi[0] - lo[0])) / 2, oy = (h - fit * (hi[1] - lo[1])) / 2;
+            const v = view(), scale = fit * v.z, ax = (ox - lo[0] * fit) * v.z + v.tx, ay = (h - oy + lo[1] * fit) * v.z + v.ty; const xy = p => [ax + p[0] * scale, ay - p[1] * scale]; transform = { xy, scale, w, h };
+            // Axis ticks span the visible part of the environment and stay on screen when zoomed.
+            const vlo = [Math.max(lo[0], -ax / scale), Math.max(lo[1], (ay - h) / scale)], vhi = [Math.min(hi[0], (w - ax) / scale), Math.min(hi[1], ay / scale)], digits = v.z > 8 ? 3 : 2;
+            const xLabelY = Math.min(xy([0, vlo[1]])[1] + 18, h - 4), yLabelX = Math.max(xy([vlo[0], 0])[0] - 9, 30);
+            const path = v => { if (!v?.length) return; c.beginPath(); v.forEach((p, i) => { const q = xy(p); i ? c.lineTo(...q) : c.moveTo(...q); }); c.closePath(); };
+            c.clearRect(0, 0, w, h);
+            path(poly); c.fillStyle = '#23262f'; c.fill(); c.save(); path(poly); c.clip();
+            if ($('showDensity').checked && session.config.density !== 'uniform') {
+                let hm = session.heatmap, b = hm.bounds, topleft = xy([b[0], b[3]]); c.imageSmoothingEnabled = true; c.drawImage(heatCanvas, topleft[0], topleft[1], (b[2] - b[0]) * scale, (b[3] - b[1]) * scale);
+            }
+            if ($('showCells').checked) { visual.cells.forEach((v, i) => { path(v); c.fillStyle = colors[i].replace('hsl', 'hsla').replace(')', ',0.07)'); c.fill(); c.strokeStyle = '#6f788e'; c.lineWidth = .9; c.stroke(); }); }
+            if ($('showTrails').checked) { trails.forEach((trail, i) => { if (trail.length < 2) return; c.beginPath(); trail.forEach((p, j) => { let q = xy(p); j ? c.lineTo(...q) : c.moveTo(...q); }); c.strokeStyle = colors[i]; c.globalAlpha = .46; c.lineWidth = 1.2; c.stroke(); c.globalAlpha = 1; }); }
+            if (['ellipse', 'disk'].includes(session.config.density)) { const a = session.config.a, b = session.config.b; if (b > 0) { let center = xy([session.config.xc, session.config.yc]); c.beginPath(); c.ellipse(...center, Math.sqrt(session.config.r2 / a) * scale, Math.sqrt(session.config.r2 / b) * scale, 0, 0, 2 * Math.PI); c.strokeStyle = '#ef7f5c'; c.setLineDash([4, 4]); c.lineWidth = 1; c.stroke(); c.setLineDash([]); } }
+            const i = visual.selected || 0;
+            if (isRadius()) { const st = visual.radius_stage, p = xy(visual.p[i]); path(st.cell); c.fillStyle = '#5ec8e533'; c.fill(); c.strokeStyle = '#5ec8e5'; c.lineWidth = 2; c.stroke(); c.beginPath(); c.arc(...p, (st.shrunk ? st.final : st.radius) * scale, 0, 2 * Math.PI); c.strokeStyle = '#5ec8e5'; c.setLineDash([6, 4]); c.lineWidth = 1.7; c.stroke(); c.setLineDash([]); if (page.id === 'communication') { st.detected.filter(j => j !== i).forEach(j => { arrow(visual.p[i], visual.p[j], '#ef7f5c', 1.3); arrow(visual.p[j], visual.p[i], '#5ec8e5', .7); }); } }
+            if (isAsync() && $('showLocal').checked) { path(visual.local_cells[i]); c.fillStyle = '#5ec8e522'; c.fill(); c.strokeStyle = '#5ec8e5'; c.setLineDash([5, 3]); c.lineWidth = 2; c.stroke(); c.setLineDash([]); const q = xy(visual.p[i]); c.beginPath(); c.arc(...q, visual.radii[i] * scale, 0, 2 * Math.PI); c.strokeStyle = '#5ec8e560'; c.lineWidth = 1; c.stroke(); visual.stored[i].forEach((p, j) => { if (j === i) return; let q = xy(p), r = xy(visual.p[j]); c.beginPath(); c.moveTo(...q); c.lineTo(...r); c.setLineDash([2, 3]); c.strokeStyle = '#8e97a9'; c.stroke(); c.setLineDash([]); c.beginPath(); c.arc(...q, 3, 0, 2 * Math.PI); c.stroke(); }); }
+            const showC = $('showCentroids').checked && (!cycle || phase !== 0) && !isRadius();
+            if (showC) { visual.centroids.forEach((p, j) => { let q = xy(p); c.strokeStyle = colors[j]; c.lineWidth = 2; c.beginPath(); c.moveTo(q[0] - 4, q[1] - 4); c.lineTo(q[0] + 4, q[1] + 4); c.moveTo(q[0] - 4, q[1] + 4); c.lineTo(q[0] + 4, q[1] - 4); c.stroke(); arrow(visual.p[j], ['unicycle', 'algo1', 'algo2', 'network'].includes(page.id) ? visual.targets[j] : p, colors[j], .35); }); }
+            if (['unicycle', 'algo2', 'algo1', 'network'].includes(page.id) && showC) { visual.targets.forEach((p, j) => { let q = xy(p); c.beginPath(); c.arc(...q, 6, 0, 2 * Math.PI); c.strokeStyle = colors[j]; c.setLineDash([2, 3]); c.lineWidth = 1.3; c.stroke(); c.setLineDash([]); }); }
+            visual.p.forEach((p, j) => {
+                let q = xy(p); if (j === i) { c.beginPath(); c.arc(...q, 10, 0, 2 * Math.PI); c.strokeStyle = '#e6e9efaa'; c.lineWidth = 1.4; c.stroke(); } if (visual.active[j]) { c.beginPath(); c.arc(...q, 8, 0, 2 * Math.PI); c.fillStyle = '#5fd3a840'; c.fill(); }
+                if (page.id === 'unicycle') { c.save(); c.translate(...q); c.rotate(-visual.theta[j]); c.fillStyle = colors[j]; c.fillRect(-6, -4, 12, 8); c.strokeStyle = '#23262f'; c.strokeRect(-6, -4, 12, 8); c.beginPath(); c.moveTo(4, 0); c.lineTo(11, 0); c.strokeStyle = colors[j]; c.lineWidth = 2; c.stroke(); c.restore(); } else { c.beginPath(); c.arc(...q, 5.3, 0, 2 * Math.PI); c.fillStyle = colors[j]; c.fill(); c.lineWidth = 1.8; c.strokeStyle = '#23262f'; c.stroke(); }
+                if ($('showIds').checked) { c.font = 'bold 9px system-ui'; c.textAlign = 'left'; c.lineWidth = 3; c.strokeStyle = '#23262f'; c.strokeText(j + 1, q[0] + 7, q[1] - 6); c.fillStyle = colors[j]; c.fillText(j + 1, q[0] + 7, q[1] - 6); }
+                if (isEnergy()) { const v = visual.v[j]; arrow(p, [p[0] + v[0] * .25, p[1] + v[1] * .25], '#ef7f5c', .9); }
+            });
+            if (page.id === 'toy2d') { let bx = Math.max(...visual.cells[0].map(p => p[0])), label = xy([bx, 2]); c.font = 'bold 11px system-ui'; c.textAlign = 'center'; c.fillStyle = '#c9cfdb'; c.fillText('x = ' + fmt(bx), label[0], label[1] + 15); }
+            c.restore(); path(poly); c.strokeStyle = '#c9cfdb'; c.lineWidth = 1.8; c.stroke();
+            c.font = '10px system-ui'; c.textAlign = 'center'; c.fillStyle = '#8e97a9'; c.strokeStyle = '#2f3445'; c.lineWidth = 3; c.lineJoin = 'round'; const label = (t, x, y) => { x = Math.min(Math.max(x, 16), w - 16); y = Math.min(Math.max(y, 10), h - 4); c.strokeText(t, x, y); c.fillText(t, x, y); }; for (let k = 0; k <= 4; k++) { let x = vlo[0] + k * (vhi[0] - vlo[0]) / 4; label(Number(x.toFixed(digits)), xy([x, 0])[0], xLabelY); let y = vlo[1] + k * (vhi[1] - vlo[1]) / 4; c.textAlign = 'right'; if (k || v.z === 1) label(Number(y.toFixed(digits)), yLabelX, xy([0, y])[1] + 3); c.textAlign = 'center'; }
+            function arrow(a, b, color, opacity) { let p = xy(a), q = xy(b), d = [q[0] - p[0], q[1] - p[1]], len = Math.hypot(...d); if (len < 12) return; let theta = Math.atan2(d[1], d[0]); c.save(); c.globalAlpha = opacity; c.strokeStyle = color; c.fillStyle = color; c.lineWidth = 1; c.beginPath(); c.moveTo(...p); c.lineTo(...q); c.stroke(); c.beginPath(); c.moveTo(...q); c.lineTo(q[0] - 5 * Math.cos(theta - .5), q[1] - 5 * Math.sin(theta - .5)); c.lineTo(q[0] - 5 * Math.cos(theta + .5), q[1] - 5 * Math.sin(theta + .5)); c.closePath(); c.fill(); c.restore(); }
+        }
+        // Cost (and energy) against model time.
+        function drawChart() { const [w, h, c] = setupCanvas($('chart')); c.clearRect(0, 0, w, h); let data = history.length ? history : [[0, visual.metrics.cost, visual.metrics.energy]]; let cols = isEnergy() ? [1, 2] : [1]; let values = data.flatMap(v => cols.map(j => v[j])); let min = Math.min(...values), max = Math.max(...values); if (max - min < 1e-12) { max += .5; min = Math.max(0, min - .5); } let t0 = data[0][0], t1 = data.at(-1)[0]; c.font = '9px system-ui'; c.fillStyle = '#8e97a9'; c.fillText(fmt(max), 0, 13); c.fillText(fmt(min), 0, h - 12); c.strokeStyle = '#474e63'; c.beginPath(); c.moveTo(47, 9); c.lineTo(47, h - 18); c.lineTo(w - 6, h - 18); c.stroke(); cols.forEach((col, j) => { c.strokeStyle = j ? '#5ec8e5' : '#ef7f5c'; c.lineWidth = 2; c.beginPath(); data.forEach((p, i) => { const x = 48 + (w - 58) * (p[0] - t0) / (t1 - t0 || 1), y = h - 19 - (h - 31) * (p[col] - min) / (max - min); i ? c.lineTo(x, y) : c.moveTo(x, y); }); c.stroke(); if (data.length === 1) { c.beginPath(); c.arc(48, h - 19 - (h - 31) * (data[0][col] - min) / (max - min), 3, 0, 2 * Math.PI); c.fillStyle = c.strokeStyle; c.fill(); } }); }
+        // ---- Inspector: numbers for the selected agent ----
+        function inspect() {
+            let i = visual.selected || 0, m = visual.metrics; let html = ''; const kv = (k, v) => `<div class="kv"><span>${k}</span><span>${v}</span></div>`;
+            html += kv('Position', point(visual.p[i])) + kv('Centroid', point(visual.centroids[i])) + kv('Cell mass', fmt(visual.masses[i])) + kv(M('\\partial\\mathcal{H}/\\partial p_i'), point(visual.gradient[i])) + kv('Neighbors', visual.neighbors[i].map(x => x + 1).join(', ') || 'none');
+            if (isEnergy()) html += kv('Velocity', point(visual.v[i])); if (page.id === 'unicycle') html += kv('Heading', fmt(visual.theta[i] * 180 / Math.PI) + '°');
+            if (isRadius()) { let r = visual.radius_stage; html += kv('Radius stage', `${r.index} / ${r.total}`) + kv('Radius', fmt(r.shrunk ? r.final : r.radius)) + kv(M('2\\max_{q\\in W}\\|q-p_i\\|'), fmt(r.required)) + kv('Certified?', r.certified ? 'yes' : 'not yet') + kv('Detected agents', r.detected.filter(j => j !== i).map(j => j + 1).join(', ') || 'none'); }
+            if (isAsync()) { html += kv('Local clock', fmt(visual.clocks[i])) + kv('Clock rate', fmt(visual.clock_rates[i])) + kv('Last thread', visual.threads[i]) + kv('Held target', point(visual.targets[i])) + kv('Control u', point(visual.u[i])) + kv('Density scale', fmt(m.mass_scale)); html += '<div class="agentbar">' + visual.active.map((v, j) => `<span class="${v ? 'on' : ''}" title="Agent ${j + 1}: ${v ? 'active' : 'idle'}">${j + 1}</span>`).join('') + '</div><div class="hint">Green = active control window. Dashed cell = selected agent’s local cell; hollow dots = stored positions.</div>'; html += '<details><summary>Stored positions and ages</summary><table><tr><th>Agent</th><th>Stored ' + M('p') + '</th><th>Age</th></tr>' + visual.stored[i].map((p, j) => `<tr><td>${j + 1}</td><td>${point(p)}</td><td>${fmt(visual.ages[i][j])}</td></tr>`).join('') + '</table></details>'; }
+            if (page.id === 'algo2') { html += kv('Event latch', visual.events[i] ? 'TRUE' : 'false') + kv('Events observed', visual.event_count[i]); html += '<table><tr><th>Agent</th><th>Stored</th><th>Now</th><th>' + M('\\Delta w') + '</th></tr>' + (visual.weights || []).map(r => `<tr class="${r.delta >= 2 ? 'trigger' : ''}"><td>${r.j + 1}</td><td>${r.stored}</td><td>${r.current}</td><td>${r.delta > 0 ? '+' : ''}${r.delta}</td></tr>`).join('') + '</table>'; }
+            if (page.id === 'toy2d') { html += '<details><summary>Cell vertices</summary>' + visual.cells[i].map((p, j) => kv(M('v_{' + (j + 1) + '}'), point(p))).join('') + '</details>'; }
+            const openDetails = new Set([...document.querySelectorAll('#inspector details[open]')].map(d => d.querySelector('summary')?.textContent)); $('inspector').innerHTML = html; document.querySelectorAll('#inspector details').forEach(d => d.open = openDetails.has(d.querySelector('summary')?.textContent));
+        }
+        function render() {
+            if (!visual) return; if (session) { canvas.classList.toggle('zoomed', view().z > 1); $('resetZoom').hidden = view().z === 1; } drawWorld(); drawChart(); inspect(); let m = visual.metrics;
+            setTex($('costLabel'), 'Coverage cost $\\mathcal{H}$'); $('cost').textContent = fmt(m.cost); setTex($('auxLabel'), isEnergy() ? 'Total energy $E$' : 'Max target error'); $('aux').textContent = fmt(isEnergy() ? m.energy : m.error); $('time').textContent = fmt(visual.t); $('iteration').textContent = visual.iteration; $('timeLabel').textContent = isDiscrete() || isRadius() ? 'Update index' : 'Model time'; setTex($('chartTitle'), isEnergy() ? '$\\mathcal{H}$ (orange) and $E$ (blue)' : 'Cost history');
+            document.querySelectorAll('.step').forEach((el, i) => el.classList.toggle('active', !!cycle && i === phase));
+            setTex($('warning'), visual.warning || ''); $('warning').classList.toggle('show', !!visual.warning);
+        }
+        // On the radius pages the selected agent drives the cycle's computation, so a mid-cycle selection
+        // jumps to the end of the cycle and recomputes; elsewhere selection only changes the view and applies at once.
+        const drivesCycle = isRadius;
+        async function select(i) {
+            if (busy || !session) return;
+            if (!cycle) { await act('select', { selected: i }); session.sel = visual.selected; return; }
+            if (drivesCycle()) {
+                const resume = running, quick = fast;
+                visual = cycle.after; session.state = visual; history = visual.history || history; cycle = null; running = false;
+                await act('select', { selected: i });
+                if (resume && !visual.finished && !visual.warning) beginCycle(true, quick);
+                return;
+            }
+            session.sel = i; relabel(session, cycle); visual.selected = i; $('selected').value = i; render();
+            api('api/action', { id: session.id, action: 'select', values: { selected: i } }).catch(error);
+        }
+        async function act(action, values = {}) { if (busy || cycle) return; busy = true; updateButtons(); try { await settle(); visual = await api('api/action', { id: session.id, action, values }); session.state = visual; if (action === 'select') $('selected').value = visual.selected; render(); } catch (e) { error(e); } finally { busy = false; updateButtons(); render(); } }
+        $('play').onclick = () => running && !fast ? pausePlayback() : beginCycle(true); $('fast').onclick = () => running && fast ? pausePlayback() : beginCycle(true, true); $('reset').onclick = () => resetDemo(session.config); $('apply').onclick = () => resetDemo(readConfig());
+        $('selected').onchange = () => select(Number($('selected').value));
+        $('preset').onchange = () => { let cfg = { ...page.defaults }; let v = $('preset').value; if (v === 'journal') { if (page.id === 'unicycle') cfg.gain = 3; else cfg.beta = 1; } if (v === 'preprint') cfg.beta = 5; if (v === 'spread') cfg.initial = 'spread'; if (v === 'gaussian') Object.assign(cfg, { n: 32, density: 'gaussian' }); resetDemo(cfg); };
+        document.querySelectorAll('.toggles input').forEach(el => el.onchange = render);
+        // Zoom: pinch (ctrl+wheel in Chrome/Firefox, gesture events in Safari) zooms about the cursor; two-finger
+        // scroll or drag pans while zoomed; double-click or "Reset zoom" returns to the full view.
+        const view = () => session.view ||= { z: 1, tx: 0, ty: 0 };
+        function zoomAt(f, mx, my) { const v = view(), z = Math.min(40, Math.max(1, v.z * f)); f = z / v.z; if (z === 1) Object.assign(v, { z: 1, tx: 0, ty: 0 }); else Object.assign(v, { z, tx: f * (v.tx - mx) + mx, ty: f * (v.ty - my) + my }); zoomChanged(); }
+        function panBy(dx, dy) { const v = view(); if (v.z === 1) return false; v.tx += dx; v.ty += dy; zoomChanged(); return true; }
+        function zoomChanged() { const zoomed = view().z > 1; canvas.classList.toggle('zoomed', zoomed); $('resetZoom').hidden = !zoomed; render(); }
+        const local = e => { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+        canvas.addEventListener('wheel', e => { if (!session) return; if (e.ctrlKey) { e.preventDefault(); zoomAt(Math.exp(-e.deltaY * .01), ...local(e)); } else if (panBy(-e.deltaX, -e.deltaY)) e.preventDefault(); }, { passive: false });
+        let gestureScale = 1;
+        canvas.addEventListener('gesturestart', e => { e.preventDefault(); gestureScale = 1; });
+        canvas.addEventListener('gesturechange', e => { if (!session) return; e.preventDefault(); zoomAt(e.scale / gestureScale, ...local(e)); gestureScale = e.scale; });
+        let drag = null, dragged = false;
+        canvas.addEventListener('pointerdown', e => { dragged = false; if (session && view().z > 1) { drag = local(e); canvas.setPointerCapture(e.pointerId); } });
+        canvas.addEventListener('pointermove', e => { if (!drag) return; const q = local(e); if (!dragged && Math.hypot(q[0] - drag[0], q[1] - drag[1]) < 4) return; dragged = true; canvas.classList.add('dragging'); panBy(q[0] - drag[0], q[1] - drag[1]); drag = q; });
+        canvas.addEventListener('pointerup', () => { drag = null; canvas.classList.remove('dragging'); });
+        canvas.ondblclick = () => { if (session) zoomAt(0, 0, 0); };
+        $('resetZoom').onclick = () => zoomAt(0, 0, 0);
+        canvas.onclick = e => { if (!transform || busy || dragged) return; const r = canvas.getBoundingClientRect(), p = [e.clientX - r.left, e.clientY - r.top]; let index = -1, best = 20; visual.p.forEach((q, i) => { let s = transform.xy(q), d = Math.hypot(p[0] - s[0], p[1] - s[1]); if (d < best) { best = d; index = i; } }); if (index >= 0) select(index); };
+        new ResizeObserver(() => { if (visual) render(); }).observe(canvas.parentElement);
+        window.addEventListener('keydown', e => { if (e.code === 'Space' && !['INPUT', 'SELECT', 'TEXTAREA', 'BUTTON'].includes(document.activeElement.tagName)) { e.preventDefault(); $('play').click(); } });
+        async function init() { try { catalog = (await connect()).pages; buildNav(); await switchPage(location.hash.slice(1) || 'lloyd'); requestAnimationFrame(tick); } catch (e) { error(e); } } init();
+    </script>
+</body>
+
+</html>
