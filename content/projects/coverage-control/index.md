@@ -1,6 +1,7 @@
 ---
 title: "Coverage Control for Mobile Sensing Networks"
 date: 2026-10-04
+weight: 2
 draft: false
 author: ["Larry Hui"]
 tags: ["robotics", "multi-agent systems", "coverage control", "Voronoi", "Lloyd algorithm", "distributed control", "MEAM 6240"]
